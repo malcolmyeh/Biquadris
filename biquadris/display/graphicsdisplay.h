@@ -1,0 +1,1 @@
+// inherits from display (observer), has an xwindow
