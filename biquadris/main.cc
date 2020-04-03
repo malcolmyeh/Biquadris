@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
         }
         else if (flag == "-seed")
         {
-            ++i; 
+            ++i;
             int seed;
             flag = argv[i];
             std::istringstream iss{argv[i]};
@@ -51,7 +51,8 @@ int main(int argc, char *argv[])
             std::istringstream iss{argv[i]};
             iss >> startLevel;
         }
-        else {
+        else
+        {
             std::cerr << "Invalid flag. Verify input is correct." << std::endl;
             return 1;
         }
@@ -61,6 +62,7 @@ int main(int argc, char *argv[])
               << scriptFile2 << std::endl
               << "starting on level " << startLevel << std::endl;
 
-    // Controller c {graphics, scriptFile1, scriptFile2, startLevel};
+    // Controller c {graphics, scriptFile1, scriptFile2, startLevel, etc....};
     // c.runGame();
+    return 0;
 }
