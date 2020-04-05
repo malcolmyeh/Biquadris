@@ -6,6 +6,7 @@ Level::Level(int levelNumber, std::string file) : levelNumber{levelNumber},
                                                   file{file}
 {
     // should we check if file is valid here or in getBlocksFromFile()
+    // we will check from main
     getBlocksFromFile();
 }
 

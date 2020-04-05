@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <ifstream>
 //
 
 int main(int argc, char *argv[])
@@ -35,14 +36,27 @@ int main(int argc, char *argv[])
         else if (flag == "-scriptfile1")
         {
             ++i;
-            flag = argv[i];
-            scriptFile1 = argv[i];
+            ifstream infile{argv[i]};
+            if (infile) {
+                flag = argv[i];
+                scriptFile1 = argv[i];
+            } else {
+                std::cerr << "Scriptfile1 invalid. Verify input is correct." << std::endl;
+                return 1; 
+            }
+            
         }
         else if (flag == "-scriptfile2")
         {
             ++i;
-            flag = argv[i];
-            scriptFile2 = argv[i];
+            ifstream infile{argv[i]};
+            if (infile) {
+                flag = argv[i];
+                scriptFile2 = argv[i];
+            } else {
+                std::cerr << "Scriptfile2 invalid. Verify input is correct." << std::endl;
+                return 1;
+            }
         }
         else if (flag == "-startlevel")
         {
