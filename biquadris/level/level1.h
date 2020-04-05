@@ -4,7 +4,9 @@
 
 class Level1 : public Level
 {
-
+public:
+    Level1();
+    char getBlockType() override;
 };
 
 #endif

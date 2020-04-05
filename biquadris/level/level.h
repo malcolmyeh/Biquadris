@@ -3,18 +3,21 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
 
 class Level
 {
+protected:
     std::string file;
     int levelNumber;
-    bool random = false;
     std::vector<char> sequence;
+    int sequencePosition = 0; // should this be modifiable throuhg ctor?
+    void getBlocksFromFile();
 
 public:
+    Level(int levelNumber);
+    Level(int levelNumber, std::string file);
     virtual char getBlockType() = 0;
-    virtual void generateSequence() = 0;
-    void setRandom(bool b);
 };
 
 #endif

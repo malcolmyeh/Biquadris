@@ -4,7 +4,12 @@
 
 class Level4 : public Level
 {
+    bool random = false;
 
+public:
+    Level4();
+    void setRandom(bool b);
+    char getBlockType() override;
 };
 
 #endif
