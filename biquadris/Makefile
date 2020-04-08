@@ -1,8 +1,14 @@
-not sure how this will work with subdirectories
-https://stackoverflow.com/questions/1139271/makefiles-with-source-files-in-different-directories
+CXX = g++
+CXXFLAGS = -std=c++14 -Wall -MMD
+OBJECTS = displayTest.o subject/subject.o point/point.o board/cell.o board/board.o display/textdisplay.o display/window.o display/graphicsdisplay.o
+DEPENDS = ${OBJECTS:.o=.d}
+EXEC = displayTest
 
-looks like we will be using VPATH
+${EXEC} : ${OBJECTS}
+	${CXX} ${OBJECTS} -o ${EXEC} -lX11
 
-or
+-include ${DEPENDS}
 
-we can create a makefile in each subdirectory and recursively make on the top level
+.PHONY : clean
+clean :
+	rm ${DEPENDS} ${OBJECTS} ${EXEC}

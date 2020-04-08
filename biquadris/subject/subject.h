@@ -1,39 +1,36 @@
-/*
-WE CAN USE THIS AS A TEMPLATE 
-*/
-
-
 #ifndef SUBJECT_H
 #define SUBJECT_H
 #include <vector>
+#include <memory>
 
-template <typename InfoType, typename StateType> class Observer;
+// #include "../point/point.h"
 
-template <typename InfoType, typename StateType> class Subject {
-  std::vector<Observer<InfoType, StateType>*> observers;
-  StateType state;
- protected:
-  void setState(StateType newS);
- public:
-  void attach(Observer<InfoType, StateType> *o);  
-  void notifyObservers();
-  virtual InfoType getInfo() const = 0;
-  StateType getState() const;
+class View;
+
+class Subject
+{
+  protected:
+  // Point point;
+  std::vector<std::shared_ptr<View>> displays;
+  // int boardNumber;
+
+public:
+
+  void attach(std::shared_ptr<View> display);
+  // int getBoardNumber();
+  // Point getPoint();
+  virtual void drawDisplays() = 0;
 };
 
-template <typename InfoType, typename StateType>
-void Subject<InfoType, StateType>::attach(Observer<InfoType, StateType> *o) {
-  observers.emplace_back(o);
-}
 
-template <typename InfoType, typename StateType>
-void Subject<InfoType, StateType>::notifyObservers() {
-  for (auto &ob : observers) ob->notify(*this);
-}
 
-template <typename InfoType, typename StateType>
-void Subject<InfoType, StateType>::setState(StateType newS) { state = newS; }
 
-template <typename InfoType, typename StateType>
-StateType Subject<InfoType, StateType>::getState() const { return state; }
+// int Subject::getBoardNumber(){
+//   return boardNumber;
+// }
+
+// Point Subject::getPoint(){
+//   return point;
+// }
+
 #endif

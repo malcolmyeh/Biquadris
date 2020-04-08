@@ -41,7 +41,7 @@ char Level4::getBlockType()
     }
     else
     {
-        if (sequencePosition >= sequence.size)
+        if (sequencePosition >= sequence.size())
         {
             sequencePosition = 0;
         }
