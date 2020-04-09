@@ -20,4 +20,6 @@ public:
     bool drop();
 };
 
+// NOTE: how do we know when a piece is "set"? So that we can release the next one?
+
 #endif
