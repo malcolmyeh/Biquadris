@@ -27,6 +27,7 @@ class GraphicsDisplay : public View
     void drawOutline(int x, int y, int width, int height);
     void drawNormalCell(int x, int y, int colour);
     void drawBlindCell(int x, int y);
+    void eraseCell(int x, int y); // for next block area, don't want lingering grid
 public:
     GraphicsDisplay(int cellSize = 25);
 

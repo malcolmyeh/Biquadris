@@ -79,6 +79,11 @@ void GraphicsDisplay::drawBlindCell(int x, int y)
     xw->fillRectangle(x, y, cellSize, cellSize, Xwindow::Black);
 }
 
+void GraphicsDisplay::eraseCell(int x, int y)
+{
+    xw->fillRectangle(x, y, cellSize, cellSize, Xwindow::White);
+}
+
 void GraphicsDisplay::drawString(int x, int y, std::string msg,
                                  int colour)
 {
