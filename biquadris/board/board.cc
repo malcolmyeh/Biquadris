@@ -69,3 +69,8 @@ void Board::fillCell(int x, int y, int colour)
     cellGrid[y][x].setColour(colour);
     cellGrid[y][x].drawDisplays();
 }
+
+bool Board::isFilled(int x, int y)
+{
+    return cellGrid[y][x].isFilled();
+}

@@ -24,6 +24,7 @@ class Board {
         void init(int boardNumber);
         void refresh();
         void fillCell(int x, int y, int colour);
+        bool isFilled(int x, int y);
         friend std::ostream &operator<<(std::ostream &out, const Board &b);
 
 };
