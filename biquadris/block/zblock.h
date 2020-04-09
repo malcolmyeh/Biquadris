@@ -5,7 +5,7 @@
 
 class ZBlock : public Block {
 public:
-    ZBlock(char type);
-}
+    ZBlock(char type, Board *board);
+};
 
 #endif

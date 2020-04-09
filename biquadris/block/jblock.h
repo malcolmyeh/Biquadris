@@ -5,7 +5,7 @@
 
 class JBlock : public Block {
 public:
-    JBlock(char type);
-}
+    JBlock(char type, Board *board);
+};
 
 #endif

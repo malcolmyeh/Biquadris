@@ -5,5 +5,6 @@ DBlock::DBlock(char type, Board *board) : Block{type, board} {
     this->points = v;
     this->recWidth = 1;
     this->recHeight = 1;
-    this->board.fillCell(p, v); // type and blindness and colour and display
+    for (auto a : v) 
+        this->board.fillCell(a.getX(), a.getY(), 1); // type and blindness and colour and display
 }

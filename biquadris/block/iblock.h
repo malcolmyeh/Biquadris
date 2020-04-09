@@ -5,7 +5,7 @@
 
 class IBlock : public Block {
 public:
-     IBlock(char type);
-}
+     IBlock(char type, Board *board);
+};
 
 #endif

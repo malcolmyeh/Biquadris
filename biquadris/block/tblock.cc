@@ -5,4 +5,6 @@ TBlock::TBlock(char type) : Block{type} {
     this->points = v;
     this->recWidth = 3;
     this->recHeight = 2;
+    for (auto a : v)
+        this->board.fillCell(a.getX(), a.getY(), 1);
 }

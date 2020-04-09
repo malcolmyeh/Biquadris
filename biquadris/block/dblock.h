@@ -6,6 +6,6 @@
 class DBlock : public Block {
 public:
     DBlock(char type, Board *board);
-}
+};
 
 #endif

@@ -18,6 +18,6 @@ public:
     bool move(char direction);
     bool rotate(char direction);
     bool drop();
-}
+};
 
 #endif

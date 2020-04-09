@@ -5,7 +5,7 @@
 
 class SBlock : public Block {
 public:
-    SBlock(char type);
-}
+    SBlock(char type, Board *board);
+};
 
 #endif
