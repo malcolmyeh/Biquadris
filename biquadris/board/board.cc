@@ -64,13 +64,13 @@ void Board::refresh()
     }
 }
 
-void Board::fillCell(int x, int y, int colour)
+void Board::fillCell(Point point, int colour)
 {
-    cellGrid[y][x].setColour(colour);
-    cellGrid[y][x].drawDisplays();
+    cellGrid[point.y][point.x].setColour(colour);
+    cellGrid[point.y][point.x].drawDisplays();
 }
 
-bool Board::isFilled(int x, int y)
+bool Board::isFilled(Point point)
 {
-    return cellGrid[y][x].isFilled();
+    return cellGrid[point.y][point.x].isFilled();
 }
