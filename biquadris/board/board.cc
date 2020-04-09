@@ -48,9 +48,9 @@ void Board::toggleBlind()
         for (int c = 8; c > 1; --c)
         {
             cellGrid[r][c].toggleBlind();
+            cellGrid[r][c].drawDisplays();
         }
     }
-    refresh();
 }
 
 void Board::refresh()
@@ -64,8 +64,8 @@ void Board::refresh()
     }
 }
 
-void Board::draw(int x, int y, int colour)
+void Board::fillCell(int x, int y, int colour)
 {
     cellGrid[y][x].setColour(colour);
-    refresh();
+    cellGrid[y][x].drawDisplays();
 }

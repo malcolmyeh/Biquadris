@@ -22,12 +22,8 @@ class Board {
         void setDisplay(std::shared_ptr<View> display);
         void toggleBlind();      
         void init(int boardNumber);
-
-        ///////////////// testing ///////////////////
         void refresh();
-        void draw(int x, int y, int colour);
-        /////////////////////////////////////////////
-        
+        void fillCell(int x, int y, int colour);
         friend std::ostream &operator<<(std::ostream &out, const Board &b);
 
 };

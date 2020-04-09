@@ -43,8 +43,8 @@ int main(int argc, char *argv[])
             int y2 = rand() % 18;
             int colour1 = rand() % 7 + 2;
             int colour2 = rand() % 7 + 2;
-            b1.draw(x1, y1, colour1);
-            b2.draw(x2, y2, colour2);
+            b1.fillCell(x1, y1, colour1);
+            b2.fillCell(x2, y2, colour2);
         }
         else if (cmd == "quit")
         {
