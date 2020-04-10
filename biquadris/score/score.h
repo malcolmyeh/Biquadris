@@ -6,12 +6,11 @@
 class Score : public Subject
 {
     int level;
-    int boardNumber;
     int currentScore;
     int highScore;
 
 public:
-    Score(int level, int boardNumber);
+    Score(int level, std::shared_ptr<Board> board);
     void updateScoreRow(int linesCleared);
     void updateScoreBlock(int level);
     void changeLevel(int level);
@@ -19,7 +18,6 @@ public:
     void drawDisplays() override;
     std::string getLevel();
     std::string getScore();
-    int getBoardNumber();
 };
 
 #endif

@@ -8,10 +8,14 @@
 
 int main(int argc, char *argv[])
 {
-    Board b1;
-    Board b2;
-    Score s1(1, 1);
-    Score s2(2, 2);
+    // Board b1;
+    // Board b2;
+    // Score s1(1, std::make_shared<Board>(&b1));
+    // Score s2(1, std::make_shared<Board>(&b2));
+    std::shared_ptr<Board> b1 = std::make_shared<Board>();
+    std::shared_ptr<Board> b2 = std::make_shared<Board>();
+    Score s1(1, b1);
+    Score s2(1, b2);
     std::string cmd;
     while (true)
     {
@@ -20,12 +24,12 @@ int main(int argc, char *argv[])
         {
             std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
             std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
-            b1.init(1);
-            b2.init(2);
-            b1.setDisplay(td);
-            b1.setDisplay(gd);
-            b2.setDisplay(td);
-            b2.setDisplay(gd);
+            b1->init(1);
+            b2->init(2);
+            b1->setDisplay(td);
+            b1->setDisplay(gd);
+            b2->setDisplay(td);
+            b2->setDisplay(gd);
             s1.attach(td);
             s1.attach(gd);
             s2.attach(td);
@@ -33,15 +37,15 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "r")
         {
-            b1.refresh();
-            b2.refresh();
+            b1->refresh();
+            b2->refresh();
             s1.drawDisplays();
             s2.drawDisplays();
         }
         else if (cmd == "b")
         {
-            b1.toggleBlind();
-            b2.toggleBlind();
+            b1->toggleBlind();
+            b2->toggleBlind();
         }
         else if (cmd == "d")
         {
@@ -51,8 +55,8 @@ int main(int argc, char *argv[])
             int y2 = rand() % 18;
             int colour1 = rand() % 7 + 2;
             int colour2 = rand() % 7 + 2;
-            b1.fillCell(Point{x1, y1}, colour1);
-            b2.fillCell(Point{x2, y2}, colour2);
+            b1->fillCell(Point{x1, y1}, colour1);
+            b2->fillCell(Point{x2, y2}, colour2);
         }
         else if (cmd == "l")
         {

@@ -3,6 +3,19 @@
 #include <memory>
 #include <iostream>
 
+Board::Board(){}
+
+Board::Board(Board * board){
+    boardNumber = board->boardNumber;
+    cellGrid = board->cellGrid;
+    displays = board->displays;
+    isBlind = board->isBlind;
+}
+
+int Board::getBoardNumber(){
+    return boardNumber;
+}
+
 void Board::clear()
 {
     for (auto r : cellGrid)
@@ -31,7 +44,7 @@ void Board::init(int boardNumber)
         for (int c = 0; c < 11; ++c)
         {
             std::shared_ptr<Point> point = std::make_shared<Point>(c, r);
-            Cell cell(std::make_shared<Point>(c, r), Xwindow::Black, boardNumber);
+            Cell cell(std::make_shared<Point>(c, r), Xwindow::Black, std::make_shared<Board>(this));
             for (auto display : displays)
                 cell.attach(display);
             cell.drawDisplays();
@@ -40,6 +53,7 @@ void Board::init(int boardNumber)
         cellGrid.emplace_back(row);
     }
 }
+ 
 
 void Board::toggleBlind()
 {

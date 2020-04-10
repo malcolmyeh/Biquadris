@@ -8,6 +8,9 @@
 #include "window.h"
 #include <iostream>
 
+
+#include "../board/board.h"
+
 GraphicsDisplay::GraphicsDisplay(int cellSize) : cellSize{cellSize}
 {
     boardWidth = 11 * cellSize;
@@ -51,7 +54,7 @@ void GraphicsDisplay::drawCell(Cell &cell)
 {
     int x = cell.getPoint()->getX() * cellSize + padding;
     int y = cell.getPoint()->getY() * cellSize + padding + scoreHeight;
-    if (cell.getBoardNumber() == 2)
+    if (cell.getBoard()->getBoardNumber() == 2)
         x += boardWidth + padding;
     if (cell.getIsBlind())
         drawBlindCell(x, y);
@@ -88,9 +91,9 @@ void GraphicsDisplay::eraseCell(int x, int y)
 void GraphicsDisplay::drawScore(Score &score)
 {
     int x = padding * 4;
-    if (score.getBoardNumber() == 2)
+    if (score.getBoard()->getBoardNumber() == 2)
         x += boardWidth + padding;
-    drawScoreArea(score.getBoardNumber());
+    drawScoreArea(score.getBoard()->getBoardNumber());
     xw->drawString(x, padding * 2, score.getLevel(), Xwindow::Black);
     xw->drawString(x, padding * 3, score.getScore(), Xwindow::Black);
 }

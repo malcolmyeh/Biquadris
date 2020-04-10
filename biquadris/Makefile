@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++14 -Wall -MMD
-OBJECTS = displayTest.o subject/subject.o point/point.o board/cell.o score/score.o board/board.o display/textdisplay.o display/window.o display/graphicsdisplay.o
+OBJECTS = displayTest.o subject/subject.o point/point.o board/cell.o score/score.o display/textdisplay.o display/window.o display/graphicsdisplay.o  board/board.o
 DEPENDS = ${OBJECTS:.o=.d}
 EXEC = displayTest
 

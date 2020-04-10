@@ -1,5 +1,7 @@
 #include "textdisplay.h"
-#include "../board/cell.h"
+// #include "../board/cell.h"
+// #include "../board/board.h"
+#include "../board/board.h"
 
 #include <iostream>
 TextDisplay::TextDisplay()
@@ -33,7 +35,7 @@ void TextDisplay::drawCell(Cell &cell)
 {
     int c = cell.getPoint()->getX();
     int r = cell.getPoint()->getY() + 3;
-    if (cell.getBoardNumber() == 2)
+    if (cell.getBoard()->getBoardNumber() == 2)
     {
         c += 16;
     }
@@ -86,12 +88,10 @@ void TextDisplay::drawScore(Score &score)
 {
     // score cna't be more than 4 digits or will be out of index (seg fault)
     int c = 7;
-    if (score.getBoardNumber() == 2)
+    if (score.getBoard()->getBoardNumber() == 2)
     {
         c += 16;
     }
-    std::cout << "level: " << score.getLevel() << " length: " << score.getLevel().length() << std::endl
-              << "score: " << score.getScore() << " length: " << score.getScore().length() << std::endl;
     for (unsigned int i = 0; i < score.getLevel().length(); ++i)
         charGrid[0][c + i] = score.getLevel()[i];
     for (unsigned int i = 0; i < score.getScore().length(); ++i)
