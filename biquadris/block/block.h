@@ -3,6 +3,7 @@
 
 #include "../point/point.h"
 #include <unordered_set>
+#include <vector>
 
 class Block
 {
