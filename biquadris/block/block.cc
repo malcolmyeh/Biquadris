@@ -117,14 +117,12 @@ bool Block::move(char direction) {
 
 
 // this function returns true if it is possible to rotate and false if it is not
-//   receiving 1 as paramater = CW, 0 = CCW - subject to change
-bool Block::rotate(char direction) {
-    // this code will (SO FAR) only consider the case where there is nothing inside the "minimum rectangle"
-    if (num) { // 1 - CW
-        for (auto i : this->points)
-    } else { // 0 - CCW
+//   if any of the new position cells are filled, then it's not a valid rotation
+bool Block::rotate(std::string direction) {
+    // convert the block's coordinates into a matrix of ints
+    std::vector<std::vector<int>> v;
+    
 
-    }
 }
 
 // it should be possible to drop at anytime..??

@@ -9,14 +9,15 @@ class Block
 protected:
     char type;
     std::vector<Point> points; // the points that the piece is occupying
-    // Point anchor;
+    std::vector<Point> minRec; // matrix of minimum rectangle
     int recWidth;
     int recHeight;
+    Point topLeft;
     Board *board;
 public:
     Block(char type, Board *board);
     bool move(char direction);
-    bool rotate(char direction);
+    bool rotate(std::string direction);
     bool drop();
 };
 
