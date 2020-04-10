@@ -1,5 +1,4 @@
 #include "cell.h"
-// #include "../point/point.h"
 #include "../display/window.h"
 #include "../display/view.h"
 

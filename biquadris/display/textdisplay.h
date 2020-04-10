@@ -13,8 +13,7 @@ class TextDisplay : public View
 public:
     TextDisplay();
     void drawCell(Cell &cell) override;
-    void drawString(int x, int y, std::string msg,
-                    int colour) override;
+    void drawScore(Score &score) override;
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 

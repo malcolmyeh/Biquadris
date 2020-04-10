@@ -3,16 +3,17 @@
 
 #include "window.h"
 #include "../board/cell.h"
+#include "../score/score.h"
 
 class Cell; 
+class Score;
 
 class View
 {
 
 public:
     virtual void drawCell(Cell &cell) = 0;
-    virtual void drawString(int x, int y, std::string msg,
-                            int colour) = 0;
+    virtual void drawScore(Score &score) = 0;
     virtual ~View() = default;
 };
 

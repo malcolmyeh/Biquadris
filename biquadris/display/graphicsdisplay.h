@@ -22,8 +22,9 @@ class GraphicsDisplay : public View
     int totalWidth;
     int totalHeight;
 
-    void initScore();
-    void initNextBlock();
+    // void initScore();
+    void drawScoreArea(int boardNumber);
+    void drawNextBlockArea();
     void drawOutline(int x, int y, int width, int height);
     void drawNormalCell(int x, int y, int colour);
     void drawBlindCell(int x, int y);
@@ -32,8 +33,7 @@ public:
     GraphicsDisplay(int cellSize = 25);
 
     void drawCell(Cell &cell) override;
-    void drawString(int x, int y, std::string msg,
-                    int colour) override;
+    void drawScore(Score &score) override;
 };
 
 #endif

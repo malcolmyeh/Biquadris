@@ -11,7 +11,7 @@ protected:
     std::string file;
     int levelNumber;
     std::vector<char> sequence;
-    int sequencePosition = 0; // should this be modifiable throuhg ctor?
+    int sequencePosition = 0; // should this be modifiable through ctor?
     void getBlocksFromFile();
 
 public:

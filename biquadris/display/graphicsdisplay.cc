@@ -22,23 +22,24 @@ GraphicsDisplay::GraphicsDisplay(int cellSize) : cellSize{cellSize}
     // set font?
 
     // initialize area/text that is static
-    initScore();
-    initNextBlock();
+    drawScoreArea(1);
+    drawScoreArea(2);
+    drawNextBlockArea();
 }
 
-void GraphicsDisplay::initScore()
-{
-    // score area
-    drawOutline(padding, padding, boardWidth, scoreHeight);
-    drawOutline(totalWidth - padding - boardWidth, padding, boardWidth, scoreHeight);
-    // score text
-    xw->drawString(2 * padding, 2 * padding, "Level: ", Xwindow::Black);
-    xw->drawString(2 * padding, 3 * padding, "Score: ", Xwindow::Black);
-    xw->drawString(totalWidth - boardWidth, 2 * padding, "Level: ", Xwindow::Black);
-    xw->drawString(totalWidth - boardWidth, 3 * padding, "Score: ", Xwindow::Black);
+
+void GraphicsDisplay::drawScoreArea(int boardNumber){
+    int x = padding;
+    if (boardNumber == 2){
+        x = totalWidth - padding - boardWidth;
+    }
+    xw->fillRectangle(x, padding, boardWidth, scoreHeight, Xwindow::White);
+    drawOutline(x, padding, boardWidth, scoreHeight);
+    xw->drawString(x+padding, 2*padding, "Level: ", Xwindow::Black);
+    xw->drawString(x+padding, 3*padding, "Score: ", Xwindow::Black);
 }
 
-void GraphicsDisplay::initNextBlock()
+void GraphicsDisplay::drawNextBlockArea()
 {
     drawOutline(padding, totalHeight - nextHeight - padding, boardWidth, nextHeight);
     drawOutline(totalWidth - boardWidth - padding, totalHeight - nextHeight - padding, boardWidth, nextHeight);
@@ -84,8 +85,12 @@ void GraphicsDisplay::eraseCell(int x, int y)
     xw->fillRectangle(x, y, cellSize, cellSize, Xwindow::White);
 }
 
-void GraphicsDisplay::drawString(int x, int y, std::string msg,
-                                 int colour)
+void GraphicsDisplay::drawScore(Score &score)
 {
-    xw->drawString(x, y, msg, colour);
+    int x = padding * 4;
+    if (score.getBoardNumber() == 2)
+        x += boardWidth + padding;
+    drawScoreArea(score.getBoardNumber());
+    xw->drawString(x, padding * 2, score.getLevel(), Xwindow::Black);
+    xw->drawString(x, padding * 3, score.getScore(), Xwindow::Black);
 }
