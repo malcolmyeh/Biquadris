@@ -1,17 +1,20 @@
 #include "block.h"
 
 // ctor 
-Block::Block(char type, Board *board) {
-    this->type = type;
+Block::Block(int colour, Board *board, int level) {
+    this->colour = colour;
     this->board = board;
+    this->level = level;
 }
 
 // this function returns true if it is possible to move in direction (x, y) and false otherwise
+//   if move is valid, unfill cells, then refill them after the points have shifted internally
 bool Block::move(char direction) {
     // basic board boundary check (R, L, D)
     if (a.getX() + 1 > 10 || a.getX() - 1 < 0 || a.getY() + 1 > 17) 
         return false;
 
+    // translation vector
     Point p{0, 0};
 
     // check for collision with an intermediate block
@@ -120,10 +123,27 @@ bool Block::move(char direction) {
 // this function returns true if it is possible to rotate and false if it is not
 //   if any of the new position cells are filled, then it's not a valid rotation
 bool Block::rotate(std::string direction) {
-    // convert the block's coordinates into a matrix of ints
-    std::vector<std::vector<int>> v;
+    // convert the block's coordinates into a matrix of 1s and 0s
+    std::vector<std::vector<int>> temp(this->recWidth, std::vector<int> (this->recHeight, 0));
+    for (int i = 0; i < this->minRec.size(); ++i) {
+        Point p{this->minRec[i]};
+        if (std::find(std::begin(this->points), std::end(this->points), p) != std::end(this->points)) { // a is in points
+            // set it as 1 in the matrix
+            v[this->minRec[i].getX() - this->topLeft.getX()][this->minRec[i].getY() - this->topLeft.getY()] = 1;
+        } else {
+            // set it as 0 in the matirx
+            v[this->minRec[i].getX() - this->topLeft.getX()][this->minRec[i].getY() - this->topLeft.getY()] = 0;
+        }
+    }
 
+    int newRecHeight = this->recWidth;
+    int newRecWidth = this->recHeight;
 
+    for (int i = 0; i < recHeight; ++i) {
+        for (int j = 0; j < recWidth; ++j) {
+            
+        }
+    } 
 }
 
 // it should be possible to drop at anytime..?? so change to void

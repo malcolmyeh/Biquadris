@@ -5,7 +5,7 @@
 
 class LBlock : public Block {
 public:
-    LBlock(char type, Board *board);
+    LBlock(int colour, Board *board, int level);
 };
 
 #endif

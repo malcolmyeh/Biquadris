@@ -1,6 +1,6 @@
 #include "tblock.h"
 
-TBlock::TBlock(char type) : Block{type} {
+TBlock::TBlock(int colour, Board *board, int level) : Block{type, board, level} {
     std::vector<Point> v = {{0, 2}, {1, 2}, {2, 2}, {1, 3}};
     this->points = v;
     this->recWidth = 3;
@@ -13,5 +13,5 @@ TBlock::TBlock(char type) : Block{type} {
         }
     }
     for (auto a : v)
-        this->board.fillCell(a.getX(), a.getY(), 1);
+        this->board.fillCell(a.getX(), a.getY(), Xwindow::Magenta);
 }

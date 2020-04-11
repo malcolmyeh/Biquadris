@@ -5,7 +5,7 @@
 
 class JBlock : public Block {
 public:
-    JBlock(char type, Board *board);
+    JBlock(int colour, Board *board, int level);
 };
 
 #endif

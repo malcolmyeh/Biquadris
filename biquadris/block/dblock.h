@@ -5,7 +5,7 @@
 
 class DBlock : public Block {
 public:
-    DBlock(char type, Board *board);
+    DBlock(int colour, Board *board, int level);
 };
 
 #endif

@@ -5,7 +5,7 @@
 
 class IBlock : public Block {
 public:
-     IBlock(char type, Board *board);
+    IBlock(int colour, Board *board, int level);
 };
 
 #endif
