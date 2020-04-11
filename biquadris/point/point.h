@@ -2,7 +2,7 @@
 #define POINT_H
 
 
-struct Point {
+class Point {
     int x;
     int y;
 
@@ -15,9 +15,6 @@ struct Point {
     Point operator-(const Point &other) const;
     Point &operator+=(const Point &other);
     Point &operator-=(const Point &other);
-    // negate?
-    // helper function for rotate?
 };
-// equal operator?
 
 #endif

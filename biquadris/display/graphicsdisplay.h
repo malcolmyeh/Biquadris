@@ -22,7 +22,6 @@ class GraphicsDisplay : public View
     int totalWidth;
     int totalHeight;
 
-    // void initScore();
     void drawScoreArea(int boardNumber);
     void drawNextBlockArea();
     void drawOutline(int x, int y, int width, int height);
