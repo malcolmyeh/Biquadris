@@ -17,6 +17,8 @@ protected:
     int recHeight;
     Point topLeft;
     Board *board;
+
+    // protected method for the loops at the end of each ctor
 public:
     Block(int colour, Board *board, int level);
     bool move(char direction);

@@ -153,3 +153,45 @@ void Block::drop() {
             break;
     }
 }
+
+// returns true if a block cannot go down further
+bool Block::isPlaced() {
+    std::unordered_set<int> uniqueXValues;
+    for (auto a : this->points) {
+        if (uniqueXValues.find(a.getX()) == uniqueXValues.end())
+            uniqueXValues.insert(a.getX());
+    }
+
+    // now that the set is created, find the lowermost points for each unique X
+    std::vector<Point> checkDown;
+    for (auto a : uniqueXValues) {
+        int largestY = 0;
+        for (auto b : this->points) {
+            if (b.getX() == a) {
+                if (b.getY() > largestY) {
+                    largestY = b.getY();
+                }
+            }
+        }
+        Point p{a, largestY};
+        checkDown.emplace_back(p);
+    }
+
+    // vector of lowest bound of piece created. check one below.
+    for (auto a : checkDown) {
+        if (this->board.isFilled(a.getX(), a.getY() + 1)) // if one of these points are filled->false
+            return false;
+    }
+    return true;
+}
+
+bool Block::clearPoint(int row) {
+    for (int i = 0; i < this->points.size(); ++i){
+        if (this->points[i].getY() == row) {
+            this->points.erase(this->points.begin()+i);
+            --i;
+        }
+    }
+
+    return this->points.empty();
+}
