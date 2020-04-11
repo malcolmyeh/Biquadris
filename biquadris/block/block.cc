@@ -12,6 +12,8 @@ bool Block::move(char direction) {
     if (a.getX() + 1 > 10 || a.getX() - 1 < 0 || a.getY() + 1 > 17) 
         return false;
 
+    Point p{0, 0};
+
     // check for collision with an intermediate block
     if (direction == 'D') {
         // create a set of unique X values which the piece occupies
@@ -42,11 +44,7 @@ bool Block::move(char direction) {
                 return false;
         }
 
-        // move points and return true
-        Point p{0, 1}
-        for (auto a : this->points) {
-            a += p;
-        }
+        p = {0, 1};
     } else if (direction == 'L') {
         std::unordered_set<int> uniqueYValues;
         for (auto a : this->points) {
@@ -73,10 +71,7 @@ bool Block::move(char direction) {
                 return false;
         }
 
-        Point p{1, 0};
-        for (auto a : this->points) {
-            a -= p;
-        }
+        p = {-1, 0};
     } else if (direction == 'R') {
         // create a set of unique Y values that the piece occupies
         std::unordered_set<int> uniqueYValues;
@@ -106,12 +101,18 @@ bool Block::move(char direction) {
                 return false;
         }
 
-        // finally move points and return true
-        Point p{1, 0};
-        for (auto a : this->points) {
-            a += p;
-        }
+        p = {1, 0};
     }
+    for (auto a : this->points) {
+        a += p;
+    }
+    for (auto a : this->minRec) {
+        a += p;
+        // if (std::find(this->points.begin(), this->points.end(), a) != this->points.end()) { // if a is in points
+
+        // }
+    }
+    this->topLeft += p;
     return true;
 }
 
@@ -121,11 +122,14 @@ bool Block::move(char direction) {
 bool Block::rotate(std::string direction) {
     // convert the block's coordinates into a matrix of ints
     std::vector<std::vector<int>> v;
-    
+
 
 }
 
-// it should be possible to drop at anytime..??
-bool Block::drop() {
-
+// it should be possible to drop at anytime..?? so change to void
+void Block::drop() {
+    while (true) {
+        if (!this->move('D'))
+            break;
+    }
 }

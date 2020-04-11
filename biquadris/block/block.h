@@ -19,7 +19,7 @@ public:
     Block(char type, Board *board);
     bool move(char direction);
     bool rotate(std::string direction);
-    bool drop();
+    void drop();
 };
 
 // NOTE: how do we know when a piece is "set"? So that we can release the next one?
