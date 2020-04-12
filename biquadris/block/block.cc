@@ -1,4 +1,12 @@
 #include "block.h"
+#include "dblock.h"
+#include "iblock.h"
+#include "jblock.h"
+#include "lblock.h"
+#include "oblock.h"
+#include "sblock.h"
+#include "tblock.h"
+#include "zblock.h"
 
 // ctor 
 Block::Block(int colour, Board *board, int level) {
@@ -220,4 +228,29 @@ bool Block::clearPoint(int row) {
     }
 
     return this->points.empty();
+}
+
+std::shared_ptr<Block> Block::makeBlock(int colour, Board *board, int level) {
+    switch (colour) {
+        case Xwindow::Brown:
+            return std::make_shared<DBlock>(colour, board, level);
+        case Xwindow::Cyan:
+            return std::make_shared<IBlock>(colour, board, level);
+        case Xwindow::Blue:
+            return std::make_shared<JBlock>(colour, board, level);
+        case Xwindow::Orange:
+            return std::make_shared<LBlock>(colour, board, level);
+        case Xwindow::Yellow:
+            return std::make_shared<OBlock>(colour, board, level);
+        case Xwindow::Green:
+            return std::make_shared<SBlock>(colour, board, level);
+        case Xwindow::Magenta:
+            return std::make_shared<TBlock>(colour, board, level);
+        case Xwindow::Red:
+            return std::make_shared<ZBlock>(colour, board, level);
+    }
+}
+
+int Block::getLevel() {
+    return this->level;
 }
