@@ -11,8 +11,7 @@ std::shared_ptr<Level> Level::makeLevel(int level){
     switch (level){
         case 0:
             return std::make_shared<Level0>();
-            break;
-        case 1:`
+        case 1:
             return std::make_shared<Level1>();
         case 2:
             return std::make_shared<Level2>();

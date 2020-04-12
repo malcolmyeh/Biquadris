@@ -26,7 +26,7 @@ void PlayerManager::changeLevel(int level)
 
 void PlayerManager::forceBlock(char blockType)
 {
-    opponent->setCurrentBlock(blockType)
+    opponent->setCurrentBlock(blockType);
 }
 
 bool PlayerManager::getCanSpecial()
@@ -44,7 +44,7 @@ bool PlayerManager::moveBlock(char direction)
     player->moveBlock(direction);
 }
 
-bool PlayerManager::rotateBlock(char direction)
+bool PlayerManager::rotateBlock(std::string direction)
 {
     player->rotateBlock(direction);
 }

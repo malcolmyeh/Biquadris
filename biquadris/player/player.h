@@ -26,7 +26,7 @@ public:
     void setNextBlock(char blockType);
     void initBlocks(char blockType1, char blockType2);
     bool moveBlock(char direction);
-    bool rotateBlock(char direction);
+    bool rotateBlock(std::string direction);
     void dropBlock();
     bool getCanSpecial();
     void toggleCanSpecial();

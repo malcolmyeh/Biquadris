@@ -25,7 +25,7 @@ public:
     void blind();
     void setNextBlock();
     bool moveBlock(char direction);
-    bool rotateBlock(char direction);
+    bool rotateBlock(std::string direction);
     void dropBlock();
     void changeLevel(int level);
     std::shared_ptr<Player> getPlayer();

@@ -72,14 +72,16 @@ int main(int argc, char *argv[])
         else if (cmd == "1")
         {
             std::cin >> cmd;
-            char direction;
+
             if (cmd == "rotate")
             {
+                std::string direction;
                 std::cin >> direction;
                 pm1->rotateBlock(direction);
             }
             else if (cmd == "move")
             {
+                char direction;
                 std::cin >> direction;
 
                 pm1->moveBlock(direction);
@@ -92,14 +94,15 @@ int main(int argc, char *argv[])
         else if (cmd == "2")
         {
             std::cin >> cmd;
-            char direction;
             if (cmd == "rotate")
             {
+                std::string direction;
                 std::cin >> direction;
                 pm2->rotateBlock(direction);
             }
             else if (cmd == "move")
             {
+                char direction;
                 std::cin >> direction;
 
                 pm2->moveBlock(direction);

@@ -111,9 +111,9 @@ int Board::checkRow(std::shared_ptr<Score> score)
         {
             ++rowsCleared;
             for (auto block : blocks){
-                if (block.clearPoint(row->front().getY()))
-                    score->updateScoreBlock(block.getLevel());
-                block.move('D');
+                if (block->clearPoint(row->front().getPoint()->getY()))
+                    score->updateScoreBlock(block->getLevel());
+                block->move('D');
             }
             score->updateScoreRow();
             --row;

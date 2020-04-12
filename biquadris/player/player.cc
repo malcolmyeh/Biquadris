@@ -47,7 +47,7 @@ bool Player::moveBlock(char direction)
         checkRow();
 }
 
-bool Player::rotateBlock(char direction)
+bool Player::rotateBlock(std::string direction)
 {
     currentBlock->rotate(direction);
 }
