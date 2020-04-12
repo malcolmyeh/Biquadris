@@ -1,6 +1,6 @@
 #include "tblock.h"
 
-TBlock::TBlock(int colour, std::shared_ptr<Board> board, int level) : Block{type, board, level} {
+TBlock::TBlock(int level) : Block{Xwindow::Magenta, level} {
     std::vector<Point> v = {{0, 2}, {1, 2}, {2, 2}, {1, 3}};
     this->points = v;
     this->recWidth = 3;
@@ -12,6 +12,5 @@ TBlock::TBlock(int colour, std::shared_ptr<Board> board, int level) : Block{type
             this->minRec.emplace_back(p);
         }
     }
-    for (auto a : v)
-        this->board->fillCell(a, Xwindow::Magenta);
+    drawBlock(this->colour);
 }

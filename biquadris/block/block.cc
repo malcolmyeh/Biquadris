@@ -1,18 +1,9 @@
 #include "block.h"
-#include "dblock.h"
-#include "iblock.h"
-#include "jblock.h"
-#include "lblock.h"
-#include "oblock.h"
-#include "sblock.h"
-#include "tblock.h"
-#include "zblock.h"
 #include "../board/board.h"
 
 // ctor 
-Block::Block(int colour, std::shared_ptr<Board> board, int level) {
+Block::Block(int colour, int level) {
     this->colour = colour;
-    this->board = board;
     this->level = level;
 }
 
@@ -59,6 +50,9 @@ bool Block::move(char direction) {
                 return false;
         }
 
+        // empty the current cells
+        this->drawBlock(Xwindow::White);
+
         p = {0, 1};
     } else if (direction == 'L') {
         std::unordered_set<int> uniqueYValues;
@@ -89,6 +83,7 @@ bool Block::move(char direction) {
                 return false;
         }
 
+        this->drawBlock(Xwindow::White);
         p = {-1, 0};
     } else if (direction == 'R') {
         // create a set of unique Y values that the piece occupies
@@ -123,6 +118,7 @@ bool Block::move(char direction) {
                 return false;
         }
 
+        this->drawBlock(Xwindow::White);
         p = {1, 0};
     }
 
@@ -136,6 +132,7 @@ bool Block::move(char direction) {
         // }
     }
     this->topLeft += p;
+    this->drawBlock(this->colour);
     return true;
 }
 
@@ -145,7 +142,7 @@ bool Block::move(char direction) {
 bool Block::rotate(std::string direction) {
     // convert the block's coordinates into a matrix of 1s and 0s
     std::vector<std::vector<int>> temp(this->recWidth, std::vector<int> (this->recHeight, 0));
-    for (int i = 0; i < this->minRec.size(); ++i) {
+    for (unsigned int i = 0; i < this->minRec.size(); ++i) {
         Point p{this->minRec[i].getX(), this->minRec[i].getY()};
         // if (std::find(std::begin(this->points), std::end(this->points), p) != std::end(this->points)) { // a is in points
         if (std::find(this->points.begin(), this->points.end(), p) != this->points.end()) { // a is in points
@@ -181,14 +178,24 @@ bool Block::rotate(std::string direction) {
     }
 
     for (auto a : newPoints) {
-        if (this->board->isFilled(a))
+        if (a.getX() < 0)
+            return false;
+        if (a.getX() > 10)
+            return false;
+        if (a.getY() > 17)
             return false;
     }
 
+    for (auto a : newPoints) {
+        if (this->board->isFilled(a))
+            return false;
+    }
+    this->drawBlock(Xwindow::White);
     this->points = newPoints;
     this->minRec = newMinRec;
     this->topLeft = newTopLeft;
     std::swap(this->recWidth, this->recHeight);
+    this->drawBlock(this->colour);
     return true;
      
 }
@@ -246,27 +253,16 @@ bool Block::clearPoint(int row) {
     return this->points.empty();
 }
 
-std::shared_ptr<Block> Block::makeBlock(int colour, std::shared_ptr<Board> board, int level) {
-    switch (colour) {
-        case Xwindow::Brown:
-            return std::make_shared<DBlock>(colour, board, level);
-        case Xwindow::Cyan:
-            return std::make_shared<IBlock>(colour, board, level);
-        case Xwindow::Blue:
-            return std::make_shared<JBlock>(colour, board, level);
-        case Xwindow::Orange:
-            return std::make_shared<LBlock>(colour, board, level);
-        case Xwindow::Yellow:
-            return std::make_shared<OBlock>(colour, board, level);
-        case Xwindow::Green:
-            return std::make_shared<SBlock>(colour, board, level);
-        case Xwindow::Magenta:
-            return std::make_shared<TBlock>(colour, board, level);
-        case Xwindow::Red:
-            return std::make_shared<ZBlock>(colour, board, level);
-    }
-}
 
 int Block::getLevel() {
     return this->level;
+}
+
+void Block::setBoard(std::shared_ptr<Board> board){
+    this->board = board;
+}
+
+void Block::drawBlock(int colour) {
+    for (auto a : this->points)
+        this->board->fillCell(a, colour);
 }

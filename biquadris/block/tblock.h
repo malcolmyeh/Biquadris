@@ -6,7 +6,7 @@
 
 class TBlock : public Block {
 public:
-    TBlock(int colour, std::shared_ptr<Board> board, int level);
+    TBlock(int level);
 };
 
 #endif

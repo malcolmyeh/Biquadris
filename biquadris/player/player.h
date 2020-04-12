@@ -18,13 +18,12 @@ class Player
     bool canSpecial = false;
     int level;
     bool isBlind = false;
-    std::shared_ptr<Block> generateBlock(char blockType);
 
 public:
     Player(std::shared_ptr<Board> board, std::shared_ptr<Score> score);
-    void setCurrentBlock(char blockType);
-    void setNextBlock(char blockType);
-    void initBlocks(char blockType1, char blockType2);
+    
+    void setCurrentBlock(std::shared_ptr<Block> block);
+    void setNextBlock(std::shared_ptr<Block> block);
     bool moveBlock(char direction);
     bool rotateBlock(std::string direction);
     void dropBlock();
@@ -34,5 +33,6 @@ public:
     void toggleBlind();
     bool currentPlaced();
     void setLevel(int level);
+    std::shared_ptr<Board> getBoard();
 };
 #endif

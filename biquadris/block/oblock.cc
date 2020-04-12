@@ -1,6 +1,6 @@
 #include "oblock.h"
 
-OBlock::OBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colour, board, level} {
+OBlock::OBlock(int level) : Block{Xwindow::Yellow, level} {
     std::vector<Point> v = {{0, 2}, {1, 2}, {0, 3}, {1, 3}};
     this->points = v;
     this->recWidth = 2;
@@ -12,6 +12,5 @@ OBlock::OBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colo
             this->minRec.emplace_back(p);
         }
     }
-    for (auto a : v)
-        this->board->fillCell(a, Xwindow::Yellow);
+    drawBlock(this->colour);
 }

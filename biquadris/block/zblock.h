@@ -6,7 +6,7 @@
 
 class ZBlock : public Block {
 public:
-    ZBlock(int colour, std::shared_ptr<Board> board, int level);
+    ZBlock(int level);
 };
 
 #endif

@@ -6,7 +6,8 @@ class Level0 : public Level
 {
     public:
         Level0(std::string file);
-        char getBlockType() override;
+        ~Level0();
+        std::shared_ptr<Block> createBlock() override;
         
 };
 

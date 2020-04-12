@@ -2,40 +2,42 @@
 
 Level3::Level3(std::string file) : Level{3, file} {}
 
-void Level3::setRandom(bool b)
+Level3::~Level3(){}
+
+void Level3::setRandom(bool random)
 {
-    random = b;
+    this->random = random;
 }
 
-char Level3::getBlockType()
+std::shared_ptr<Block> Level3::createBlock()
 {
-    char blockType;
+    std::shared_ptr<Block> block;
     if (random)
     {
         switch (rand() % 9)
         {
         case 0:
         case 1:
-            blockType = 'S';
+            block = std::make_shared<SBlock>(levelNumber);
             break;
         case 2:
         case 3:
-            blockType = 'Z';
+            block = std::make_shared<ZBlock>(levelNumber);
             break;
         case 4:
-            blockType = 'I';
+            block = std::make_shared<IBlock>(levelNumber);
             break;
         case 5:
-            blockType = 'J';
+            block = std::make_shared<JBlock>(levelNumber);
             break;
         case 6:
-            blockType = 'L';
+            block = std::make_shared<LBlock>(levelNumber);
             break;
         case 7:
-            blockType = 'O';
+            block = std::make_shared<OBlock>(levelNumber);
             break;
         case 8:
-            blockType = 'T';
+            block = std::make_shared<TBlock>(levelNumber);
             break;
         }
     }
@@ -45,8 +47,31 @@ char Level3::getBlockType()
         {
             sequencePosition = 0;
         }
-        blockType = sequence.at(sequencePosition);
+        switch (sequence.at(sequencePosition))
+        {
+        case 'I':
+            block = std::make_shared<IBlock>(levelNumber);
+            break;
+        case 'J':
+            block = std::make_shared<JBlock>(levelNumber);
+            break;
+        case 'L':
+            block = std::make_shared<LBlock>(levelNumber);
+            break;
+        case 'O':
+            block = std::make_shared<OBlock>(levelNumber);
+            break;
+        case 'S':
+            block = std::make_shared<SBlock>(levelNumber);
+            break;
+        case 'Z':
+            block = std::make_shared<ZBlock>(levelNumber);
+            break;
+        case 'T':
+            block = std::make_shared<TBlock>(levelNumber);
+            break;
+        }
         ++sequencePosition;
     }
-    return blockType;
+    return block;
 }

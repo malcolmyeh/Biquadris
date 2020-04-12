@@ -1,55 +1,40 @@
 #include "player.h"
-#include "../block/block.h"
+#include "../block/dblock.h"
+#include "../block/iblock.h"
+#include "../block/jblock.h"
+#include "../block/lblock.h"
+#include "../block/oblock.h"
+#include "../block/sblock.h"
+#include "../block/tblock.h"
+#include "../block/zblock.h"
 #include "../score/score.h"
 #include "../board/board.h"
 #include "../display/window.h"
 
 Player::Player(std::shared_ptr<Board> board, std::shared_ptr<Score> score)
-    : board{board}, score{score}, canSpecial{false} {}
+    : score{score}, board{board}, canSpecial{false} {}
 
-std::shared_ptr<Block> Player::generateBlock(char blockType)
-{
-    switch (blockType)
-    {
-    case 'I':
-        return Block::makeBlock(Xwindow::Cyan, board, level);
-    case 'J':
-        return Block::makeBlock(Xwindow::Blue, board, level);
-    case 'L':
-        return Block::makeBlock(Xwindow::Orange, board, level);
-    case 'O':
-        return Block::makeBlock(Xwindow::Yellow, board, level);
-    case 'S':
-        return Block::makeBlock(Xwindow::Green, board, level);
-    case 'Z':
-        return Block::makeBlock(Xwindow::Red, board, level);
-    case 'T':
-        return Block::makeBlock(Xwindow::Magenta, board, level);
-    }
+void Player::setCurrentBlock(std::shared_ptr<Block> block){
+    currentBlock = block;
+    block->setBoard(board);
 }
 
-void Player::setCurrentBlock(char blockType){
-    currentBlock = generateBlock(blockType);
+void Player::setNextBlock(std::shared_ptr<Block> block){
+    nextBlock = block;
+    block->setBoard(board);
 }
 
-void Player::setNextBlock(char blockType){
-    nextBlock = generateBlock(blockType);
-}
-
-void Player::initBlocks(char blockType1, char blockType2){
-    setCurrentBlock(blockType1);
-    setNextBlock(blockType2);
-}
 bool Player::moveBlock(char direction)
 {
-    currentBlock->move(direction);
+    bool checkMove = currentBlock->move(direction);
     if (direction == 'D')
         checkRow();
+    return checkMove;
 }
 
 bool Player::rotateBlock(std::string direction)
 {
-    currentBlock->rotate(direction);
+    return currentBlock->rotate(direction);
 }
 
 void Player::dropBlock()
@@ -95,4 +80,8 @@ bool Player::currentPlaced()
 void Player::setLevel(int level)
 {
     this->level = level;
+}
+
+std::shared_ptr<Board> Player::getBoard(){
+    return board;
 }

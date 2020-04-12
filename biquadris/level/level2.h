@@ -4,9 +4,10 @@
 
 class Level2 : public Level
 {
-    public:
-        Level2(std::string file);
-        char getBlockType() override;
+public:
+    Level2(std::string file);
+    ~Level2();
+    std::shared_ptr<Block> createBlock() override;
 };
 
 #endif

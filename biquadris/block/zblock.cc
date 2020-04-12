@@ -1,6 +1,6 @@
 #include "zblock.h"
 
-ZBlock::ZBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colour, board, level} {
+ZBlock::ZBlock(int level) : Block{Xwindow::Red, level} {
     std::vector<Point> v = {{0, 2}, {1, 2}, {1, 3}, {2, 3}};
     this->points = v;
     this->recWidth = 3;
@@ -12,6 +12,5 @@ ZBlock::ZBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colo
             this->minRec.emplace_back(p);
         }
     }
-    for (auto a : v)
-        this->board->fillCell(a, Xwindow::Red);
+    drawBlock(this->colour);
 }

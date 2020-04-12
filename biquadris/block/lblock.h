@@ -6,7 +6,7 @@
 
 class LBlock : public Block {
 public:
-    LBlock(int colour, std::shared_ptr<Board> board, int level);
+    LBlock(int level);
 };
 
 #endif

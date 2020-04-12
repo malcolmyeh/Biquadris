@@ -2,37 +2,39 @@
 
 Level1::Level1(std::string file) : Level{1, file} {}
 
-char Level1::getBlockType()
+Level1::~Level1(){}
+
+std::shared_ptr<Block> Level1::createBlock()
 {
-    char blockType;
+    std::shared_ptr<Block> block;
     switch (rand() % 12)
     {
     case 0:
     case 1:
-        blockType = 'I';
+        block = std::make_shared<IBlock>(levelNumber);
         break;
     case 2:
     case 3:
-        blockType = 'J';
+        block = std::make_shared<JBlock>(levelNumber);
         break;
     case 4:
     case 5:
-        blockType = 'L';
+        block = std::make_shared<LBlock>(levelNumber);
         break;
     case 6:
     case 7:
-        blockType = 'O';
+        block = std::make_shared<OBlock>(levelNumber);
         break;
     case 8:
     case 9:
-        blockType = 'T';
+        block = std::make_shared<TBlock>(levelNumber);
         break;
     case 10:
-        blockType = 'S';
+        block = std::make_shared<SBlock>(levelNumber);
         break;
     case 11:
-        blockType = 'Z';
+        block = std::make_shared<ZBlock>(levelNumber);
         break;
     }
-    return blockType;
+    return block;
 }

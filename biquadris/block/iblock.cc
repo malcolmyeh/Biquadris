@@ -1,6 +1,6 @@
 #include "iblock.h"
 
-IBlock::IBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colour, board, level} {
+IBlock::IBlock(int level) : Block{Xwindow::Cyan, level} {
     std::vector<Point> v = {{0, 3}, {1, 3}, {2, 3}, {3, 3}};
     this->points = v;
     this->recWidth = 4;
@@ -12,6 +12,5 @@ IBlock::IBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colo
             this->minRec.emplace_back(p);
         }
     }
-    for (auto a : v)
-        this->board->fillCell(a, Xwindow::Cyan);
+    drawBlock(this->colour);
 }

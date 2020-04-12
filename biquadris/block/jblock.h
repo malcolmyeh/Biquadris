@@ -6,7 +6,7 @@
 
 class JBlock : public Block {
 public:
-    JBlock(int colour, std::shared_ptr<Board> board, int level);
+    JBlock(int level);
 };
 
 #endif

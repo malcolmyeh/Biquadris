@@ -4,7 +4,12 @@
 #include "player/playermanager.h"
 #include "score/score.h"
 #include "block/block.h"
-#include "level/level.h"
+
+#include "level/level0.h"
+#include "level/level1.h"
+#include "level/level2.h"
+#include "level/level3.h"
+#include "level/level4.h"
 
 #include <memory>
 #include <string>
@@ -32,9 +37,9 @@ int main(int argc, char *argv[])
 
     // playermanager (+ players)
     std::shared_ptr<PlayerManager> pm1 =
-        std::make_shared<PlayerManager>(s1, b1, std::make_shared<Level>(level, levelFile));
+        std::make_shared<PlayerManager>(s1, b1, std::make_shared<Level1>(levelFile));
     std::shared_ptr<PlayerManager> pm2 =
-        std::make_shared<PlayerManager>(s2, b2, std::make_shared<Level>(level, levelFile));
+        std::make_shared<PlayerManager>(s2, b2, std::make_shared<Level1>(levelFile));
 
     // link players to each other
     pm1->setOpponent(pm2->getPlayer());

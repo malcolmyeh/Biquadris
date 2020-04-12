@@ -22,14 +22,15 @@ protected:
     int level;
     // protected method for the loops at the end of each ctor
 public:
-    Block(int colour, std::shared_ptr<Board> board, int level);
-    bool move(char direction);
+    Block(int colour, int level);
+    bool move(char direction); // change the colour
     bool rotate(std::string direction);
     void drop();
-    bool isPlaced(); //
+    bool isPlaced();          //
     bool clearPoint(int row); // get rid of all y = row. return true if block is empty
-    static std::shared_ptr<Block> makeBlock(int colour, std::shared_ptr<Board> board, int level);
     int getLevel();
+    void setBoard(std::shared_ptr<Board> board);
+    void drawBlock(int colour);
 };
 
 // NOTE: how do we know when a piece is "set"? So that we can release the next one?

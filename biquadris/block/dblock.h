@@ -4,9 +4,10 @@
 #include "../point/point.h"
 #include "block.h"
 
-class DBlock : public Block {
+class DBlock : public Block
+{
 public:
-    DBlock(int colour, std::shared_ptr<Board> board, int level);
+    DBlock(int level);
 };
 
 #endif

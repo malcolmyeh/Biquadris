@@ -8,8 +8,9 @@ class Level3 : public Level
 
 public:
     Level3(std::string file);
-    void setRandom(bool b);
-    char getBlockType() override;
+    ~Level3();
+    void setRandom(bool random);
+    std::shared_ptr<Block> createBlock() override;
 };
 
 #endif
