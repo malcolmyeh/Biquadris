@@ -30,6 +30,7 @@ public:
     int getBoardNumber();
     void refresh();
     void fillCell(Point point, int colour);
+    void fillCell2(int x, int y, int colour);
     bool isFilled(Point point);
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
     int checkRow(std::shared_ptr<Score> score);

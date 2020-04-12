@@ -263,6 +263,8 @@ void Block::setBoard(std::shared_ptr<Board> board){
 }
 
 void Block::drawBlock(int colour) {
-    for (auto a : this->points)
-        this->board->fillCell(a, colour);
+    for (auto a : this->points){
+        // this->board->fillCell(a, colour);
+        this->board->fillCell2(a.getX(), a.getY(), colour);
+    }
 }

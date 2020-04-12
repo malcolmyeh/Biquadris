@@ -89,8 +89,23 @@ void Board::fillCell(Point point, int colour)
     std::cout << "row: " << point.getY() << " col: " << point.getX() << " colour: " << colour << std::endl;
     // cellGrid[point.getY()][point.getX()].setColour(colour);
     // cellGrid[point.getY()][point.getX()].drawDisplays();
-    cellGrid.at(point.getY()).at(point.getX()).setColour(colour);
-    cellGrid.at(point.getY()).at(point.getX()).drawDisplays();
+    std::cout << "cellgrid y size: " << cellGrid.size();
+    Point newPoint{point.getX(), point.getY()};
+    cellGrid.at(newPoint.getY()).at(newPoint.getX()).setColour(colour);
+    cellGrid.at(newPoint.getY()).at(newPoint.getX()).drawDisplays();
+}
+
+void Board::fillCell2(int x, int y, int colour)
+{
+    std::cout << "#####################################################################" << std::endl;
+    std::cout << "############################ FILLCELL2 #############################" << std::endl;
+    std::cout << "#####################################################################" << std::endl;
+    std::cout << "row: " << y << " col: " << x << " colour: " << colour << std::endl;
+    // cellGrid[point.getY()][point.getX()].setColour(colour);
+    // cellGrid[point.getY()][point.getX()].drawDisplays();
+    std::cout << "cellgrid y size: " << cellGrid.size();
+    cellGrid.at(y).at(x).setColour(colour);
+    cellGrid.at(y).at(x).drawDisplays();
 }
 
 bool Board::isFilled(Point point)
