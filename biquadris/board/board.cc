@@ -48,7 +48,7 @@ void Board::init(int boardNumber)
         for (int c = 0; c < 11; ++c)
         {
             std::shared_ptr<Point> point = std::make_shared<Point>(c, r);
-            Cell cell(std::make_shared<Point>(c, r), Xwindow::Black, std::make_shared<Board>(this));
+            Cell cell(std::make_shared<Point>(c, r), Xwindow::White, std::make_shared<Board>(this));
             for (auto display : displays)
                 cell.attach(display);
             cell.drawDisplays();
@@ -83,8 +83,14 @@ void Board::refresh()
 
 void Board::fillCell(Point point, int colour)
 {
-    cellGrid[point.getY()][point.getX()].setColour(colour);
-    cellGrid[point.getY()][point.getX()].drawDisplays();
+    std::cout << "#####################################################################" << std::endl;
+    std::cout << "############################ FILLCELL #############################" << std::endl;
+    std::cout << "#####################################################################" << std::endl;
+    std::cout << "row: " << point.getY() << " col: " << point.getX() << " colour: " << colour << std::endl;
+    // cellGrid[point.getY()][point.getX()].setColour(colour);
+    // cellGrid[point.getY()][point.getX()].drawDisplays();
+    cellGrid.at(point.getY()).at(point.getX()).setColour(colour);
+    cellGrid.at(point.getY()).at(point.getX()).drawDisplays();
 }
 
 bool Board::isFilled(Point point)
@@ -107,10 +113,11 @@ int Board::checkRow(std::shared_ptr<Score> score)
     int rowsCleared = 0;
     for (auto row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
     {
-         if (rowIsFilled(*row))
+        if (rowIsFilled(*row))
         {
             ++rowsCleared;
-            for (auto block : blocks){
+            for (auto block : blocks)
+            {
                 if (block->clearPoint(row->front().getPoint()->getY()))
                     score->updateScoreBlock(block->getLevel());
                 block->move('D');
@@ -119,8 +126,10 @@ int Board::checkRow(std::shared_ptr<Score> score)
             --row;
         }
     }
+    return rowsCleared;
 }
 
-void Board::addBlock(std::shared_ptr<Block> block){
+void Board::addBlock(std::shared_ptr<Block> block)
+{
     blocks.emplace_back(block);
 }

@@ -56,8 +56,6 @@ int main(int argc, char *argv[])
         if (cmd == "init")
         {
             // link board (+cells), score, display
-            std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
-            std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
             b1->init(1);
             b2->init(2);
             b1->setDisplay(td);
@@ -86,6 +84,28 @@ int main(int argc, char *argv[])
             std::cout << "#####################################################################" << std::endl;
             std::cout << "############################ INIT BLOCK #############################" << std::endl;
             std::cout << "#####################################################################" << std::endl;
+        }
+        else if (cmd == "d")
+        {
+            int x1 = rand() % 11;
+            int y1 = rand() % 18;
+            int x2 = rand() % 11;
+            int y2 = rand() % 18;
+            int colour1 = rand() % 7 + 2;
+            int colour2 = rand() % 7 + 2;
+            b1->fillCell(Point{x1, y1}, colour1);
+            b2->fillCell(Point{x2, y2}, colour2);
+        }
+        else if (cmd == "02")
+        {
+            int x1 = 0;
+            int y1 = 2;
+            int x2 = 2;
+            int y2 = 2;
+            int colour1 = rand() % 7 + 2;
+            int colour2 = rand() % 7 + 2;
+            b1->fillCell(Point{x1, y1}, colour1);
+            b2->fillCell(Point{x2, y2}, colour2);
         }
         else if (cmd == "1")
         {
