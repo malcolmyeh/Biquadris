@@ -250,3 +250,7 @@ std::shared_ptr<Block> Block::makeBlock(int colour, Board *board, int level) {
             return std::make_shared<ZBlock>(colour, board, level);
     }
 }
+
+int Block::getLevel() {
+    return this->level;
+}
