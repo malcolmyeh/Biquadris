@@ -40,14 +40,14 @@ void Player::initBlocks(char blockType1, char blockType2){
     setCurrentBlock(blockType1);
     setNextBlock(blockType2);
 }
-void Player::moveBlock(char direction)
+bool Player::moveBlock(char direction)
 {
     currentBlock->move(direction);
     if (direction == 'D')
         checkRow();
 }
 
-void Player::rotateBlock(char direction)
+bool Player::rotateBlock(char direction)
 {
     currentBlock->rotate(direction);
 }
