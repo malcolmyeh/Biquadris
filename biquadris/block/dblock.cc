@@ -1,6 +1,8 @@
 #include "dblock.h"
+#include "block.h"
+#include "../display/window.h"
 
-DBlock::DBlock(int colour, Board *board, int level) : Block{colour, board, level} {
+DBlock::DBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colour, board, level} {
     std::vector<Point> v = {{0, 3}};
     this->points = v;
     this->minRec = v;
@@ -8,5 +10,5 @@ DBlock::DBlock(int colour, Board *board, int level) : Block{colour, board, level
     this->recHeight = 1;
     this->topLeft = {0, 3};
     for (auto a : v) 
-        this->board.fillCell(a.getX(), a.getY(), Xwindow::Brown); // type and blindness and colour and display
+        this->board->fillCell(a, Xwindow::Brown); // type and blindness and colour and display
 }

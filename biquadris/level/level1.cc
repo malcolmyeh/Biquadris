@@ -1,6 +1,6 @@
 #include "level1.h"
 
-Level1::Level1() : Level{1} {}
+Level1::Level1(std::string file) : Level{1, file} {}
 
 char Level1::getBlockType()
 {

@@ -1,6 +1,6 @@
 #include "playermanager.h"
 #include "player.h"
-#include "level.h"
+#include "../level/level.h"
 
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<Board> board, std::shared_ptr<Level> level)
 {
@@ -20,7 +20,8 @@ void PlayerManager::initBlocks(){
 
 void PlayerManager::changeLevel(int level)
 {
-    this->level = Level::makeLevel(level);
+    std::string file = this->level->getFile();
+    this->level = Level::makeLevel(level, file); // WHAT TO DO ABOUT FILE????
     player->setLevel(level);
 }
 

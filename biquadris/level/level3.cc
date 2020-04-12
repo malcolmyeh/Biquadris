@@ -1,6 +1,6 @@
 #include "level3.h"
 
-Level3::Level3() : Level{3} {}
+Level3::Level3(std::string file) : Level{3, file} {}
 
 void Level3::setRandom(bool b)
 {

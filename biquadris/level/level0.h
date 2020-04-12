@@ -5,7 +5,7 @@
 class Level0 : public Level
 {
     public:
-        Level0(std::string filename);
+        Level0(std::string file);
         char getBlockType() override;
         
 };

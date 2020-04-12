@@ -7,7 +7,7 @@ class Level3 : public Level
     bool random = true;
 
 public:
-    Level3();
+    Level3(std::string file);
     void setRandom(bool b);
     char getBlockType() override;
 };

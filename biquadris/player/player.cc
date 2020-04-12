@@ -12,19 +12,19 @@ std::shared_ptr<Block> Player::generateBlock(char blockType)
     switch (blockType)
     {
     case 'I':
-        return Block::makeBlock(Xwindow::Cyan, level);
+        return Block::makeBlock(Xwindow::Cyan, board, level);
     case 'J':
-        return Block::makeBlock(Xwindow::Blue, level);
+        return Block::makeBlock(Xwindow::Blue, board, level);
     case 'L':
-        return Block::makeBlock(Xwindow::Orange, level);
+        return Block::makeBlock(Xwindow::Orange, board, level);
     case 'O':
-        return Block::makeBlock(Xwindow::Yellow, level);
+        return Block::makeBlock(Xwindow::Yellow, board, level);
     case 'S':
-        return Block::makeBlock(Xwindow::Green, level);
+        return Block::makeBlock(Xwindow::Green, board, level);
     case 'Z':
-        return Block::makeBlock(Xwindow::Red, level);
+        return Block::makeBlock(Xwindow::Red, board, level);
     case 'T':
-        return Block::makeBlock(Xwindow::Magenta, level);
+        return Block::makeBlock(Xwindow::Magenta, board, level);
     }
 }
 

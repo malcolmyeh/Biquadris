@@ -7,9 +7,10 @@
 #include "sblock.h"
 #include "tblock.h"
 #include "zblock.h"
+#include "../board/board.h"
 
 // ctor 
-Block::Block(int colour, Board *board, int level) {
+Block::Block(int colour, std::shared_ptr<Board> board, int level) {
     this->colour = colour;
     this->board = board;
     this->level = level;
@@ -17,11 +18,9 @@ Block::Block(int colour, Board *board, int level) {
 
 // this function returns true if it is possible to move in direction (x, y) and false otherwise
 //   if move is valid, unfill cells, then refill them after the points have shifted internally
-bool Block::move(char direction) {
-    // basic board boundary check (R, L, D)
-    if (a.getX() + 1 > 10 || a.getX() - 1 < 0 || a.getY() + 1 > 17) 
-        return false;
 
+// MAKE SURE I CHECK FOR BOUNDARIES AND SEG FAULTS ASAP
+bool Block::move(char direction) {
     // translation vector
     Point p{0, 0};
 
@@ -51,7 +50,12 @@ bool Block::move(char direction) {
 
         // vector of lowest bound of piece created. check one below.
         for (auto a : checkDown) {
-            if (this->board.isFilled(a.getX(), a.getY() + 1)) // if one of these points are filled->false
+            // check bottom boundary
+            if (a.getY() + 1 > 17)
+                return false;
+            // check if piece is occupying
+            Point q{a.getX(), a.getY() + 1};
+            if (this->board->isFilled(q)) // if one of these points are filled->false
                 return false;
         }
 
@@ -78,7 +82,10 @@ bool Block::move(char direction) {
         }
 
         for (auto a : checkLeft) {
-            if (this->board.isFilled(a.getX() - 1, a.getY()))
+            if (a.getX() - 1 < 0)
+                return false;
+            Point q{a.getX() - 1, a.getY()};
+            if (this->board->isFilled(q))
                 return false;
         }
 
@@ -108,12 +115,17 @@ bool Block::move(char direction) {
 
         // check one cell to the right if they are occupied or nah
         for (auto a : checkRight) {
-            if (this->board.isFilled(a.getX() + 1, a.getY()))
+            if (a.getX() + 1 > 10)
+                return false;
+            Point q{a.getX() + 1, a.getY()};
+            // if (this->board->isFilled(a.getX() + 1, a.getY()))
+            if (this->board->isFilled(q))
                 return false;
         }
 
         p = {1, 0};
     }
+
     for (auto a : this->points) {
         a += p;
     }
@@ -134,8 +146,9 @@ bool Block::rotate(std::string direction) {
     // convert the block's coordinates into a matrix of 1s and 0s
     std::vector<std::vector<int>> temp(this->recWidth, std::vector<int> (this->recHeight, 0));
     for (int i = 0; i < this->minRec.size(); ++i) {
-        Point p{this->minRec[i]};
-        if (std::find(std::begin(this->points), std::end(this->points), p) != std::end(this->points)) { // a is in points
+        Point p{this->minRec[i].getX(), this->minRec[i].getY()};
+        // if (std::find(std::begin(this->points), std::end(this->points), p) != std::end(this->points)) { // a is in points
+        if (std::find(this->points.begin(), this->points.end(), p) != this->points.end()) { // a is in points
             // set it as 1 in the matrix
             temp[this->minRec[i].getX() - this->topLeft.getX()][this->minRec[i].getY() - this->topLeft.getY()] = 1;
         } else {
@@ -152,7 +165,7 @@ bool Block::rotate(std::string direction) {
     // rotate 1 and 0 matrix
     for (int i = 0; i < recWidth; ++i) {
         for (int j = 0; j < recHeight; ++j) {
-            tempCW[j][i] = v[i][recHeight - 1 - j];
+            tempCW[j][i] = temp[i][recHeight - 1 - j];
         }
     }
 
@@ -168,7 +181,7 @@ bool Block::rotate(std::string direction) {
     }
 
     for (auto a : newPoints) {
-        if (this->board.isFilled(a.getX(), a.getY()))
+        if (this->board->isFilled(a))
             return false;
     }
 
@@ -213,14 +226,17 @@ bool Block::isPlaced() {
 
     // vector of lowest bound of piece created. check one below.
     for (auto a : checkDown) {
-        if (this->board.isFilled(a.getX(), a.getY() + 1)) // if one of these points are filled->false
+        if (a.getY() + 1 > 17)
+            return false;
+        Point q{a.getX(), a.getY() + 1};
+        if (this->board->isFilled(q)) // if one of these points are filled->false
             return false;
     }
     return true;
 }
 
 bool Block::clearPoint(int row) {
-    for (int i = 0; i < this->points.size(); ++i){
+    for (unsigned int i = 0; i < this->points.size(); ++i){
         if (this->points[i].getY() == row) {
             this->points.erase(this->points.begin()+i);
             --i;
@@ -230,7 +246,7 @@ bool Block::clearPoint(int row) {
     return this->points.empty();
 }
 
-std::shared_ptr<Block> Block::makeBlock(int colour, Board *board, int level) {
+std::shared_ptr<Block> Block::makeBlock(int colour, std::shared_ptr<Board> board, int level) {
     switch (colour) {
         case Xwindow::Brown:
             return std::make_shared<DBlock>(colour, board, level);

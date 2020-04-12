@@ -1,11 +1,12 @@
-#ifndef IBLOCK_H
-#define IBLOCK_H
+#ifndef LBLOCK_H
+#define LBLOCK_H
 
 #include "../point/point.h"
+#include "block.h"
 
 class LBlock : public Block {
 public:
-    LBlock(int colour, Board *board, int level);
+    LBlock(int colour, std::shared_ptr<Board> board, int level);
 };
 
 #endif

@@ -6,28 +6,29 @@
 #include <vector>
 #include "../display/window.h"
 #include <utility>
+#include "../board/board.h"
+#include <algorithm>
 
 class Block
 {
 protected:
-    int level;
     int colour;
     std::vector<Point> points; // the points that the piece is occupying
     std::vector<Point> minRec; // matrix of minimum rectangle
     int recWidth;
     int recHeight;
     Point topLeft;
-    Board *board;
-
+    std::shared_ptr<Board> board;
+    int level;
     // protected method for the loops at the end of each ctor
 public:
-    Block(int colour, Board *board, int level);
+    Block(int colour, std::shared_ptr<Board> board, int level);
     bool move(char direction);
     bool rotate(std::string direction);
     void drop();
     bool isPlaced(); //
     bool clearPoint(int row); // get rid of all y = row. return true if block is empty
-    std::shared_ptr<Block> makeBlock(int colour);
+    static std::shared_ptr<Block> makeBlock(int colour, std::shared_ptr<Board> board, int level);
     int getLevel();
 };
 

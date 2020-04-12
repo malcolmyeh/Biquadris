@@ -1,6 +1,6 @@
 #include "jblock.h"
 
-JBlock::JBlock(int colour, Board *board, int level) : Block{colour, board, level} {
+JBlock::JBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colour, board, level} {
     std::vector<Point> v = {{0, 2}, {0, 3}, {1, 3}, {2, 3}};
     this->points = v;
     this->recWidth = 3;
@@ -13,5 +13,5 @@ JBlock::JBlock(int colour, Board *board, int level) : Block{colour, board, level
         }
     }
     for (auto a : v)
-        this->board.fillCell(a.getX(), a.getY(), Xwindow::Blue);
+        this->board->fillCell(a, Xwindow::Blue);
 }

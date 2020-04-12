@@ -1,6 +1,6 @@
 #include "sblock.h"
 
-SBlock::SBlock(int colour, Board *board, int level) : Block{colour, board, level} {
+SBlock::SBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colour, board, level} {
     std::vector<Point> v = {{1, 2}, {2, 2}, {0, 3}, {1, 3}};
     this->points = v;
     this->recWidth = 3;
@@ -13,5 +13,5 @@ SBlock::SBlock(int colour, Board *board, int level) : Block{colour, board, level
         }
     }
     for (auto a : v) 
-        this->board.fillCell(a.getX(), a.getY(), Xwindow::Green);
+        this->board->fillCell(a, Xwindow::Green);
 }

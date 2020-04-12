@@ -49,6 +49,6 @@ Point &Point::operator-=(const Point &other)
     this->y = difference.y;
 }
 
-bool Point::operator==(const Point &other) {
-    return this->x == other.x && this->y other.y;
+bool Point::operator==(const Point &other) const {
+    return this->x == other.getX() && this->y == other.getY();
 }

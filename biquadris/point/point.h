@@ -17,8 +17,7 @@ public:
     Point &operator+=(const Point &other);
     Point &operator-=(const Point &other);
     bool operator==(const Point &other) const;
-    // negate?
-    // helper function for rotate?
+
 };
 
 #endif

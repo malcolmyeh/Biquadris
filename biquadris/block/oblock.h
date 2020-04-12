@@ -2,10 +2,11 @@
 #define OBLOCK_H
 
 #include "../point/point.h"
+#include "block.h"
 
 class OBlock : public Block {
 public:
-    OBlock(int colour, Board *board, int level);
+    OBlock(int colour, std::shared_ptr<Board> board, int level);
 };
 
 #endif

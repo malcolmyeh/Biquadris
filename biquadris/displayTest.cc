@@ -1,9 +1,10 @@
 #include "display/graphicsdisplay.h"
 #include "display/textdisplay.h"
 #include "board/board.h"
-#include "playermanager.h"
-#include "score.h"
-#include "block.h"
+#include "player/playermanager.h"
+#include "score/score.h"
+#include "block/block.h"
+#include "level/level.h"
 
 #include <memory>
 #include <string>

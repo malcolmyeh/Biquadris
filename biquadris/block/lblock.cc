@@ -1,6 +1,6 @@
 #include "lblock.h"
 
-LBlock::LBlock(int colour, Board *board, int level) : Block{colour, board, level} {
+LBlock::LBlock(int colour, std::shared_ptr<Board> board, int level) : Block{colour, board, level} {
     std::vector<Point> v = {{2, 2}, {0, 3}, {1, 3}, {2, 3}};
     this->points = v;
     this->recWidth = 3;
@@ -13,5 +13,5 @@ LBlock::LBlock(int colour, Board *board, int level) : Block{colour, board, level
         }
     }
     for (auto a : v)
-        this->board.fillCell(a.getX(), a.getY(), Xwindow::Orange);
+        this->board->fillCell(a, Xwindow::Orange);
 }

@@ -2,10 +2,11 @@
 #define IBLOCK_H
 
 #include "../point/point.h"
+#include "block.h"
 
 class IBlock : public Block {
 public:
-    IBlock(int colour, Board *board, int level);
+    IBlock(int colour, std::shared_ptr<Board> board, int level);
 };
 
 #endif
