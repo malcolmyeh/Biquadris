@@ -129,21 +129,45 @@ bool Block::rotate(std::string direction) {
         Point p{this->minRec[i]};
         if (std::find(std::begin(this->points), std::end(this->points), p) != std::end(this->points)) { // a is in points
             // set it as 1 in the matrix
-            v[this->minRec[i].getX() - this->topLeft.getX()][this->minRec[i].getY() - this->topLeft.getY()] = 1;
+            temp[this->minRec[i].getX() - this->topLeft.getX()][this->minRec[i].getY() - this->topLeft.getY()] = 1;
         } else {
             // set it as 0 in the matirx
-            v[this->minRec[i].getX() - this->topLeft.getX()][this->minRec[i].getY() - this->topLeft.getY()] = 0;
+            temp[this->minRec[i].getX() - this->topLeft.getX()][this->minRec[i].getY() - this->topLeft.getY()] = 0;
         }
     }
 
-    int newRecHeight = this->recWidth;
-    int newRecWidth = this->recHeight;
+    // new vars
+    std::vector<std::vector<int>> tempCW(this->recHeight, std::vector<int> (this->recWidth, 0));
+    std::vector<Point> newPoints;
+    std::vector<Point> newMinRec;
 
-    for (int i = 0; i < recHeight; ++i) {
-        for (int j = 0; j < recWidth; ++j) {
-            
+    // rotate 1 and 0 matrix
+    for (int i = 0; i < recWidth; ++i) {
+        for (int j = 0; j < recHeight; ++j) {
+            tempCW[j][i] = v[i][recHeight - 1 - j];
         }
-    } 
+    }
+
+    Point newTopLeft{this->topLeft.getX(), this->topLeft.getY() + this->recHeight - this->recWidth};
+    for (int i = 0; i < recWidth; ++i) {
+        for (int j = 0; j < recHeight; ++j) {
+            Point p{newTopLeft.getX() + j, newTopLeft.getY() + i};
+            newMinRec.emplace_back(p);
+            if (tempCW[j][i] == 1) {
+                newPoints.emplace_back(p);
+            }
+        }
+    }
+
+    for (auto a : newPoints) {
+        if (this->board.isFilled(a.getX(), a.getY()))
+            return false;
+    }
+
+    this->points = newPoints;
+    this->minRec = newMinRec;
+    return true;
+     
 }
 
 // it should be possible to drop at anytime..?? so change to void
