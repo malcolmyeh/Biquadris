@@ -27,6 +27,7 @@ public:
     void drop();
     bool isPlaced(); //
     bool clearPoint(int row); // get rid of all y = row. return true if block is empty
+    std::shared_prt<Block> makeBlock(int colour);
 };
 
 // NOTE: how do we know when a piece is "set"? So that we can release the next one?
