@@ -5,7 +5,7 @@
 
 class TBlock : public Block {
 public:
-    TBlock(char type, Board *board);
+    TBlock(int colour, Board *board, int level);
 };
 
 #endif

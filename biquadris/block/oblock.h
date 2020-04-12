@@ -5,7 +5,7 @@
 
 class OBlock : public Block {
 public:
-    OBlock(char type, Board *board);
+    OBlock(int colour, Board *board, int level);
 };
 
 #endif

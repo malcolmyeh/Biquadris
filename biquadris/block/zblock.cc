@@ -1,6 +1,6 @@
 #include "zblock.h"
 
-ZBlock::ZBlock(char type) : Block{type} {
+ZBlock::ZBlock(int colour, Board *board, int level) : Block{colour, board, level} {
     std::vector<Point> v = {{0, 2}, {1, 2}, {1, 3}, {2, 3}};
     this->points = v;
     this->recWidth = 3;
@@ -13,5 +13,5 @@ ZBlock::ZBlock(char type) : Block{type} {
         }
     }
     for (auto a : v)
-        this->board.fillCell(a.getX(), a.getY(), 1);
+        this->board.fillCell(a.getX(), a.getY(), Xwindow::Red);
 }
