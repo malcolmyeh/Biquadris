@@ -166,6 +166,8 @@ bool Block::rotate(std::string direction) {
 
     this->points = newPoints;
     this->minRec = newMinRec;
+    this->topLeft = newTopLeft;
+    std::swap(this->recWidth, this->recHeight);
     return true;
      
 }
