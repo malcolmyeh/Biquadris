@@ -45,9 +45,9 @@ int main(int argc, char *argv[])
     pm1->setOpponent(pm2->getPlayer());
     pm2->setOpponent(pm1->getPlayer());
 
-    // create initial blocks
-    pm1->initBlocks();
-    pm2->initBlocks();
+    std::cout << "#####################################################################" << std::endl;
+    std::cout << "############################ CHECKPOINT #############################" << std::endl;
+    std::cout << "#####################################################################" << std::endl;
 
     std::string cmd;
     while (true)
@@ -68,12 +68,24 @@ int main(int argc, char *argv[])
             s1->attach(gd);
             s2->attach(td);
             s2->attach(gd);
+        }
+        else if (cmd == "refresh")
+        {
 
             //refresh
             b1->refresh();
             b2->refresh();
             s1->drawDisplays();
             s2->drawDisplays();
+        }
+        else if (cmd == "initblocks")
+        {
+            // create initial blocks
+            pm1->initBlocks();
+            pm2->initBlocks(); // create initial blocks
+            std::cout << "#####################################################################" << std::endl;
+            std::cout << "############################ INIT BLOCK #############################" << std::endl;
+            std::cout << "#####################################################################" << std::endl;
         }
         else if (cmd == "1")
         {
