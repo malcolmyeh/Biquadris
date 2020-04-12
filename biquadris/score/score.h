@@ -11,7 +11,7 @@ class Score : public Subject
 
 public:
     Score(int level, std::shared_ptr<Board> board);
-    void updateScoreRow(int linesCleared);
+    void updateScoreRow();
     void updateScoreBlock(int level);
     void changeLevel(int level);
     void resetScore();

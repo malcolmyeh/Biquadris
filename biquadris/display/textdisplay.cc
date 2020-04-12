@@ -68,6 +68,9 @@ void TextDisplay::drawCell(Cell &cell)
         case Xwindow::Magenta:
             charGrid[r][c] = 'T';
             break;
+        case Xwindow::Brown:
+            charGrid[r][c] = 'D';
+            break;
         }
     }
     else
@@ -86,7 +89,7 @@ void TextDisplay::drawCell(Cell &cell)
 
 void TextDisplay::drawScore(Score &score)
 {
-    // score cna't be more than 4 digits or will be out of index (seg fault)
+    // score cna't be more than 6 digits or will be out of index (seg fault)
     int c = 7;
     if (score.getBoard()->getBoardNumber() == 2)
     {

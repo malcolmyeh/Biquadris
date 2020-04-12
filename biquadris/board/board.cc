@@ -1,18 +1,22 @@
 #include "board.h"
 #include "../display/window.h"
+#include "../block/block.h"
+#include "../score/score.h"
 #include <memory>
 #include <iostream>
 
-Board::Board(){}
+Board::Board() {}
 
-Board::Board(Board * board){
+Board::Board(Board *board)
+{
     boardNumber = board->boardNumber;
     cellGrid = board->cellGrid;
     displays = board->displays;
     isBlind = board->isBlind;
 }
 
-int Board::getBoardNumber(){
+int Board::getBoardNumber()
+{
     return boardNumber;
 }
 
@@ -53,7 +57,6 @@ void Board::init(int boardNumber)
         cellGrid.emplace_back(row);
     }
 }
- 
 
 void Board::toggleBlind()
 {
@@ -80,11 +83,44 @@ void Board::refresh()
 
 void Board::fillCell(Point point, int colour)
 {
-    cellGrid[point.y][point.x].setColour(colour);
-    cellGrid[point.y][point.x].drawDisplays();
+    cellGrid[point.getY()][point.getX()].setColour(colour);
+    cellGrid[point.getY()][point.getX()].drawDisplays();
 }
 
 bool Board::isFilled(Point point)
 {
-    return cellGrid[point.y][point.x].isFilled();
+    return cellGrid[point.getY()][point.getX()].isFilled();
+}
+
+bool Board::rowIsFilled(std::vector<Cell> row)
+{
+    for (auto c : row)
+    {
+        if (!c.isFilled())
+            return false;
+    }
+    return true;
+}
+
+int Board::checkRow(std::shared_ptr<Score> score)
+{
+    int rowsCleared = 0;
+    for (auto row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
+    {
+         if (rowIsFilled(*row))
+        {
+            ++rowsCleared;
+            for (auto block : blocks){
+                if (block.clearPoint(row->front().getY()))
+                    score->updateScoreBlock(block.getLevel());
+                block.move('D');
+            }
+            score->updateScoreRow();
+            --row;
+        }
+    }
+}
+
+void Board::addBlock(std::shared_ptr<Block> block){
+    blocks.emplace_back(block);
 }

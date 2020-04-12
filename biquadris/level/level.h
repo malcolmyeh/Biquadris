@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <memory>
 
 class Level
 {
@@ -15,9 +16,10 @@ protected:
     void getBlocksFromFile();
 
 public:
-    Level(int levelNumber);
     Level(int levelNumber, std::string file);
+    static std::shared_ptr<Level> makeLevel(int level);
     virtual char getBlockType() = 0;
+    int getLevelNumber();
 };
 
 #endif

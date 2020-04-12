@@ -1,14 +1,27 @@
 #include "level.h"
+#include "level0.h"
+#include "level1.h"
+#include "level2.h"
+#include "level3.h"
+#include "level4.h"
 
-Level::Level(int levelNumber) : levelNumber{levelNumber} {}
 
-Level::Level(int levelNumber, std::string file) : levelNumber{levelNumber},
-                                                  file{file}
-{
-    // should we check if file is valid here or in getBlocksFromFile()
-    getBlocksFromFile();
+
+std::shared_ptr<Level> Level::makeLevel(int level){
+    switch (level){
+        case 0:
+            return std::make_shared<Level0>();
+            break;
+        case 1:`
+            return std::make_shared<Level1>();
+        case 2:
+            return std::make_shared<Level2>();
+        case 3:
+            return std::make_shared<Level3>();
+        case 4:
+            return std::make_shared<Level4>();
+    }
 }
-
 void Level::getBlocksFromFile()
 {
     std::ifstream ifs{file};
@@ -17,4 +30,9 @@ void Level::getBlocksFromFile()
     {
         sequence.emplace_back(blockType);
     }
+}
+
+int Level::getLevelNumber()
+{ 
+    return levelNumber;
 }
