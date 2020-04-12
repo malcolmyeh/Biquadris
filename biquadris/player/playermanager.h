@@ -20,6 +20,7 @@ class PlayerManager
 public:
     PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<Board> board, std::shared_ptr<Level> level);
     void setOpponent(std::shared_ptr<Player> opponent);
+    void initBlocks();
     void forceBlock(char blockType);
     void blind();
     void setNextBlock();
@@ -27,6 +28,7 @@ public:
     bool rotateBlock(char direction);
     void dropBlock();
     void changeLevel(int level);
+    std::shared_ptr<Player> getPlayer();
 };
 
 #endif

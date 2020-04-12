@@ -14,6 +14,10 @@ void PlayerManager::setOpponent(std::shared_ptr<Player> opponent)
     this->opponent = opponent;
 }
 
+void PlayerManager::initBlocks(){
+    player->initBlocks(level->getBlockType(), level->getBlockType());
+}
+
 void PlayerManager::changeLevel(int level)
 {
     this->level = Level::makeLevel(level);
@@ -48,4 +52,8 @@ bool PlayerManager::rotateBlock(char direction)
 void PlayerManager::dropBlock()
 {
     player->dropBlock();
+}
+
+std::shared_ptr<Player> PlayerManager::getPlayer(){
+    return player;
 }
