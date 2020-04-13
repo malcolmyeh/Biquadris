@@ -20,6 +20,7 @@ void Player::setCurrentBlock(std::shared_ptr<Block> block)
 {
     currentBlock = block;
     block->setBoard(board);
+    board->addBlock(block);
 }
 
 void Player::setNextBlock(std::shared_ptr<Block> block)
@@ -82,17 +83,16 @@ void Player::checkRow()
         canSpecial = true;
 }
 
-// lets PlayersManager know when currentBlock is placed and to call setBlock
 bool Player::currentPlaced()
 {
-    if (currentBlock->isPlaced())
+    if (currentBlock->isPlaced() || currentBlock->isEmpty()) 
     {
-        currentBlock = nextBlock;
-        currentBlock->setBoard(board);
+        setCurrentBlock(nextBlock);
         return true;
     }
     return false;
 }
+
 
 void Player::setLevel(int level)
 {

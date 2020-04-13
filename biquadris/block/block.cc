@@ -311,11 +311,14 @@ bool Block::isPlaced()
 
 bool Block::clearPoint(int row)
 {
+    std::cout << "Block::clearPoint" << std::endl;
     for (unsigned int i = 0; i < this->points.size(); ++i)
     {
         if (this->points[i].getY() == row)
         {
+            drawBlock(Xwindow::White);
             this->points.erase(this->points.begin() + i);
+            drawBlock(this->colour);
             --i;
         }
     }

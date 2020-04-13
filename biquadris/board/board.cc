@@ -110,11 +110,10 @@ int Board::checkRow(std::shared_ptr<Score> score)
     // for (auto row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
     for (std::vector<std::vector<Cell>>::reverse_iterator row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
     {
-        if (rowIsFilled(*row))
+        while (rowIsFilled(*row))
         {
-            std::cout << "row is filled" << std::endl;
             ++rowsCleared;
-            std::cout << "looping through all blocks" << std::endl;
+            // should do sanity check, make sure blocks is nonempty
             for (auto block : blocks)
             {
                 if (block->clearPoint(row->front().getPoint()->getY()))
@@ -122,7 +121,6 @@ int Board::checkRow(std::shared_ptr<Score> score)
                 block->move('D');
             }
             score->updateScoreRow();
-            --row;
         }
     }
     std::cout << "finished looping through cellGrid rows" << std::endl;
