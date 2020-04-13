@@ -187,6 +187,9 @@ bool Block::move(char direction)
 bool Block::rotate(std::string direction)
 {
     std::cout << "Block::rotate" << std::endl;
+    std::cout << "BEFORE ROTATE POINTS" << std::endl;
+    this->printCellCoordinates();
+
     // convert the block's coordinates into a matrix of 1s and 0s
     std::vector<std::vector<int>> temp(this->recWidth, std::vector<int>(this->recHeight, 0));
     for (unsigned int i = 0; i < this->minRec.size(); ++i)
@@ -233,6 +236,11 @@ bool Block::rotate(std::string direction)
         }
     }
 
+    std::cout << "AFTER ROTATE POINTS" << std::endl;
+    // for (auto a : newPoints)
+    //     std::cout << "{" << a.getX() << "," << a.getY() << "} ";
+    // std::cout << std::endl;
+
     for (auto a : newPoints)
     {
         if (a.getX() < 0)
@@ -244,12 +252,17 @@ bool Block::rotate(std::string direction)
     }
 
     for (auto a : newPoints)
-    {
-        if (this->board->isFilled(a))
-            return false;
+    {   
+        if (std::find(this->points.begin(), this->points.end(), a) == this->points.end()) { // a is not in points
+            if (this->board->isFilled(a))
+                return false;
+        }
+        // if (this->board->isFilled(a) && !std::find(this->points.begin(), this->points.end(), a))
+        //     return false;
     }
     this->drawBlock(Xwindow::White);
     this->points = newPoints;
+    this->printCellCoordinates();
     this->minRec = newMinRec;
     this->topLeft = newTopLeft;
     std::swap(this->recWidth, this->recHeight);
