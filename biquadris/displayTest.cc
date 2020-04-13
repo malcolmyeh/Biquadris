@@ -72,12 +72,20 @@ int main(int argc, char *argv[])
     pm1->initBlocks();
     pm2->initBlocks();
 
-    std::cout << "                 Testing Commands: " << std::endl
+    std::cout << "       Testing Commands:" << std::endl
               << std::endl
               << "∙ move {1,2} {L,R,D} ------- move current block " << std::endl
               << "∙ rotate {1,2} {CC, CW} ---- rotate current block" << std::endl
               << "∙ drop {1,2} --------------- drop current block" << std::endl
-              << "∙ quit --------------------- exit" << std::endl;
+              << "∙ quit --------------------- exit" << std::endl
+              << "       Player 1 Shortcuts:" << std::endl
+              << "∙ {asd} --------------------- move" << std::endl
+              << "∙ {w} ----------------------- drop" << std::endl
+              << "∙ {eq} ---------------------- rotate" << std::endl
+              << "       Player 2 Shortcuts:" << std::endl
+              << "∙ {jkl} --------------------- move" << std::endl
+              << "∙ {i} ----------------------- drop" << std::endl
+              << "∙ {uo} ---------------------- rotate" << std::endl;
 
     while (true)
     {
@@ -105,6 +113,57 @@ int main(int argc, char *argv[])
             std::cin >> player;
             playerManagers[player - 1]->dropBlock();
         }
+        // short cuts for p1
+        else if (cmd == "a")
+        { // move left
+            playerManagers[0]->moveBlock('L');
+        }
+        else if (cmd == "s")
+        { // move down
+            playerManagers[0]->moveBlock('D');
+        }
+        else if (cmd == "d")
+        { // move right
+            playerManagers[0]->moveBlock('R');
+        }
+        else if (cmd == "w")
+        { // drop
+            playerManagers[0]->dropBlock();
+        }
+        else if (cmd == "e")
+        { // rotate clockwise
+            playerManagers[0]->rotateBlock("CC");
+        }
+        else if (cmd == "q")
+        { // rotate counterclockwise
+            playerManagers[0]->rotateBlock("CW");
+        }
+        // short cuts for p2
+        else if (cmd == "j")
+        { // move left
+            playerManagers[1]->moveBlock('L');
+        }
+        else if (cmd == "k")
+        { // move down
+            playerManagers[1]->moveBlock('D');
+        }
+        else if (cmd == "l")
+        { // move right
+            playerManagers[1]->moveBlock('R');
+        }
+        else if (cmd == "i")
+        { // drop
+            playerManagers[1]->dropBlock();
+        }
+        else if (cmd == "o")
+        { // rotate clockwise
+            playerManagers[1]->rotateBlock("CC");
+        }
+        else if (cmd == "u")
+        { // rotate counterclockwise
+            playerManagers[1]->rotateBlock("CW");
+        }
+
         else if (cmd == "quit")
         {
             break;
