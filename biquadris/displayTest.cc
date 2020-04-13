@@ -37,9 +37,9 @@ int main(int argc, char *argv[])
 
     // playermanager (+ players)
     std::shared_ptr<PlayerManager> pm1 =
-        std::make_shared<PlayerManager>(s1, b1, std::make_shared<Level1>(levelFile));
+        std::make_shared<PlayerManager>(s1, b1, std::make_shared<Level2>(levelFile));
     std::shared_ptr<PlayerManager> pm2 =
-        std::make_shared<PlayerManager>(s2, b2, std::make_shared<Level1>(levelFile));
+        std::make_shared<PlayerManager>(s2, b2, std::make_shared<Level2>(levelFile));
 
     // link players to each other
     pm1->setOpponent(pm2->getPlayer());
