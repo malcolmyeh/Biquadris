@@ -13,5 +13,4 @@ OBlock::OBlock(int level) : Block{Xwindow::Yellow, level} {
             this->minRec.emplace_back(p);
         }
     }
-    drawBlock(this->colour);
 }

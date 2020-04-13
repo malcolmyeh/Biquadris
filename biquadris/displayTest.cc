@@ -45,110 +45,65 @@ int main(int argc, char *argv[])
     pm1->setOpponent(pm2->getPlayer());
     pm2->setOpponent(pm1->getPlayer());
 
-    std::cout << "#####################################################################" << std::endl;
-    std::cout << "############################ CHECKPOINT #############################" << std::endl;
-    std::cout << "#####################################################################" << std::endl;
+    // put into vector for harness
+    std::vector<std::shared_ptr<PlayerManager>> playerManagers;
+    playerManagers.emplace_back(pm1);
+    playerManagers.emplace_back(pm2);
 
-    std::string cmd;
+    // link board, score, display
+    b1->init(1);
+    b2->init(2);
+    b1->setDisplay(td);
+    b1->setDisplay(gd);
+    b2->setDisplay(td);
+    b2->setDisplay(gd);
+    s1->attach(td);
+    s1->attach(gd);
+    s2->attach(td);
+    s2->attach(gd);
+
+    // refresh board and score, updates display
+    b1->refresh();
+    b2->refresh();
+    s1->drawDisplays();
+    s2->drawDisplays();
+
+    // create initial blocks
+    pm1->initBlocks();
+    pm2->initBlocks();
+
+    std::cout << "                 Testing Commands: " << std::endl
+              << std::endl
+              << "∙ move {1,2} {L,R,D} ------- move current block " << std::endl
+              << "∙ rotate {1,2} {CC, CW} ---- rotate current block" << std::endl
+              << "∙ drop {1,2} --------------- drop current block" << std::endl
+              << "∙ quit --------------------- exit" << std::endl;
+
     while (true)
     {
+        std::string cmd;
+        int player;
+        char moveDirection;
+        std::string rotateDirection;
+
         std::cin >> cmd;
-        if (cmd == "init")
-        {
-            // link board (+cells), score, display
-            b1->init(1);
-            b2->init(2);
-            b1->setDisplay(td);
-            b1->setDisplay(gd);
-            b2->setDisplay(td);
-            b2->setDisplay(gd);
-            s1->attach(td);
-            s1->attach(gd);
-            s2->attach(td);
-            s2->attach(gd);
-        }
-        else if (cmd == "refresh")
-        {
 
-            //refresh
-            b1->refresh();
-            b2->refresh();
-            s1->drawDisplays();
-            s2->drawDisplays();
-        }
-        else if (cmd == "initblocks")
+        if (cmd == "move")
         {
-            // create initial blocks
-            pm1->initBlocks();
-            pm2->initBlocks(); // create initial blocks
-            std::cout << "#####################################################################" << std::endl;
-            std::cout << "############################ INIT BLOCK #############################" << std::endl;
-            std::cout << "#####################################################################" << std::endl;
+            std::cin >> player;
+            std::cin >> moveDirection;
+            playerManagers[player - 1]->moveBlock(moveDirection);
         }
-        else if (cmd == "d")
+        else if (cmd == "rotate")
         {
-            int x1 = rand() % 11;
-            int y1 = rand() % 18;
-            int x2 = rand() % 11;
-            int y2 = rand() % 18;
-            int colour1 = rand() % 7 + 2;
-            int colour2 = rand() % 7 + 2;
-            b1->fillCell(Point{x1, y1}, colour1);
-            b2->fillCell(Point{x2, y2}, colour2);
+            std::cin >> player;
+            std::cin >> rotateDirection;
+            playerManagers[player - 1]->rotateBlock(rotateDirection);
         }
-        else if (cmd == "02")
+        else if (cmd == "drop")
         {
-            int x1 = 0;
-            int y1 = 2;
-            int x2 = 2;
-            int y2 = 2;
-            int colour1 = rand() % 7 + 2;
-            int colour2 = rand() % 7 + 2;
-            b1->fillCell(Point{x1, y1}, colour1);
-            b2->fillCell(Point{x2, y2}, colour2);
-        }
-        else if (cmd == "1")
-        {
-            std::cin >> cmd;
-
-            if (cmd == "rotate")
-            {
-                std::string direction;
-                std::cin >> direction;
-                pm1->rotateBlock(direction);
-            }
-            else if (cmd == "move")
-            {
-                char direction;
-                std::cin >> direction;
-
-                pm1->moveBlock(direction);
-            }
-            else if (cmd == "drop")
-            {
-                pm1->dropBlock();
-            }
-        }
-        else if (cmd == "2")
-        {
-            std::cin >> cmd;
-            if (cmd == "rotate")
-            {
-                std::string direction;
-                std::cin >> direction;
-                pm2->rotateBlock(direction);
-            }
-            else if (cmd == "move")
-            {
-                char direction;
-                std::cin >> direction;
-
-                pm2->moveBlock(direction);
-            }
-            else if (cmd == "drop")
-            {
-                pm2->dropBlock();
-            }
+            std::cin >> player;
+            playerManagers[player - 1]->dropBlock();
         }
         else if (cmd == "quit")
         {

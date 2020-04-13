@@ -6,7 +6,8 @@
 #include "../board/board.h"
 #include <memory>
 
-struct Point;
+// struct Point;
+class Point;
 class Board;
 class Cell : public Subject
 {

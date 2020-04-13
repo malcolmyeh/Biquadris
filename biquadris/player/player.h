@@ -20,7 +20,7 @@ class Player
     bool isBlind = false;
 
 public:
-    Player(std::shared_ptr<Board> board, std::shared_ptr<Score> score);
+    Player(std::shared_ptr<Score> score, std::shared_ptr<Board> board);
     
     void setCurrentBlock(std::shared_ptr<Block> block);
     void setNextBlock(std::shared_ptr<Block> block);

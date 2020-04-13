@@ -22,7 +22,6 @@ class Board
 public:
     Board();
     Board(Board *board);
-    // ~Board(); // do we need?
     void clear(); // ^
     void setDisplay(std::shared_ptr<View> display);
     void toggleBlind();
@@ -30,7 +29,6 @@ public:
     int getBoardNumber();
     void refresh();
     void fillCell(Point point, int colour);
-    void fillCell2(int x, int y, int colour);
     bool isFilled(Point point);
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
     int checkRow(std::shared_ptr<Score> score);

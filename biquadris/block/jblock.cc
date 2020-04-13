@@ -12,5 +12,4 @@ JBlock::JBlock(int level) : Block{Xwindow::Blue, level} {
             this->minRec.emplace_back(p);
         }
     }
-    drawBlock(this->colour);
 }

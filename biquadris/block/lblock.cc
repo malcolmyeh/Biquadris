@@ -12,5 +12,4 @@ LBlock::LBlock(int level) : Block{Xwindow::Orange, level} {
             this->minRec.emplace_back(p);
         }
     }
-    drawBlock(this->colour);
 }

@@ -40,6 +40,7 @@ Point &Point::operator+=(const Point &other)
     Point sum = this->operator+(other);
     this->x = sum.x;
     this->y = sum.y;
+    return *this;
 }
 
 Point &Point::operator-=(const Point &other)
@@ -47,6 +48,7 @@ Point &Point::operator-=(const Point &other)
     Point difference = this->operator-(other);
     this->x = difference.x;
     this->y = difference.y;
+    return *this;
 }
 
 bool Point::operator==(const Point &other) const {

@@ -12,5 +12,4 @@ TBlock::TBlock(int level) : Block{Xwindow::Magenta, level} {
             this->minRec.emplace_back(p);
         }
     }
-    drawBlock(this->colour);
 }

@@ -16,7 +16,7 @@
 
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<Board> board, std::shared_ptr<Level> level)
 {
-    this->player = std::make_shared<Player>(board, score);
+    this->player = std::make_shared<Player>(score, board);
     this->level = level;
     player->setLevel(level->getLevelNumber());
 }
@@ -81,16 +81,19 @@ bool PlayerManager::getCanSpecial()
 
 bool PlayerManager::moveBlock(char direction)
 {
+    std::cout << "PlayerManager::moveBlock" << std::endl;
     return player->moveBlock(direction);
 }
 
 bool PlayerManager::rotateBlock(std::string direction)
 {
+    std::cout << "PlayerManager::rotateBlock" << std::endl;
     return player->rotateBlock(direction);
 }
 
 void PlayerManager::dropBlock()
 {
+    std::cout << "PlayerManager::rotateBlock" << std::endl;
     player->dropBlock();
 }
 

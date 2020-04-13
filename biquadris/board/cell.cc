@@ -20,7 +20,7 @@ Cell::~Cell()
 
 bool Cell::isFilled()
 {
-    return this->colour != Xwindow::Black;
+    return this->colour != Xwindow::White;
 }
 void Cell::toggleBlind()
 {

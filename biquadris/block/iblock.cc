@@ -12,5 +12,4 @@ IBlock::IBlock(int level) : Block{Xwindow::Cyan, level} {
             this->minRec.emplace_back(p);
         }
     }
-    drawBlock(this->colour);
 }

@@ -31,6 +31,10 @@ public:
     int getLevel();
     void setBoard(std::shared_ptr<Board> board);
     void drawBlock(int colour);
+
+    /// TESTING ///
+    void printCellCoordinates();
+    //////////////
 };
 
 // NOTE: how do we know when a piece is "set"? So that we can release the next one?

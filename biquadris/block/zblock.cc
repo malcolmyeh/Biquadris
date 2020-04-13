@@ -12,5 +12,4 @@ ZBlock::ZBlock(int level) : Block{Xwindow::Red, level} {
             this->minRec.emplace_back(p);
         }
     }
-    drawBlock(this->colour);
 }

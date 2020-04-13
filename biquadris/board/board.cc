@@ -83,29 +83,8 @@ void Board::refresh()
 
 void Board::fillCell(Point point, int colour)
 {
-    std::cout << "#####################################################################" << std::endl;
-    std::cout << "############################ FILLCELL #############################" << std::endl;
-    std::cout << "#####################################################################" << std::endl;
-    std::cout << "row: " << point.getY() << " col: " << point.getX() << " colour: " << colour << std::endl;
-    // cellGrid[point.getY()][point.getX()].setColour(colour);
-    // cellGrid[point.getY()][point.getX()].drawDisplays();
-    std::cout << "cellgrid y size: " << cellGrid.size();
-    Point newPoint{point.getX(), point.getY()};
-    cellGrid.at(newPoint.getY()).at(newPoint.getX()).setColour(colour);
-    cellGrid.at(newPoint.getY()).at(newPoint.getX()).drawDisplays();
-}
-
-void Board::fillCell2(int x, int y, int colour)
-{
-    std::cout << "#####################################################################" << std::endl;
-    std::cout << "############################ FILLCELL2 #############################" << std::endl;
-    std::cout << "#####################################################################" << std::endl;
-    std::cout << "row: " << y << " col: " << x << " colour: " << colour << std::endl;
-    // cellGrid[point.getY()][point.getX()].setColour(colour);
-    // cellGrid[point.getY()][point.getX()].drawDisplays();
-    std::cout << "cellgrid y size: " << cellGrid.size();
-    cellGrid.at(y).at(x).setColour(colour);
-    cellGrid.at(y).at(x).drawDisplays();
+    cellGrid[point.getY()][point.getX()].setColour(colour);
+    cellGrid[point.getY()][point.getX()].drawDisplays();
 }
 
 bool Board::isFilled(Point point)
@@ -125,12 +104,18 @@ bool Board::rowIsFilled(std::vector<Cell> row)
 
 int Board::checkRow(std::shared_ptr<Score> score)
 {
+    std::cout << "Board::checkRow" << std::endl;
     int rowsCleared = 0;
-    for (auto row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
+    std::cout << "looping through cellGrid rows, from bottom up" << std::endl;
+    // for (auto row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
+    for (std::vector<std::vector<Cell>>::reverse_iterator row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
     {
+        std::cout << "." << std::endl;
         if (rowIsFilled(*row))
         {
+            std::cout << "row is filled" << std::endl;
             ++rowsCleared;
+            std::cout << "looping through all blocks" << std::endl;
             for (auto block : blocks)
             {
                 if (block->clearPoint(row->front().getPoint()->getY()))
@@ -141,6 +126,7 @@ int Board::checkRow(std::shared_ptr<Score> score)
             --row;
         }
     }
+    std::cout << "finished looping through cellGrid rows" << std::endl;
     return rowsCleared;
 }
 

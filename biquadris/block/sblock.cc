@@ -15,5 +15,4 @@ SBlock::SBlock(int level) : Block{Xwindow::Green, level}
             this->minRec.emplace_back(p);
         }
     }
-    drawBlock(this->colour);
 }

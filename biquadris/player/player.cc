@@ -11,37 +11,52 @@
 #include "../board/board.h"
 #include "../display/window.h"
 
-Player::Player(std::shared_ptr<Board> board, std::shared_ptr<Score> score)
-    : score{score}, board{board}, canSpecial{false} {}
+Player::Player(std::shared_ptr<Score> score, std::shared_ptr<Board> board)
+    : score{score}, board{board}, canSpecial{false}
+{
+}
 
-void Player::setCurrentBlock(std::shared_ptr<Block> block){
+void Player::setCurrentBlock(std::shared_ptr<Block> block)
+{
     currentBlock = block;
     block->setBoard(board);
 }
 
-void Player::setNextBlock(std::shared_ptr<Block> block){
+void Player::setNextBlock(std::shared_ptr<Block> block)
+{
     nextBlock = block;
-    block->setBoard(board);
 }
 
 bool Player::moveBlock(char direction)
 {
+    if (!currentBlock){
+        std::cout << "NO BLOCK THIS SHOULDN'T HAPPEN" << std::endl;
+        return false;
+    }
+    std::cout << "Player::moveBlock" << std::endl;
     bool checkMove = currentBlock->move(direction);
     if (direction == 'D')
+    {
+        std::cout << "direction is DOWN, checking row..." << std::endl;
         checkRow();
+    }
     return checkMove;
 }
 
 bool Player::rotateBlock(std::string direction)
 {
+    std::cout << "Player::roateBlock" << std::endl;
     return currentBlock->rotate(direction);
 }
 
 void Player::dropBlock()
 {
+    std::cout << "Player::moveBlock" << std::endl;
     currentBlock->drop();
+    std::cout << "Block is at lowest possible Y, checking row..." << std::endl;
     checkRow();
-    if (isBlind) toggleBlind();
+    if (isBlind)
+        toggleBlind();
 }
 
 bool Player::getCanSpecial()
@@ -62,6 +77,7 @@ void Player::toggleBlind()
 
 void Player::checkRow()
 {
+    std::cout << "Player::checkRow" << std::endl;
     if (board->checkRow(score) > 2)
         canSpecial = true;
 }
@@ -72,6 +88,7 @@ bool Player::currentPlaced()
     if (currentBlock->isPlaced())
     {
         currentBlock = nextBlock;
+        currentBlock->setBoard(board);
         return true;
     }
     return false;
@@ -82,6 +99,7 @@ void Player::setLevel(int level)
     this->level = level;
 }
 
-std::shared_ptr<Board> Player::getBoard(){
+std::shared_ptr<Board> Player::getBoard()
+{
     return board;
 }
