@@ -156,12 +156,15 @@ bool Block::move(char direction)
         this->drawBlock(Xwindow::White);
         p = {1, 0};
     }
-
-    for (auto a : this->points)
+    std::cout << "P: {" << p.getX() << "," << p.getY() << "}" << std::endl;
+    std::cout << "moving current cells" << std::endl;
+    for (auto &a : this->points)
     {
+        std::cout << "a before: {" << a.getX() << "," << a.getY() << "}" << std::endl;
         a += p;
+        std::cout << "a after: {" << a.getX() << "," << a.getY() << "}" << std::endl;
     }
-    for (auto a : this->minRec)
+    for (auto &a : this->minRec)
     {
         a += p;
         // if (std::find(this->points.begin(), this->points.end(), a) != this->points.end()) { // if a is in points

@@ -110,7 +110,6 @@ int Board::checkRow(std::shared_ptr<Score> score)
     // for (auto row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
     for (std::vector<std::vector<Cell>>::reverse_iterator row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
     {
-        std::cout << "." << std::endl;
         if (rowIsFilled(*row))
         {
             std::cout << "row is filled" << std::endl;
