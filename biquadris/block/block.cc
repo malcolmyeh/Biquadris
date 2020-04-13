@@ -17,7 +17,10 @@ bool Block::move(char direction)
     std::cout << "Block::move" << std::endl;
     // translation vector
     Point p{0, 0};
-
+    // std::cout << "BEFORE MOVE" << std::endl;
+    // for (a : this->points) {
+    //     std::cout << a.getX() << ", " << a.getY() << std::endl;
+    // }
     // check for collision with an intermediate block
     if (direction == 'D')
     {
@@ -298,12 +301,12 @@ bool Block::isPlaced()
     for (auto a : checkDown)
     {
         if (a.getY() + 1 > 17)
-            return false;
+            return true;
         Point q{a.getX(), a.getY() + 1};
         if (this->board->isFilled(q)) // if one of these points are filled->false
-            return false;
+            return true;
     }
-    return true;
+    return false;
 }
 
 bool Block::clearPoint(int row)
