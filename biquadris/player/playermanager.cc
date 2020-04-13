@@ -82,12 +82,20 @@ bool PlayerManager::getCanSpecial()
 bool PlayerManager::moveBlock(char direction)
 {
     std::cout << "PlayerManager::moveBlock" << std::endl;
-    return player->moveBlock(direction);
+    bool checkMove = player->moveBlock(direction);
+    if (player->currentPlaced())
+    {
+        std::cout << "current block is at bottom" << std::endl;
+        setNextBlock();
+    }
+
+    return checkMove;
 }
 
 bool PlayerManager::rotateBlock(std::string direction)
 {
     std::cout << "PlayerManager::rotateBlock" << std::endl;
+
     return player->rotateBlock(direction);
 }
 
@@ -95,6 +103,11 @@ void PlayerManager::dropBlock()
 {
     std::cout << "PlayerManager::rotateBlock" << std::endl;
     player->dropBlock();
+    if (player->currentPlaced())
+    {
+        std::cout << "current block is at bottom" << std::endl;
+        setNextBlock();
+    }
 }
 
 std::shared_ptr<Player> PlayerManager::getPlayer()
