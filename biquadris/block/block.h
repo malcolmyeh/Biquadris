@@ -31,6 +31,7 @@ public:
     int getLevel();
     void setBoard(std::shared_ptr<Board> board);
     void drawBlock(int colour);
+    bool isEmpty();
 
     /// TESTING ///
     void printCellCoordinates();

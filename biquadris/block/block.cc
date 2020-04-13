@@ -359,3 +359,7 @@ void Block::printCellCoordinates()
         std::cout << "{" << a.getX() << "," << a.getY() << "} ";
     std::cout << std::endl;
 }
+
+bool Block::isEmpty() {
+    return this->points.empty();
+}
