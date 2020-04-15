@@ -8,6 +8,8 @@ class Level;
 class Score;
 
 class Board;
+class MainBoard;
+class NextBlockBoard;
 
 class PlayerManager
 {
@@ -18,7 +20,8 @@ class PlayerManager
     bool getCanSpecial();
 
 public:
-    PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<Board> board, std::shared_ptr<Level> level);
+    PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
+                  std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard);
     void setOpponent(std::shared_ptr<Player> opponent);
     void initBlocks();
     void forceBlock(char blockType);
@@ -27,7 +30,7 @@ public:
     bool moveBlock(char direction);
     bool rotateBlock(std::string direction);
     void dropBlock();
-    void changeLevel(int level);
+    void setLevel(std::shared_ptr<Level> level);
     std::shared_ptr<Player> getPlayer();
 };
 

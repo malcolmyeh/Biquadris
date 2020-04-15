@@ -14,9 +14,10 @@
 #include "../block/tblock.h"
 #include "../block/zblock.h"
 
-PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<Board> board, std::shared_ptr<Level> level)
+PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
+ std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard)
 {
-    this->player = std::make_shared<Player>(score, board);
+    this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard);
     this->level = level;
     player->setLevel(level->getLevelNumber());
 }
@@ -37,11 +38,10 @@ void PlayerManager::setNextBlock()
     player->setNextBlock(level->createBlock());
 }
 
-void PlayerManager::changeLevel(int level)
+void PlayerManager::setLevel(std::shared_ptr<Level> level)
 {
-    std::string file = this->level->getFile();
-
-    player->setLevel(level);
+    this->level = level;
+    player->setLevel(level->getLevelNumber());
 }
 
 void PlayerManager::forceBlock(char blockType)
@@ -81,11 +81,9 @@ bool PlayerManager::getCanSpecial()
 
 bool PlayerManager::moveBlock(char direction)
 {
-    std::cout << "PlayerManager::moveBlock" << std::endl;
     bool checkMove = player->moveBlock(direction);
-    if (player->currentPlaced())
+    if (player->currentPlaced() && !player->getIsLost())
     {
-        std::cout << "current block is at bottom" << std::endl;
         setNextBlock();
     }
 
@@ -94,18 +92,14 @@ bool PlayerManager::moveBlock(char direction)
 
 bool PlayerManager::rotateBlock(std::string direction)
 {
-    std::cout << "PlayerManager::rotateBlock" << std::endl;
-
     return player->rotateBlock(direction);
 }
 
 void PlayerManager::dropBlock()
 {
-    std::cout << "PlayerManager::rotateBlock" << std::endl;
     player->dropBlock();
-    if (player->currentPlaced())
+    if (player->currentPlaced() && !player->getIsLost())
     {
-        std::cout << "current block is at bottom" << std::endl;
         setNextBlock();
     }
 }

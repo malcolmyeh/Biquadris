@@ -3,8 +3,10 @@
 
 #include <vector>
 #include <memory>
+#include "../point/point.h"
 #include "cell.h"
 
+class Point;
 class Cell;
 class View;
 class Block;
@@ -12,27 +14,29 @@ class Score;
 
 class Board
 {
-    int boardNumber = 0;
+
+protected:
+    int boardNumber;
     std::vector<std::vector<Cell>> cellGrid;
     std::vector<std::shared_ptr<View>> displays;
-    std::vector<std::shared_ptr<Block>> blocks;
-    bool isBlind = false;
-    bool rowIsFilled(std::vector<Cell> row);
+    Point origin; // Where the Board is located on the Display
+    int rows;
+    int cols;
 
 public:
     Board();
+    Board(int rows, int cols, Point origin);
     Board(Board *board);
-    void clear(); // ^
+    void clear();
     void setDisplay(std::shared_ptr<View> display);
-    void toggleBlind();
     void init(int boardNumber);
     int getBoardNumber();
     void refresh();
     void fillCell(Point point, int colour);
-    bool isFilled(Point point);
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
-    int checkRow(std::shared_ptr<Score> score);
-    void addBlock(std::shared_ptr<Block> block);
+    Point getOrigin();
+
+    bool isFilled(Point point);
 };
 
 #endif

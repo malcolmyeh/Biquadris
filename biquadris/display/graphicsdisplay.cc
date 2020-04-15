@@ -8,7 +8,6 @@
 #include "window.h"
 #include <iostream>
 
-
 #include "../board/board.h"
 
 GraphicsDisplay::GraphicsDisplay(int cellSize) : cellSize{cellSize}
@@ -16,13 +15,12 @@ GraphicsDisplay::GraphicsDisplay(int cellSize) : cellSize{cellSize}
     boardWidth = 11 * cellSize;
     boardHeight = 18 * cellSize;
     scoreHeight = 3 * cellSize;
-    nextHeight = 4 * cellSize;
+    nextHeight = 5 * cellSize;
     padding = cellSize;
     totalWidth = (2 * boardWidth) + (3 * padding);
-    totalHeight = scoreHeight + boardHeight + nextHeight + (2 * padding);
+    totalHeight = scoreHeight + boardHeight + nextHeight + (3 * padding);
 
     xw = std::make_unique<Xwindow>(totalWidth, totalHeight);
-    // set font?
 
     // initialize area/text that is static
     drawScoreArea(1);
@@ -30,30 +28,32 @@ GraphicsDisplay::GraphicsDisplay(int cellSize) : cellSize{cellSize}
     drawNextBlockArea();
 }
 
-
-void GraphicsDisplay::drawScoreArea(int boardNumber){
+void GraphicsDisplay::drawScoreArea(int boardNumber)
+{
     int x = padding;
-    if (boardNumber == 2){
+    if (boardNumber == 2)
+    {
         x = totalWidth - padding - boardWidth;
     }
     xw->fillRectangle(x, padding, boardWidth, scoreHeight, Xwindow::White);
     drawOutline(x, padding, boardWidth, scoreHeight);
-    xw->drawString(x+padding, 2*padding, "Level: ", Xwindow::Black);
-    xw->drawString(x+padding, 3*padding, "Score: ", Xwindow::Black);
+    xw->drawString(x + padding, 2 * padding, "Level: ", Xwindow::Black);
+    xw->drawString(x + padding, 3 * padding, "Score: ", Xwindow::Black);
 }
 
 void GraphicsDisplay::drawNextBlockArea()
 {
-    drawOutline(padding, totalHeight - nextHeight - padding, boardWidth, nextHeight);
-    drawOutline(totalWidth - boardWidth - padding, totalHeight - nextHeight - padding, boardWidth, nextHeight);
-    xw->drawString((2 * padding), totalHeight - nextHeight, "Next: ", Xwindow::Black);
-    xw->drawString(totalWidth - boardWidth, totalHeight - nextHeight, "Next: ", Xwindow::Black);
+    drawOutline(padding, totalHeight - nextHeight - 2 * padding, boardWidth, nextHeight);
+    drawOutline(totalWidth - boardWidth - padding, totalHeight - nextHeight - 2 * padding, boardWidth, nextHeight);
+    xw->drawString((2 * padding), totalHeight - nextHeight - padding, "Next: ", Xwindow::Black);
+    xw->drawString(totalWidth - boardWidth, totalHeight - nextHeight - padding, "Next: ", Xwindow::Black);
 }
 
 void GraphicsDisplay::drawCell(Cell &cell)
 {
-    int x = cell.getPoint()->getX() * cellSize + padding;
-    int y = cell.getPoint()->getY() * cellSize + padding + scoreHeight;
+    Point adjusted = cell.getPoint() + cell.getBoard()->getOrigin();
+    int x = adjusted.getX() * cellSize + padding;
+    int y = adjusted.getY() * cellSize + padding;
     if (cell.getBoard()->getBoardNumber() == 2)
         x += boardWidth + padding;
     if (cell.getIsBlind())

@@ -1,11 +1,17 @@
+//////////////////////////////////////////////////////
+// remove printCellCoordinates and other debug output
+//////////////////////////////////////////////////////
+
 #include "block.h"
-#include "../board/board.h"
+#include "../board/mainboard.h"
+#include "../board/nextblockboard.h"
 
 // ctor
 Block::Block(int colour, int level)
 {
     this->colour = colour;
     this->level = level;
+    printCellCoordinates();
 }
 
 // this function returns true if it is possible to move in direction (x, y) and false otherwise
@@ -14,13 +20,9 @@ Block::Block(int colour, int level)
 // MAKE SURE I CHECK FOR BOUNDARIES AND SEG FAULTS ASAP
 bool Block::move(char direction)
 {
-    std::cout << "Block::move" << std::endl;
     // translation vector
     Point p{0, 0};
-    // std::cout << "BEFORE MOVE" << std::endl;
-    // for (a : this->points) {
-    //     std::cout << a.getX() << ", " << a.getY() << std::endl;
-    // }
+
     // check for collision with an intermediate block
     if (direction == 'D')
     {
@@ -59,14 +61,12 @@ bool Block::move(char direction)
                 return false;
             // check if piece is occupying
             Point q{a.getX(), a.getY() + 1};
-            if (this->board->isFilled(q)) // if one of these points are filled->false
+            if (this->mainBoard->isFilled(q)) // if one of these points are filled->false
                 return false;
         }
 
         // empty the current cells
-        std::cout << "Can move down. Current coordinates: " << std::endl;
         this->printCellCoordinates();
-        std::cout << "Clearing original cells..." << std::endl;
         this->drawBlock(Xwindow::White);
 
         p = {0, 1};
@@ -103,13 +103,11 @@ bool Block::move(char direction)
             if (a.getX() - 1 < 0)
                 return false;
             Point q{a.getX() - 1, a.getY()};
-            if (this->board->isFilled(q))
+            if (this->mainBoard->isFilled(q))
                 return false;
         }
 
-        std::cout << "Can move left. Current coordinates: " << std::endl;
         this->printCellCoordinates();
-        std::cout << "Clearing original cells..." << std::endl;
         this->drawBlock(Xwindow::White);
         p = {-1, 0};
     }
@@ -149,23 +147,18 @@ bool Block::move(char direction)
                 return false;
             Point q{a.getX() + 1, a.getY()};
             // if (this->board->isFilled(a.getX() + 1, a.getY()))
-            if (this->board->isFilled(q))
+            if (this->mainBoard->isFilled(q))
                 return false;
         }
 
-        std::cout << "Can move down. Current coordinates: " << std::endl;
         this->printCellCoordinates();
-        std::cout << "Clearing original cells..." << std::endl;
         this->drawBlock(Xwindow::White);
         p = {1, 0};
     }
-    std::cout << "P: {" << p.getX() << "," << p.getY() << "}" << std::endl;
-    std::cout << "moving current cells" << std::endl;
+
     for (auto &a : this->points)
     {
-        std::cout << "a before: {" << a.getX() << "," << a.getY() << "}" << std::endl;
         a += p;
-        std::cout << "a after: {" << a.getX() << "," << a.getY() << "}" << std::endl;
     }
     for (auto &a : this->minRec)
     {
@@ -175,9 +168,7 @@ bool Block::move(char direction)
         // }
     }
     this->topLeft += p;
-    std::cout << "Finished moving. Current coordinates: " << std::endl;
     this->printCellCoordinates();
-    std::cout << "Filling in new cells..." << std::endl;
     this->drawBlock(this->colour);
     return true;
 }
@@ -186,8 +177,6 @@ bool Block::move(char direction)
 //   if any of the new position cells are filled, then it's not a valid rotation
 bool Block::rotate(std::string direction)
 {
-    std::cout << "Block::rotate" << std::endl;
-    std::cout << "BEFORE ROTATE POINTS" << std::endl;
     this->printCellCoordinates();
 
     // convert the block's coordinates into a matrix of 1s and 0s
@@ -236,11 +225,6 @@ bool Block::rotate(std::string direction)
         }
     }
 
-    std::cout << "AFTER ROTATE POINTS" << std::endl;
-    // for (auto a : newPoints)
-    //     std::cout << "{" << a.getX() << "," << a.getY() << "} ";
-    // std::cout << std::endl;
-
     for (auto a : newPoints)
     {
         if (a.getX() < 0)
@@ -252,9 +236,10 @@ bool Block::rotate(std::string direction)
     }
 
     for (auto a : newPoints)
-    {   
-        if (std::find(this->points.begin(), this->points.end(), a) == this->points.end()) { // a is not in points
-            if (this->board->isFilled(a))
+    {
+        if (std::find(this->points.begin(), this->points.end(), a) == this->points.end())
+        { // a is not in points
+            if (this->mainBoard->isFilled(a))
                 return false;
         }
         // if (this->board->isFilled(a) && !std::find(this->points.begin(), this->points.end(), a))
@@ -273,7 +258,6 @@ bool Block::rotate(std::string direction)
 // it should be possible to drop at anytime..?? so change to void
 void Block::drop()
 {
-    std::cout << "Block::drop" << std::endl;
     while (true)
     {
         if (!this->move('D'))
@@ -316,7 +300,7 @@ bool Block::isPlaced()
         if (a.getY() + 1 > 17)
             return true;
         Point q{a.getX(), a.getY() + 1};
-        if (this->board->isFilled(q)) // if one of these points are filled->false
+        if (this->mainBoard->isFilled(q)) // if one of these points are filled->false
             return true;
     }
     return false;
@@ -324,7 +308,6 @@ bool Block::isPlaced()
 
 bool Block::clearPoint(int row)
 {
-    std::cout << "Block::clearPoint" << std::endl;
     for (unsigned int i = 0; i < this->points.size(); ++i)
     {
         if (this->points[i].getY() == row)
@@ -344,16 +327,40 @@ int Block::getLevel()
     return this->level;
 }
 
-void Block::setBoard(std::shared_ptr<Board> board)
+bool Block::setMainBoard(std::shared_ptr<MainBoard> mainBoard)
 {
-    this->board = board;
+    drawBlock(Xwindow::White);
+    this->mainBoard = mainBoard;
+    this->nextBlockBoard = nullptr;
+    if (isValid())
+    {
+        drawBlock(this->colour);
+        return true;
+    }
+    return false;
+}
+
+void Block::setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard)
+{
+    this->nextBlockBoard = nextBlockBoard;
     drawBlock(this->colour);
 }
 
 void Block::drawBlock(int colour)
 {
-    for (auto a : this->points)
-        this->board->fillCell(a, colour);
+    if (this->mainBoard)
+    {
+        for (auto a : this->points)
+            this->mainBoard->fillCell(a, colour);
+    }
+    else if (this->nextBlockBoard)
+    {
+        for (auto a : this->points)
+        {
+            Point b = a += {0, -2};
+            this->nextBlockBoard->fillCell(b, colour);
+        }
+    }
 }
 
 void Block::printCellCoordinates()
@@ -363,6 +370,19 @@ void Block::printCellCoordinates()
     std::cout << std::endl;
 }
 
-bool Block::isEmpty() {
+bool Block::isEmpty()
+{
     return this->points.empty();
+}
+
+bool Block::isValid()
+{
+    for (auto a : this->points)
+    {
+        if (mainBoard->isFilled(a))
+        {
+            return false;
+        }
+    }
+    return true;
 }

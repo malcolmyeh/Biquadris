@@ -2,14 +2,15 @@
 #include "../display/window.h"
 #include "../display/view.h"
 
-Cell::Cell(std::shared_ptr<Point> point, int colour, std::shared_ptr<Board> board)
-    : Subject{board}, point{point}, colour{colour}{}
+Cell::Cell(Point point, int colour, std::shared_ptr<Board> board)
+    : Subject{board}, colour{colour}, point{point} {}
+
 void Cell::setColour(int colour)
 {
     this->colour = colour;
 }
 
-std::shared_ptr<Point> Cell::getPoint()
+Point Cell::getPoint()
 {
     return point;
 }

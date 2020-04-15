@@ -1,19 +1,17 @@
-// #include "controller.h"
+#include "controller/controller.h"
 
-//
 #include <string>
 #include <sstream>
 #include <iostream>
-#include <ifstream>
-//
+#include <fstream>
+#include <memory>
 
 int main(int argc, char *argv[])
 {
     bool graphics = true;
-    std::string scriptFile1 = "sequence1.txt";
-    std::string scriptFile2 = "sequence2.txt";
-    int startLevel = 0;
-
+    std::vector<std::string> scriptFiles = {"sequences/sequence1.txt", "sequence/sequencefile2"};
+    int startLevel = 2;
+    std::cout << "BEFORE FLAG" << std::endl;
     // handling flags
     for (int i = 1; i < argc; ++i)
     {
@@ -36,24 +34,29 @@ int main(int argc, char *argv[])
         else if (flag == "-scriptfile1")
         {
             ++i;
-            ifstream infile{argv[i]};
-            if (infile) {
+            std::ifstream infile{argv[i]};
+            if (infile)
+            {
                 flag = argv[i];
-                scriptFile1 = argv[i];
-            } else {
-                std::cerr << "Scriptfile1 invalid. Verify input is correct." << std::endl;
-                return 1; 
+                scriptFiles[0] = argv[i];
             }
-            
+            else
+            {
+                std::cerr << "Scriptfile1 invalid. Verify input is correct." << std::endl;
+                return 1;
+            }
         }
         else if (flag == "-scriptfile2")
         {
             ++i;
-            ifstream infile{argv[i]};
-            if (infile) {
+            std::ifstream infile{argv[i]};
+            if (infile)
+            {
                 flag = argv[i];
-                scriptFile2 = argv[i];
-            } else {
+                scriptFiles[1] = argv[i];
+            }
+            else
+            {
                 std::cerr << "Scriptfile2 invalid. Verify input is correct." << std::endl;
                 return 1;
             }
@@ -71,15 +74,11 @@ int main(int argc, char *argv[])
             return 1;
         }
     }
-    std::cout << "p1 block source: " << scriptFile1 << std::endl
-              << "p2 block source: "
-              << scriptFile2 << std::endl
-              << "starting on level " << startLevel << std::endl;
+    std::cout << "BEFORE CONTROLLER" << std::endl;
 
-    // Controller c {graphics, scriptFile1, scriptFile2, startLevel, etc....};
-    // c.runGame();
+    std::shared_ptr<Controller> c = std::make_shared<Controller>(graphics, scriptFiles, startLevel);
 
-
+    c->runGame();
 
     return 0;
 }

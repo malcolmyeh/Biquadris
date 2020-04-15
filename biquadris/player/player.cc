@@ -8,37 +8,35 @@
 #include "../block/tblock.h"
 #include "../block/zblock.h"
 #include "../score/score.h"
-#include "../board/board.h"
+#include "../board/mainboard.h"
+#include "../board/nextblockboard.h"
 #include "../display/window.h"
 
-Player::Player(std::shared_ptr<Score> score, std::shared_ptr<Board> board)
-    : score{score}, board{board}, canSpecial{false}
+Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
+               std::shared_ptr<NextBlockBoard> nextBlockBoard)
+    : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard}, canSpecial{false},
+      isBlind{false}, isLost{false}
 {
 }
 
 void Player::setCurrentBlock(std::shared_ptr<Block> block)
 {
     currentBlock = block;
-    block->setBoard(board);
-    board->addBlock(block);
+    isLost = !currentBlock->setMainBoard(mainBoard);
+    mainBoard->addBlock(currentBlock);
 }
 
 void Player::setNextBlock(std::shared_ptr<Block> block)
 {
     nextBlock = block;
+    nextBlock->setNextBlockBoard(nextBlockBoard);
 }
 
 bool Player::moveBlock(char direction)
 {
-    if (!currentBlock){
-        std::cout << "NO BLOCK THIS SHOULDN'T HAPPEN" << std::endl;
-        return false;
-    }
-    std::cout << "Player::moveBlock" << std::endl;
     bool checkMove = currentBlock->move(direction);
     if (direction == 'D')
     {
-        std::cout << "direction is DOWN, checking row..." << std::endl;
         checkRow();
     }
     return checkMove;
@@ -46,15 +44,12 @@ bool Player::moveBlock(char direction)
 
 bool Player::rotateBlock(std::string direction)
 {
-    std::cout << "Player::roateBlock" << std::endl;
     return currentBlock->rotate(direction);
 }
 
 void Player::dropBlock()
 {
-    std::cout << "Player::moveBlock" << std::endl;
     currentBlock->drop();
-    std::cout << "Block is at lowest possible Y, checking row..." << std::endl;
     checkRow();
     if (isBlind)
         toggleBlind();
@@ -72,20 +67,19 @@ void Player::toggleCanSpecial()
 
 void Player::toggleBlind()
 {
-    board->toggleBlind();
+    mainBoard->toggleBlind();
     isBlind = !isBlind;
 }
 
 void Player::checkRow()
 {
-    std::cout << "Player::checkRow" << std::endl;
-    if (board->checkRow(score) > 2)
+    if (mainBoard->checkRow(score) > 2)
         canSpecial = true;
 }
 
 bool Player::currentPlaced()
 {
-    if (currentBlock->isPlaced() || currentBlock->isEmpty()) 
+    if (currentBlock->isPlaced() || currentBlock->isEmpty())
     {
         setCurrentBlock(nextBlock);
         return true;
@@ -93,13 +87,17 @@ bool Player::currentPlaced()
     return false;
 }
 
-
 void Player::setLevel(int level)
 {
     this->level = level;
 }
 
-std::shared_ptr<Board> Player::getBoard()
+std::shared_ptr<Board> Player::getMainBoard()
 {
-    return board;
+    return mainBoard;
+}
+
+bool Player::getIsLost()
+{
+    return isLost;
 }

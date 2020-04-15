@@ -1,6 +1,7 @@
 #include "display/graphicsdisplay.h"
 #include "display/textdisplay.h"
-#include "board/board.h"
+#include "board/mainboard.h"
+#include "board/nextblockboard.h"
 #include "player/playermanager.h"
 #include "score/score.h"
 #include "block/block.h"
@@ -15,6 +16,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <ncurses.h>
 
 int main(int argc, char *argv[])
 {
@@ -28,18 +30,20 @@ int main(int argc, char *argv[])
     std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
 
     // boards (+ cells)
-    std::shared_ptr<Board> b1 = std::make_shared<Board>();
-    std::shared_ptr<Board> b2 = std::make_shared<Board>();
+    std::shared_ptr<MainBoard> mb1 = std::make_shared<MainBoard>();
+    std::shared_ptr<MainBoard> mb2 = std::make_shared<MainBoard>();
+    std::shared_ptr<NextBlockBoard> nb1 = std::make_shared<NextBlockBoard>();
+    std::shared_ptr<NextBlockBoard> nb2 = std::make_shared<NextBlockBoard>();
 
     // score
-    std::shared_ptr<Score> s1 = std::make_shared<Score>(level, b1);
-    std::shared_ptr<Score> s2 = std::make_shared<Score>(level, b2);
+    std::shared_ptr<Score> s1 = std::make_shared<Score>(level, mb1);
+    std::shared_ptr<Score> s2 = std::make_shared<Score>(level, mb2);
 
     // playermanager (+ players)
     std::shared_ptr<PlayerManager> pm1 =
-        std::make_shared<PlayerManager>(s1, b1, std::make_shared<Level2>(levelFile));
+        std::make_shared<PlayerManager>(s1, mb1, std::make_shared<Level2>(levelFile), nb1);
     std::shared_ptr<PlayerManager> pm2 =
-        std::make_shared<PlayerManager>(s2, b2, std::make_shared<Level2>(levelFile));
+        std::make_shared<PlayerManager>(s2, mb2, std::make_shared<Level2>(levelFile), nb2);
 
     // link players to each other
     pm1->setOpponent(pm2->getPlayer());
@@ -51,20 +55,29 @@ int main(int argc, char *argv[])
     playerManagers.emplace_back(pm2);
 
     // link board, score, display
-    b1->init(1);
-    b2->init(2);
-    b1->setDisplay(td);
-    b1->setDisplay(gd);
-    b2->setDisplay(td);
-    b2->setDisplay(gd);
+    mb1->init(1);
+    mb2->init(2);
+    nb1->init(1);
+    nb2->init(2);
+    mb1->setDisplay(td);
+    mb1->setDisplay(gd);
+    mb2->setDisplay(td);
+    mb2->setDisplay(gd);
+    nb1->setDisplay(td);
+    nb1->setDisplay(gd);
+    nb2->setDisplay(td);
+    nb2->setDisplay(gd);
+
     s1->attach(td);
     s1->attach(gd);
     s2->attach(td);
     s2->attach(gd);
 
     // refresh board and score, updates display
-    b1->refresh();
-    b2->refresh();
+    mb1->refresh();
+    mb2->refresh();
+    nb1->refresh();
+    nb2->refresh();
     s1->drawDisplays();
     s2->drawDisplays();
 

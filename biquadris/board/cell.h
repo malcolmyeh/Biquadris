@@ -12,11 +12,13 @@ class Board;
 class Cell : public Subject
 {
     bool isBlind = false;
-    std::shared_ptr<Point> point;
+    // std::shared_ptr<Point> point;
     int colour;
+    Point point;
 
 public:
-    Cell(std::shared_ptr<Point> point, int colour, std::shared_ptr<Board> board);
+    // Cell(std::shared_ptr<Point> point, int colour, std::shared_ptr<Board> board);
+    Cell(Point point, int colour, std::shared_ptr<Board> board);
     ~Cell();
     void setColour(int colour);
     int getColour();
@@ -24,7 +26,8 @@ public:
     void toggleBlind();
     void drawDisplays() override;
     bool getIsBlind();
-    std::shared_ptr<Point> getPoint();
+    // std::shared_ptr<Point> getPoint();
+    Point getPoint();
 };
 
 #endif

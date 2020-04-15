@@ -7,7 +7,7 @@
 TextDisplay::TextDisplay()
 {
     // initialize character grid with spaces
-    for (int r = 0; r < 25; ++r)
+    for (int r = 0; r < 27; ++r)
     {
         std::vector<char> row;
         for (int r = 0; r < 28; ++r)
@@ -33,8 +33,9 @@ void TextDisplay::drawStatic(std::string str, int r)
 
 void TextDisplay::drawCell(Cell &cell)
 {
-    int c = cell.getPoint()->getX();
-    int r = cell.getPoint()->getY() + 3;
+    Point adjusted = cell.getPoint() + cell.getBoard()->getOrigin();
+    int c = adjusted.getX();
+    int r = adjusted.getY();
     if (cell.getBoard()->getBoardNumber() == 2)
     {
         c += 16;

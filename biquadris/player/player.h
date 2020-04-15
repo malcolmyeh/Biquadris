@@ -7,6 +7,10 @@ class Block;
 
 class Score;
 
+class MainBoard;
+
+class NextBlockBoard;
+
 class Board;
 
 class Player
@@ -14,14 +18,16 @@ class Player
     std::shared_ptr<Block> currentBlock;
     std::shared_ptr<Block> nextBlock;
     std::shared_ptr<Score> score;
-    std::shared_ptr<Board> board;
+    std::shared_ptr<MainBoard> mainBoard;
+    std::shared_ptr<NextBlockBoard> nextBlockBoard;
     bool canSpecial = false;
     int level;
     bool isBlind = false;
+    bool isLost = false;
 
 public:
-    Player(std::shared_ptr<Score> score, std::shared_ptr<Board> board);
-    
+    Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
+           std::shared_ptr<NextBlockBoard> nextBlockBoard);
     void setCurrentBlock(std::shared_ptr<Block> block);
     void setNextBlock(std::shared_ptr<Block> block);
     bool moveBlock(char direction);
@@ -33,6 +39,7 @@ public:
     void toggleBlind();
     bool currentPlaced();
     void setLevel(int level);
-    std::shared_ptr<Board> getBoard();
+    std::shared_ptr<Board> getMainBoard();
+    bool getIsLost();
 };
 #endif

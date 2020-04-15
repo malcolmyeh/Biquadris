@@ -6,6 +6,8 @@
 #include <vector>
 #include "../display/window.h"
 #include <utility>
+#include "../board/mainboard.h"
+#include "../board/nextblockboard.h"
 #include "../board/board.h"
 #include <algorithm>
 
@@ -18,8 +20,10 @@ protected:
     int recWidth;
     int recHeight;
     Point topLeft;
-    std::shared_ptr<Board> board;
+    std::shared_ptr<MainBoard> mainBoard = nullptr;
+    std::shared_ptr<NextBlockBoard> nextBlockBoard;
     int level;
+    
     // protected method for the loops at the end of each ctor
 public:
     Block(int colour, int level);
@@ -29,10 +33,12 @@ public:
     bool isPlaced();          //
     bool clearPoint(int row); // get rid of all y = row. return true if block is empty
     int getLevel();
-    void setBoard(std::shared_ptr<Board> board);
+    bool setMainBoard(std::shared_ptr<MainBoard> mainBoard);
+    void setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard);
     void drawBlock(int colour);
     bool isEmpty();
-
+    bool isValid(); // checks if any of the Points are already filled, to be called right after
+                    // creation before it gets drawn
     /// TESTING ///
     void printCellCoordinates();
     //////////////
