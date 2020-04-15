@@ -190,8 +190,8 @@ bool Block::rotate(std::string direction)
     std::cout << "BEFORE ROTATE POINTS" << std::endl;
     this->printCellCoordinates();
 
-    // convert the block's coordinates into a matrix of 1s and 0s
     std::vector<std::vector<int>> temp(this->recWidth, std::vector<int>(this->recHeight, 0));
+    // convert the block's coordinates into a matrix of 1s and 0s
     for (unsigned int i = 0; i < this->minRec.size(); ++i)
     {
         Point p{this->minRec[i].getX(), this->minRec[i].getY()};
@@ -208,66 +208,114 @@ bool Block::rotate(std::string direction)
         }
     }
 
-    // new vars
-    std::vector<std::vector<int>> tempCW(this->recHeight, std::vector<int>(this->recWidth, 0));
-    std::vector<Point> newPoints;
-    std::vector<Point> newMinRec;
+    if (direction == "CW") {
+        
+        // new vars
+        std::vector<std::vector<int>> tempCW(this->recHeight, std::vector<int>(this->recWidth, 0));
+        std::vector<Point> newPoints;
+        std::vector<Point> newMinRec;
 
-    // rotate 1 and 0 matrix
-    for (int i = 0; i < recWidth; ++i)
-    {
-        for (int j = 0; j < recHeight; ++j)
+        // rotate 1 and 0 matrix
+        for (int i = 0; i < recWidth; ++i)
         {
-            tempCW[j][i] = temp[i][recHeight - 1 - j];
-        }
-    }
-
-    Point newTopLeft{this->topLeft.getX(), this->topLeft.getY() + this->recHeight - this->recWidth};
-    for (int i = 0; i < recWidth; ++i)
-    {
-        for (int j = 0; j < recHeight; ++j)
-        {
-            Point p{newTopLeft.getX() + j, newTopLeft.getY() + i};
-            newMinRec.emplace_back(p);
-            if (tempCW[j][i] == 1)
+            for (int j = 0; j < recHeight; ++j)
             {
-                newPoints.emplace_back(p);
+                tempCW[j][i] = temp[i][recHeight - 1 - j];
             }
         }
-    }
 
-    std::cout << "AFTER ROTATE POINTS" << std::endl;
-    // for (auto a : newPoints)
-    //     std::cout << "{" << a.getX() << "," << a.getY() << "} ";
-    // std::cout << std::endl;
+        Point newTopLeft{this->topLeft.getX(), this->topLeft.getY() + this->recHeight - this->recWidth};
+        for (int i = 0; i < recWidth; ++i)
+        {
+            for (int j = 0; j < recHeight; ++j)
+            {
+                Point p{newTopLeft.getX() + j, newTopLeft.getY() + i};
+                newMinRec.emplace_back(p);
+                if (tempCW[j][i] == 1)
+                {
+                    newPoints.emplace_back(p);
+                }
+            }
+        }
 
-    for (auto a : newPoints)
-    {
-        if (a.getX() < 0)
-            return false;
-        if (a.getX() > 10)
-            return false;
-        if (a.getY() > 17)
-            return false;
-    }
+        std::cout << "AFTER ROTATE POINTS" << std::endl;
+        // for (auto a : newPoints)
+        //     std::cout << "{" << a.getX() << "," << a.getY() << "} ";
+        // std::cout << std::endl;
 
-    for (auto a : newPoints)
-    {   
-        if (std::find(this->points.begin(), this->points.end(), a) == this->points.end()) { // a is not in points
-            if (this->board->isFilled(a))
+        for (auto a : newPoints)
+        {
+            if (a.getX() < 0)
+                return false;
+            if (a.getX() > 10)
+                return false;
+            if (a.getY() > 17)
                 return false;
         }
-        // if (this->board->isFilled(a) && !std::find(this->points.begin(), this->points.end(), a))
-        //     return false;
+
+        for (auto a : newPoints)
+        {   
+            if (std::find(this->points.begin(), this->points.end(), a) == this->points.end()) { // a is not in points
+                if (this->board->isFilled(a))
+                    return false;
+            }
+            // if (this->board->isFilled(a) && !std::find(this->points.begin(), this->points.end(), a))
+            //     return false;
+        }
+        this->drawBlock(Xwindow::White);
+        this->points = newPoints;
+        this->printCellCoordinates();
+        this->minRec = newMinRec;
+        this->topLeft = newTopLeft;
+        std::swap(this->recWidth, this->recHeight);
+        this->drawBlock(this->colour);
+        return true;
+    } else if (direction == "CCW") {
+        std::vector<std::vector<int>> tempCCW(this->recHeight, std::vector<int>(this->recWidth, 0));
+        std::vector<Point> newPoints;
+        std::vector<Point> newMinRec;
+
+        for (int i = 0; i < recWidth; ++i) {
+            for (int j = 0; j < recHeight; ++j) {
+                tempCCW[j][i] = temp[recWidth - 1 - i][j];
+            }
+        }
+
+        Point newTopLeft{this->topLeft.getX(), this->topLeft.getY() + this->recHeight - this->recWidth};
+        for (int i = 0; i < recWidth; ++i) {
+            for (int j = 0; j < recHeight; ++j) {
+                Point p{newTopLeft.getX() + j, newTopLeft.getY() + i};
+                newMinRec.emplace_back(p);
+                if (tempCCW[j][i] == 1) {
+                    newPoints.emplace_back(p);
+                }
+            }
+        }
+
+        for (auto a : newPoints) {
+            if (a.getX() < 0)
+                return false;
+            if (a.getX() > 10)
+                return false;
+            if (a.getY() > 17)
+                return false;
+        }
+
+        for (auto a : newPoints) {
+            if (std::find(this->points.begin(), this->points.end(), a) == this->points.end()) {
+                if (this->board->isFilled(a))
+                    return false;
+            }
+        }
+        this->drawBlock(Xwindow::White);
+        this->points = newPoints;
+        this->printCellCoordinates();
+        this->minRec = newMinRec;
+        this->topLeft = newTopLeft;
+        std::swap(this->recWidth, this->recHeight);
+        this->drawBlock(this->colour);
+        return true;
     }
-    this->drawBlock(Xwindow::White);
-    this->points = newPoints;
-    this->printCellCoordinates();
-    this->minRec = newMinRec;
-    this->topLeft = newTopLeft;
-    std::swap(this->recWidth, this->recHeight);
-    this->drawBlock(this->colour);
-    return true;
 }
 
 // it should be possible to drop at anytime..?? so change to void
