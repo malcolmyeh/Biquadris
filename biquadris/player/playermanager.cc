@@ -17,11 +17,9 @@
 
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                              std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
-                             std::shared_ptr<Message> message)
+                             std::shared_ptr<Message> message) : level{level}, message{message}
 {
     this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard);
-    this->level = level;
-    this->message = message;
     player->setLevel(level->getLevelNumber());
 }
 

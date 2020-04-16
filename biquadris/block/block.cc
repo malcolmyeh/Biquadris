@@ -7,10 +7,8 @@
 #include "../board/nextblockboard.h"
 
 // ctor
-Block::Block(int colour, int level)
+Block::Block(int colour, int level) : colour{colour}, level{level}
 {
-    this->colour = colour;
-    this->level = level;
     printCellCoordinates();
 }
 
