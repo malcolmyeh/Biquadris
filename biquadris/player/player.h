@@ -15,6 +15,7 @@ class Board;
 
 class Player
 {
+protected:
     std::shared_ptr<Block> currentBlock;
     std::shared_ptr<Block> nextBlock;
     std::shared_ptr<Score> score;
@@ -30,7 +31,7 @@ public:
            std::shared_ptr<NextBlockBoard> nextBlockBoard);
     void setCurrentBlock(std::shared_ptr<Block> block);
     void setNextBlock(std::shared_ptr<Block> block);
-    bool moveBlock(char direction);
+    virtual bool moveBlock(char direction);
     bool rotateBlock(std::string direction);
     void dropBlock();
     bool getCanSpecial();

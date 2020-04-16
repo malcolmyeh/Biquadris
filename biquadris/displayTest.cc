@@ -16,7 +16,6 @@
 #include <string>
 #include <sstream>
 #include <iostream>
-#include <ncurses.h>
 
 int main(int argc, char *argv[])
 {
@@ -24,26 +23,27 @@ int main(int argc, char *argv[])
     // constants
     int level = 1;
     std::string levelFile = "";
-
     // displays
     std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
     std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
-
     // boards (+ cells)
     std::shared_ptr<MainBoard> mb1 = std::make_shared<MainBoard>();
     std::shared_ptr<MainBoard> mb2 = std::make_shared<MainBoard>();
     std::shared_ptr<NextBlockBoard> nb1 = std::make_shared<NextBlockBoard>();
     std::shared_ptr<NextBlockBoard> nb2 = std::make_shared<NextBlockBoard>();
-
     // score
     std::shared_ptr<Score> s1 = std::make_shared<Score>(level, mb1);
     std::shared_ptr<Score> s2 = std::make_shared<Score>(level, mb2);
 
+    // message
+    std::shared_ptr<Message> m1 = std::make_shared<Message>(mb1);
+    std::shared_ptr<Message> m2 = std::make_shared<Message>(mb2);
+
     // playermanager (+ players)
     std::shared_ptr<PlayerManager> pm1 =
-        std::make_shared<PlayerManager>(s1, mb1, std::make_shared<Level2>(levelFile), nb1);
+        std::make_shared<PlayerManager>(s1, mb1, std::make_shared<Level2>(levelFile), nb1, m1);
     std::shared_ptr<PlayerManager> pm2 =
-        std::make_shared<PlayerManager>(s2, mb2, std::make_shared<Level2>(levelFile), nb2);
+        std::make_shared<PlayerManager>(s2, mb2, std::make_shared<Level2>(levelFile), nb2, m2);
 
     // link players to each other
     pm1->setOpponent(pm2->getPlayer());
@@ -72,6 +72,13 @@ int main(int argc, char *argv[])
     s1->attach(gd);
     s2->attach(td);
     s2->attach(gd);
+
+    m1->attach(td);
+    m1->attach(gd);
+    m2->attach(td);
+    m2->attach(gd);
+    m1->playerWon();
+    m2->specialReady();
 
     // refresh board and score, updates display
     mb1->refresh();
@@ -145,11 +152,11 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "e")
         { // rotate clockwise
-            playerManagers[0]->rotateBlock("CC");
+            playerManagers[0]->rotateBlock("CW");
         }
         else if (cmd == "q")
         { // rotate counterclockwise
-            playerManagers[0]->rotateBlock("CW");
+            playerManagers[0]->rotateBlock("CCW");
         }
         // short cuts for p2
         else if (cmd == "j")

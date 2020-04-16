@@ -97,3 +97,16 @@ void GraphicsDisplay::drawScore(Score &score)
     xw->drawString(x, padding * 2, score.getLevel(), Xwindow::Black);
     xw->drawString(x, padding * 3, score.getScore(), Xwindow::Black);
 }
+
+void GraphicsDisplay::drawMessage(Message &message)
+{
+    int x = 2 * padding + boardWidth / 2;
+    int y = padding + scoreHeight + boardHeight + padding;
+    if (message.getBoard()->getBoardNumber() == 2)
+        x += boardWidth + padding;
+    for (unsigned int i = 0; i < message.getText().size(); ++i)
+        xw->drawString(x, y + i * cellSize, message.getText()[i], Xwindow::Black);
+}
+void GraphicsDisplay::clearMessage()
+{
+}

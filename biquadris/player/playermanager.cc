@@ -13,12 +13,15 @@
 #include "../block/sblock.h"
 #include "../block/tblock.h"
 #include "../block/zblock.h"
+#include "../message/message.h"
 
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
- std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard)
+                             std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
+                             std::shared_ptr<Message> message)
 {
     this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard);
     this->level = level;
+    this->message = message;
     player->setLevel(level->getLevelNumber());
 }
 
@@ -76,7 +79,17 @@ void PlayerManager::forceBlock(char blockType)
 
 bool PlayerManager::getCanSpecial()
 {
-    return player->getCanSpecial();
+    bool canSpecial = player->getCanSpecial();
+    if (canSpecial)
+        message->specialReady();
+    return canSpecial;
+}
+
+bool PlayerManager::getOpponentLost(){
+    bool opponentLost = opponent->getIsLost();
+    if (opponentLost)
+        message->playerWon();
+    return opponentLost;
 }
 
 bool PlayerManager::moveBlock(char direction)

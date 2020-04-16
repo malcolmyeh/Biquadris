@@ -9,11 +9,14 @@ class TextDisplay : public View
 {
     std::vector<std::vector<char>> charGrid;
     void drawStatic(std::string str, int y);
+    void draw();
 
 public:
     TextDisplay();
     void drawCell(Cell &cell) override;
     void drawScore(Score &score) override;
+    void drawMessage(Message &message) override;
+    void clearMessage() override;
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);
 };
 

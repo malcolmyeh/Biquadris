@@ -7,16 +7,15 @@
 TextDisplay::TextDisplay()
 {
     // initialize character grid with spaces
-    for (int r = 0; r < 27; ++r)
+    for (int r = 0; r < 30; ++r)
     {
         std::vector<char> row;
-        for (int r = 0; r < 28; ++r)
+        for (int c = 0; c < 28; ++c)
         {
             row.emplace_back(' ');
         }
         this->charGrid.emplace_back(row);
     }
-
     // setting static elements of the character grid
     drawStatic("Level: ", 0);
     drawStatic("Score: ", 1);
@@ -78,14 +77,7 @@ void TextDisplay::drawCell(Cell &cell)
     {
         charGrid[r][c] = ' ';
     }
-
-    std::cout << "\033[2J\033[1;1H";
-    for (auto r : this->charGrid)
-    {
-        for (auto c : r)
-            std::cout << c;
-        std::cout << std::endl;
-    }
+    draw();
 }
 
 void TextDisplay::drawScore(Score &score)
@@ -100,6 +92,36 @@ void TextDisplay::drawScore(Score &score)
         charGrid[0][c + i] = score.getLevel()[i];
     for (unsigned int i = 0; i < score.getScore().length(); ++i)
         charGrid[1][c + i] = score.getScore()[i];
+    draw();
+}
+
+void TextDisplay::drawMessage(Message &message)
+{
+    int c = 0;
+    int r = 26;
+    if (message.getBoard()->getBoardNumber() == 2)
+    {
+        c += 16;
+    }
+    for (unsigned int i = 0; i < message.getText().size(); ++i)
+    {
+        for (unsigned int j = 0; j < message.getText()[i].length(); ++j)
+            charGrid[r + i][c + j] = message.getText()[i][j];
+    }
+    draw();
+}
+
+void TextDisplay::clearMessage()
+{
+    for (int r = 26; r < 30; ++r){
+        for (int c = 0; c < 28; ++c)
+            charGrid[r][c] = ' ';
+    }
+    draw();
+}
+
+void TextDisplay::draw()
+{
     std::cout << "\033[2J\033[1;1H";
     for (auto r : this->charGrid)
     {
@@ -108,7 +130,6 @@ void TextDisplay::drawScore(Score &score)
         std::cout << std::endl;
     }
 }
-
 std::ostream &operator<<(std::ostream &out, const TextDisplay &td)
 {
     for (auto r : td.charGrid)
