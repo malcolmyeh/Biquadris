@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
+#include <locale>
 
 #include "../display/graphicsdisplay.h"
 #include "../display/textdisplay.h"
