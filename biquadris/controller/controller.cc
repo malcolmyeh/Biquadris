@@ -87,61 +87,81 @@ void Controller::changeTurn()
         currentPlayer = playerManagers.front();
 }
 
-void Controller::runGame()
-{
-    while (true)
-    {
-        std::string cmd;
-        char moveDirection;
-        std::string rotateDirection;
+// returns true if the command starts with input, ie. prefix
+//   use of mismatch was found from:
+//   https://stackoverflow.com/questions/7913835/check-if-one-string-is-a-prefix-of-another
+bool startsWith(std::string input, std::string command) {
+    return (input.length() <= command.length()) && 
+           (std::mismatch(input.begin(), input.end(), command.begin()).first == input.end())
+}
 
-        std::cin >> cmd;
-        if (cmd == "move")
-        {
-            std::cin >> moveDirection;
-            currentPlayer->moveBlock(moveDirection);
+void Controller::runGame()
+{   
+    // we can build a map later to support macros and remapping
+    std::vector<std::string> commands = {"left", "down", "right", "clockwise", 
+                                         "counterclockwise", "drop", "levelup", 
+                                         "leveldown", "norandom", "random", 
+                                         "sequence", "restart", "remap"};
+    std::unordered_map<std::string, void (*)(int)> commands = {"left": };
+    std::string matchedCommand = "";
+    
+    while (true)
+    {   
+        // getOpponentLost
+        std::string input;
+        std::cin >> input;
+        int multiplier = 1;
+        if (isDigit(input[0])) { // grab multiplier. if none, default is 1
+            multiplier = std::atoi(input); 
         }
-        else if (cmd == "rotate")
-        {
-            std::cin >> rotateDirection;
-            currentPlayer->rotateBlock(rotateDirection);
+
+        for (command : commands) { // match command
+            if (startsWith(input, command) && matchedCommand != "")
+                // ambiguous, can't match - what will we do here? error flag to redo loop?
+                std::cerr << "Unable to find command." << std::endl;
+
+            if (startsWith(input, command))
+                matchedCommand = command;
         }
-        else if (cmd == "drop")
-        {
-            currentPlayer->dropBlock();
-        }
-        // short cuts
-        else if (cmd == "a")
-        { // move left
-            currentPlayer->moveBlock('L');
-        }
-        else if (cmd == "s")
-        { // move down
-            currentPlayer->moveBlock('D');
-        }
-        else if (cmd == "d")
-        { // move right
-            currentPlayer->moveBlock('R');
-        }
-        else if (cmd == "w")
-        { // drop
-            currentPlayer->dropBlock();
-        }
-        else if (cmd == "e")
-        { // rotate clockwise
-            currentPlayer->rotateBlock("CC");
-        }
-        else if (cmd == "q")
-        { // rotate counterclockwise
-            currentPlayer->rotateBlock("CW");
-        }
-        else if (cmd == "quit")
-        {
-            break;
-        }
-        changeTurn();
+
+        // change something in command array to remap. the if statement maps to a function. we may have to move the matching
+        //   to a function for easier remapping
+        if (matchedCommand == commands[0]) { // move left
+            for (int i = 0; i < multiplier; ++i) currentPlayer->moveBlock('L');
+        } else if (matchedCommand == commands[1]) { // move down
+            for (int i = 0; i < multiplier; ++i) currentPlayer->moveBlock('D');
+        } else if (matchedCommand == commands[2]) { // move right
+            for (int i = 0; i < multiplier; ++i) currentPlayer->moveBlock('R');
+        } else if (matchedCommand == commands[3]) { // rotate clockwise
+            for (int i = 0; i < multiplier; ++i) currentPlayer->rotateBlock("CW");
+        } else if (matchedCommand == commands[4]) { // rotate counterclockwise
+            for (int i = 0; i < multiplier; ++i) currentPlayer->rotateBlock("CCW");
+        } else if (matchedCommand == commands[5]) { // drop piece 
+            for (int i = 0; i < multiplier; ++i) currentPlayer->dropBlock();
+        } else if (matchedCommand == commands[6]) { // level up 
+
+        } else if (matchedCommand == commands[7]) { // level down
+
+        } else if (matchedCommand == commands[8]) { // no random
+
+        } else if (matchedCommand == commands[9]) { // random 
+
+        } else if (matchedCommand == commands[10]) { // sequence
+
+        } else if (matchedCommand == commands[11]) { // restart 
+
+        } else if (matchedCommand == commands[12]) { // remapping 
+            std::string newCommand;
+            std::cin >> newCommand;
+            // here, we should probably match commands again and find the index of the commands array we want to remap
+            //   and change it to that in the commands array.
+        } // no need for else. it is verified in the matching phase. 
+
+        // remember to reset multipliers and matchedCommand at the end of loop
     }
 }
+
+
 
 std::shared_ptr<Level> Controller::createLevel(int levelNumber, std::string file)
 {
