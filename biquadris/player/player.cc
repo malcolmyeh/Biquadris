@@ -17,8 +17,20 @@ Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoar
                std::shared_ptr<HoldBlockBoard> holdBlockBoard)
     : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard},
       holdBlockBoard{holdBlockBoard}, canSpecial{false},
-      isBlind{false}, isLost{false}
+      isBlind{false}, isLost{false}, isDecorated{false}
 {
+}
+
+Player::Player(std::shared_ptr<Player> other)
+{
+    score = other->score;
+    mainBoard = other->mainBoard;
+    nextBlockBoard = other->nextBlockBoard;
+    holdBlockBoard = other->holdBlockBoard;
+    canSpecial = other->canSpecial;
+    isBlind = other->isBlind;
+    isLost = other->isLost;
+    isDecorated = other->isDecorated;
 }
 
 void Player::setCurrentBlock(std::shared_ptr<Block> block)
@@ -68,8 +80,9 @@ void Player::setHoldBlock()
 {
     currentBlock->setHoldBlockBoard(holdBlockBoard);
     if (hasHoldBlock())
-        this->currentBlock.swap(this->holdBlock);     
-    else{
+        this->currentBlock.swap(this->holdBlock);
+    else
+    {
         this->holdBlock = this->currentBlock;
         setCurrentBlock(nextBlock);
     }
@@ -120,4 +133,14 @@ std::shared_ptr<Board> Player::getMainBoard()
 bool Player::getIsLost()
 {
     return isLost;
+}
+
+bool Player::getIsDecorated()
+{
+    return isDecorated;
+}
+
+std::shared_ptr<Player> Player::getPlayer()
+{
+    return std::make_shared<Player>(this);
 }

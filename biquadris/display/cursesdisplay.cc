@@ -34,7 +34,7 @@ void CursesDisplay::initNextBlockWindows()
 }
 
 void CursesDisplay::initBoardWindows()
-{
+{ 
 	boardWindows.emplace_back(newwin(18, 11, 3, 0));
 	boardWindows.emplace_back(newwin(18, 11, 3, 16));
 }

@@ -9,8 +9,9 @@ protected:
     std::shared_ptr<Player> player;
 
 public:
-    Heavy(std::shared_ptr<Player> player);
+    Heavy(std::shared_ptr<Player> player, bool isDecorated = false);
     bool moveBlock(char direction) override;
+    std::shared_ptr<Player> getPlayer() override;
 };
 
 #endif

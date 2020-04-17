@@ -1,6 +1,8 @@
 #include "heavy.h"
 
-Heavy::Heavy(std::shared_ptr<Player> player) : player{player} {}
+Heavy::Heavy(std::shared_ptr<Player> player, bool isDecorated) : player{player} {
+    this->isDecorated = isDecorated;
+}
 
 bool Heavy::moveBlock(char direction)
 {
@@ -10,4 +12,8 @@ bool Heavy::moveBlock(char direction)
         player->moveBlock('D');
         player->moveBlock('D');
     }
+}
+
+std::shared_ptr<Player> Heavy::getPlayer(){
+    return this->player;
 }

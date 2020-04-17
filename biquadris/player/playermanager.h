@@ -6,8 +6,6 @@
 class Player;
 class Level;
 class Score;
-
-class Board;
 class MainBoard;
 class NextBlockBoard;
 class HoldBlockBoard;
@@ -32,6 +30,7 @@ public:
     void initBlocks();
     void forceBlock(char blockType);
     void blind();
+    void makeHeavy();
     void setNextBlock();
     bool moveBlock(char direction);
     bool rotateBlock(std::string direction);

@@ -14,6 +14,7 @@
 #include "../block/tblock.h"
 #include "../block/zblock.h"
 #include "../message/message.h"
+#include "heavy.h"
 
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                              std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
@@ -44,6 +45,8 @@ void PlayerManager::setLevel(std::shared_ptr<Level> level)
 {
     this->level = level;
     player->setLevel(level->getLevelNumber());
+    if (level->getLevelNumber >= 3)
+        player = std::make_shared<Heavy>(player);
 }
 
 void PlayerManager::forceBlock(char blockType)
@@ -76,6 +79,11 @@ void PlayerManager::forceBlock(char blockType)
     opponent->setCurrentBlock(block);
 }
 
+void PlayerManager::makeHeavy()
+{
+    opponent = std::make_shared<Heavy>(opponent, true);
+}
+
 bool PlayerManager::getCanSpecial()
 {
     bool canSpecial = player->getCanSpecial();
@@ -98,6 +106,8 @@ bool PlayerManager::moveBlock(char direction)
     if (player->currentPlaced() && !player->getIsLost())
     {
         setNextBlock();
+        if (player->getIsDecorated())
+            player = player->getPlayer();
     }
 
     return checkMove;
@@ -114,6 +124,8 @@ void PlayerManager::dropBlock()
     if (player->currentPlaced() && !player->getIsLost())
     {
         setNextBlock();
+        if (player->getIsDecorated())
+            player = player->getPlayer();
     }
 }
 
@@ -121,7 +133,8 @@ void PlayerManager::holdBlock()
 {
     if (player->hasHoldBlock)
         player->setHoldBlock();
-    else {
+    else
+    {
         player->setHoldBlock();
         setNextBlock();
     }

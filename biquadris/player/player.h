@@ -4,15 +4,10 @@
 #include <memory>
 
 class Block;
-
 class Score;
-
 class MainBoard;
-
 class NextBlockBoard;
-
 class HoldBlockBoard;
-
 class Board;
 
 class Player
@@ -29,25 +24,37 @@ protected:
     int level;
     bool isBlind = false;
     bool isLost = false;
+    bool isDecorated = false; // is decorated by opponent
 
 public:
     Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
            std::shared_ptr<NextBlockBoard> nextBlockBoard,
            std::shared_ptr<HoldBlockBoard> holdBlockBoard);
+    Player(std::shared_ptr<Player> player);
+
+    // Setters
     void setCurrentBlock(std::shared_ptr<Block> block);
     void setNextBlock(std::shared_ptr<Block> block);
-    bool moveBlock(char direction);
-    bool rotateBlock(std::string direction);
-    void dropBlock();
+    void setLevel(int level);
     void setHoldBlock();
+    void toggleCanSpecial();
+    void toggleBlind();
+
+    // Getters
     bool hasHoldBlock();
     bool getCanSpecial();
-    void toggleCanSpecial();
-    void checkRow();
-    void toggleBlind();
-    bool currentPlaced();
-    void setLevel(int level);
     std::shared_ptr<Board> getMainBoard();
     bool getIsLost();
+    bool getIsDecorated();
+
+    // Block functions
+    virtual bool moveBlock(char direction);
+    bool rotateBlock(std::string direction);
+    void dropBlock();
+    void checkRow();
+    bool currentPlaced();
+
+    // Undecorate function if Player is Decorator
+    virtual std::shared_ptr<Player> getPlayer();
 };
 #endif
