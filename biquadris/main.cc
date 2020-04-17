@@ -6,79 +6,76 @@
 #include <fstream>
 #include <memory>
 
-int main(int argc, char *argv[])
+
+// Command-line Interface
+bool parseCommandLineArgs(const int argc, char *argv[], bool &graphics, bool &bonus, std::vector<std::string> &scriptFiles, int &startLevel)
 {
-    bool graphics = true;
-    std::vector<std::string> scriptFiles = {"sequences/sequence1.txt", "sequence/sequencefile2"};
-    int startLevel = 2;
-    std::cout << "BEFORE FLAG" << std::endl;
-    // handling flags
     for (int i = 1; i < argc; ++i)
     {
         std::string flag = argv[i];
-        if (flag == "-text")
+        try
         {
-            graphics = false;
-            std::cout << "text only" << std::endl;
-        }
-        else if (flag == "-seed")
-        {
-            ++i;
-            int seed;
-            flag = argv[i];
-            std::istringstream iss{argv[i]};
-            iss >> seed;
-            srand(seed);
-            std::cout << "seeding with " << seed << std::endl;
-        }
-        else if (flag == "-scriptfile1")
-        {
-            ++i;
-            std::ifstream infile{argv[i]};
-            if (infile)
+            if (flag == "-text")
+                graphics = false;
+            else if (flag == "-seed")
             {
-                flag = argv[i];
-                scriptFiles[0] = argv[i];
+                if (i + 1 < argc)
+                    srand(std::stoi(argv[i + 1]));
+                else
+                    throw "Invalid seed. ";
+            }
+            else if (flag == "-scriptfile1")
+            {
+                if (i + 1 < argc)
+                    scriptFiles[0] = argv[i + 1];
+                else
+                    throw "Invalid scriptfile1. ";
+            }
+            else if (flag == "-scriptfile2")
+            {
+                if (i + 1 < argc)
+                    scriptFiles[1] = argv[i + 1];
+                else
+                    throw "Invalid scriptfile2. ";
+            }
+            else if (flag == "-startlevel")
+            {
+                if (i + 1 < argc)
+                    startLevel = std::stoi(argv[i + 1]);
+                else
+                    throw "Invalid startlevel. ";
             }
             else
-            {
-                std::cerr << "Scriptfile1 invalid. Verify input is correct." << std::endl;
-                return 1;
-            }
+                throw "Invalid flag. Verify input is correct.";
         }
-        else if (flag == "-scriptfile2")
+        catch (std::string error)
         {
-            ++i;
-            std::ifstream infile{argv[i]};
-            if (infile)
-            {
-                flag = argv[i];
-                scriptFiles[1] = argv[i];
-            }
-            else
-            {
-                std::cerr << "Scriptfile2 invalid. Verify input is correct." << std::endl;
-                return 1;
-            }
+            std::cerr << error << std::endl;
+            return false;
         }
-        else if (flag == "-startlevel")
+    }
+    return true;
+}
+
+int main(int argc, char *argv[])
+{
+    bool graphics = true, bonus = false;
+    std::vector<std::string> scriptFiles{"sequence1.txt", "sequence2.txt"};
+    int startLevel = 2;
+
+    bool valid = parseCommandLineArgs(argc, argv, graphics, bonus, scriptFiles, startLevel);
+
+    if (valid)
+    {
+        if (bonus)
         {
-            ++i;
-            flag = argv[i];
-            std::istringstream iss{argv[i]};
-            iss >> startLevel;
+            // ncurses controller
         }
         else
         {
-            std::cerr << "Invalid flag. Verify input is correct." << std::endl;
-            return 1;
+            std::shared_ptr<Controller> c = std::make_shared<Controller>(graphics, scriptFiles, startLevel);
+            c->runGame();
         }
     }
-    std::cout << "BEFORE CONTROLLER" << std::endl;
-
-    std::shared_ptr<Controller> c = std::make_shared<Controller>(graphics, scriptFiles, startLevel);
-
-    c->runGame();
-
     return 0;
 }
