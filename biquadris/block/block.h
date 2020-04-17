@@ -8,7 +8,7 @@
 #include <utility>
 #include "../board/mainboard.h"
 #include "../board/nextblockboard.h"
-#include "../board/board.h"
+#include "../board/holdblockboard.h"
 #include <algorithm>
 
 class Block
@@ -22,6 +22,7 @@ protected:
     Point topLeft;
     std::shared_ptr<MainBoard> mainBoard = nullptr;
     std::shared_ptr<NextBlockBoard> nextBlockBoard;
+    std::shared_ptr<HoldBlockBoard> holdBlockBoard;
     int level;
     
     // protected method for the loops at the end of each ctor
@@ -35,6 +36,7 @@ public:
     int getLevel();
     bool setMainBoard(std::shared_ptr<MainBoard> mainBoard);
     void setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard);
+    void setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard);
     void drawBlock(int colour);
     bool isEmpty();
     bool isValid(); // checks if any of the Points are already filled, to be called right after

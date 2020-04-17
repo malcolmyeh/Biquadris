@@ -17,9 +17,10 @@
 
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                              std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
+                             std::shared_ptr<HoldBlockBoard> holdBlockBoard,
                              std::shared_ptr<Message> message) : level{level}, message{message}
 {
-    this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard);
+    this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard, holdBlockBoard);
     player->setLevel(level->getLevelNumber());
 }
 
@@ -83,7 +84,8 @@ bool PlayerManager::getCanSpecial()
     return canSpecial;
 }
 
-bool PlayerManager::getOpponentLost(){
+bool PlayerManager::getOpponentLost()
+{
     bool opponentLost = opponent->getIsLost();
     if (opponentLost)
         message->playerWon();
@@ -115,6 +117,15 @@ void PlayerManager::dropBlock()
     }
 }
 
+void PlayerManager::holdBlock()
+{
+    if (player->hasHoldBlock)
+        player->setHoldBlock();
+    else {
+        player->setHoldBlock();
+        setNextBlock();
+    }
+}
 std::shared_ptr<Player> PlayerManager::getPlayer()
 {
     return player;

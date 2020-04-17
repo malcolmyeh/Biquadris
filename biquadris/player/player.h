@@ -11,6 +11,8 @@ class MainBoard;
 
 class NextBlockBoard;
 
+class HoldBlockBoard;
+
 class Board;
 
 class Player
@@ -18,9 +20,11 @@ class Player
 protected:
     std::shared_ptr<Block> currentBlock;
     std::shared_ptr<Block> nextBlock;
+    std::shared_ptr<Block> holdBlock;
     std::shared_ptr<Score> score;
     std::shared_ptr<MainBoard> mainBoard;
     std::shared_ptr<NextBlockBoard> nextBlockBoard;
+    std::shared_ptr<HoldBlockBoard> holdBlockBoard;
     bool canSpecial = false;
     int level;
     bool isBlind = false;
@@ -28,12 +32,15 @@ protected:
 
 public:
     Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
-           std::shared_ptr<NextBlockBoard> nextBlockBoard);
+           std::shared_ptr<NextBlockBoard> nextBlockBoard,
+           std::shared_ptr<HoldBlockBoard> holdBlockBoard);
     void setCurrentBlock(std::shared_ptr<Block> block);
     void setNextBlock(std::shared_ptr<Block> block);
-    virtual bool moveBlock(char direction);
+    bool moveBlock(char direction);
     bool rotateBlock(std::string direction);
     void dropBlock();
+    void setHoldBlock();
+    bool hasHoldBlock();
     bool getCanSpecial();
     void toggleCanSpecial();
     void checkRow();

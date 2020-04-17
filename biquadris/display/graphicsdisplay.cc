@@ -101,11 +101,11 @@ void GraphicsDisplay::drawScore(Score &score)
 void GraphicsDisplay::drawMessage(Message &message)
 {
     int x = 2 * padding + boardWidth / 2;
-    int y = padding + scoreHeight + boardHeight + padding;
+    int y = 2 * padding;
     if (message.getBoard()->getBoardNumber() == 2)
         x += boardWidth + padding;
     for (unsigned int i = 0; i < message.getText().size(); ++i)
-        xw->drawString(x, y + i * cellSize, message.getText()[i], Xwindow::Black);
+        xw->drawString(x, y + i * cellSize / 2, message.getText()[i], Xwindow::Black);
 }
 void GraphicsDisplay::clearMessage()
 {

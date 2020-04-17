@@ -380,8 +380,12 @@ int Block::getLevel()
 bool Block::setMainBoard(std::shared_ptr<MainBoard> mainBoard)
 {
     drawBlock(Xwindow::White);
-    this->mainBoard = mainBoard;
-    this->nextBlockBoard = nullptr;
+    if (!this->mainBoard)
+        this->mainBoard = mainBoard;
+    if (this->nextBlockBoard)
+        this->nextBlockBoard = nullptr;
+    if (this->holdBlockBoard)
+        this->holdBlockBoard = nullptr;
     if (isValid())
     {
         drawBlock(this->colour);
@@ -393,6 +397,11 @@ bool Block::setMainBoard(std::shared_ptr<MainBoard> mainBoard)
 void Block::setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard)
 {
     this->nextBlockBoard = nextBlockBoard;
+    drawBlock(this->colour);
+}
+
+void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard){
+    this->holdBlockBoard = holdBlockBoard;
     drawBlock(this->colour);
 }
 

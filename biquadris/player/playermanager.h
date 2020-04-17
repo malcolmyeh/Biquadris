@@ -10,6 +10,7 @@ class Score;
 class Board;
 class MainBoard;
 class NextBlockBoard;
+class HoldBlockBoard;
 class Message;
 
 class PlayerManager
@@ -24,6 +25,7 @@ class PlayerManager
 public:
     PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                   std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
+                  std::shared_ptr<HoldBlockBoard> holdBlockBoard,
                   std::shared_ptr<Message> message);
     void setOpponent(std::shared_ptr<Player> opponent);
     bool getOpponentLost();
@@ -34,6 +36,7 @@ public:
     bool moveBlock(char direction);
     bool rotateBlock(std::string direction);
     void dropBlock();
+    void holdBlock();
     void setLevel(std::shared_ptr<Level> level);
     std::shared_ptr<Player> getPlayer();
 };

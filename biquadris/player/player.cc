@@ -13,8 +13,10 @@
 #include "../display/window.h"
 
 Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
-               std::shared_ptr<NextBlockBoard> nextBlockBoard)
-    : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard}, canSpecial{false},
+               std::shared_ptr<NextBlockBoard> nextBlockBoard,
+               std::shared_ptr<HoldBlockBoard> holdBlockBoard)
+    : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard},
+      holdBlockBoard{holdBlockBoard}, canSpecial{false},
       isBlind{false}, isLost{false}
 {
 }
@@ -53,6 +55,24 @@ void Player::dropBlock()
     checkRow();
     if (isBlind)
         toggleBlind();
+}
+
+bool Player::hasHoldBlock()
+{
+    if (this->holdBlock)
+        return true;
+    return false;
+}
+
+void Player::setHoldBlock()
+{
+    currentBlock->setHoldBlockBoard(holdBlockBoard);
+    if (hasHoldBlock())
+        this->currentBlock.swap(this->holdBlock);     
+    else{
+        this->holdBlock = this->currentBlock;
+        setCurrentBlock(nextBlock);
+    }
 }
 
 bool Player::getCanSpecial()
