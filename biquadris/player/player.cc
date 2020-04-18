@@ -21,7 +21,7 @@ Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoar
 {
 }
 
-Player::Player(std::shared_ptr<Player> other)
+Player::Player(Player * other)
 {
     score = other->score;
     mainBoard = other->mainBoard;
@@ -32,6 +32,8 @@ Player::Player(std::shared_ptr<Player> other)
     isLost = other->isLost;
     isDecorated = other->isDecorated;
 }
+
+Player::Player(){}
 
 void Player::setCurrentBlock(std::shared_ptr<Block> block)
 {

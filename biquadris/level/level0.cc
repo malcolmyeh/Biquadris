@@ -1,8 +1,9 @@
 #include "level0.h"
 
 Level0::Level0(std::string file) : Level{0, file} {}
-
-Level0::~Level0(){}
+Level0::Level0(std::vector<char> sequence, unsigned int sequencePosition)
+: Level{0, sequence, sequencePosition}{}
+Level0::~Level0() {}
 
 std::shared_ptr<Block> Level0::createBlock()
 {

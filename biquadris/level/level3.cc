@@ -1,8 +1,10 @@
 #include "level3.h"
 
 Level3::Level3(std::string file) : Level{3, file} {}
+Level3::Level3(std::vector<char> sequence, unsigned int sequencePosition)
+ : Level{3, sequence, sequencePosition} {}
 
-Level3::~Level3(){}
+Level3::~Level3() {}
 
 void Level3::setRandom(bool random)
 {

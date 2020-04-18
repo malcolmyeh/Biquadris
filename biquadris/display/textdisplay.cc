@@ -21,7 +21,7 @@ TextDisplay::TextDisplay()
     drawStatic("Score: ", 1);
     drawStatic("-----------", 2);
     drawStatic("-----------", 21);
-    drawStatic("Next: ", 22);
+    drawStatic("Next: Hold:", 22);
 }
 
 void TextDisplay::drawStatic(std::string str, int r)

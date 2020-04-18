@@ -2,6 +2,7 @@
 #include "display/textdisplay.h"
 #include "board/mainboard.h"
 #include "board/nextblockboard.h"
+#include "board/holdblockboard.h"
 #include "player/playermanager.h"
 #include "score/score.h"
 #include "block/block.h"
@@ -31,6 +32,9 @@ int main(int argc, char *argv[])
     std::shared_ptr<MainBoard> mb2 = std::make_shared<MainBoard>();
     std::shared_ptr<NextBlockBoard> nb1 = std::make_shared<NextBlockBoard>();
     std::shared_ptr<NextBlockBoard> nb2 = std::make_shared<NextBlockBoard>();
+    std::shared_ptr<HoldBlockBoard> hb1 = std::make_shared<HoldBlockBoard>();
+    std::shared_ptr<HoldBlockBoard> hb2 = std::make_shared<HoldBlockBoard>();
+    
     // score
     std::shared_ptr<Score> s1 = std::make_shared<Score>(level, mb1);
     std::shared_ptr<Score> s2 = std::make_shared<Score>(level, mb2);
@@ -41,9 +45,9 @@ int main(int argc, char *argv[])
 
     // playermanager (+ players)
     std::shared_ptr<PlayerManager> pm1 =
-        std::make_shared<PlayerManager>(s1, mb1, std::make_shared<Level2>(levelFile), nb1, m1);
+        std::make_shared<PlayerManager>(s1, mb1, std::make_shared<Level2>(levelFile), nb1, hb1, m1);
     std::shared_ptr<PlayerManager> pm2 =
-        std::make_shared<PlayerManager>(s2, mb2, std::make_shared<Level2>(levelFile), nb2, m2);
+        std::make_shared<PlayerManager>(s2, mb2, std::make_shared<Level2>(levelFile), nb2, hb2, m2);
 
     // link players to each other
     pm1->setOpponent(pm2->getPlayer());
@@ -59,6 +63,8 @@ int main(int argc, char *argv[])
     mb2->init(2);
     nb1->init(1);
     nb2->init(2);
+    hb1->init(1);
+    hb2->init(2)
     mb1->setDisplay(td);
     mb1->setDisplay(gd);
     mb2->setDisplay(td);
@@ -67,6 +73,10 @@ int main(int argc, char *argv[])
     nb1->setDisplay(gd);
     nb2->setDisplay(td);
     nb2->setDisplay(gd);
+    hb1->setDisplay(td);
+    hb1->setDisplay(gd);
+    hb2->setDisplay(td);
+    hb2->setDisplay(gd);
 
     s1->attach(td);
     s1->attach(gd);
@@ -85,6 +95,8 @@ int main(int argc, char *argv[])
     mb2->refresh();
     nb1->refresh();
     nb2->refresh();
+    hb1->refresh();
+    hb2->refresh();
     s1->drawDisplays();
     s2->drawDisplays();
 

@@ -45,7 +45,7 @@ void PlayerManager::setLevel(std::shared_ptr<Level> level)
 {
     this->level = level;
     player->setLevel(level->getLevelNumber());
-    if (level->getLevelNumber >= 3)
+    if (level->getLevelNumber() >= 3)
         player = std::make_shared<Heavy>(player);
 }
 
@@ -131,7 +131,7 @@ void PlayerManager::dropBlock()
 
 void PlayerManager::holdBlock()
 {
-    if (player->hasHoldBlock)
+    if (player->hasHoldBlock())
         player->setHoldBlock();
     else
     {

@@ -47,6 +47,8 @@ void GraphicsDisplay::drawNextBlockArea()
     drawOutline(totalWidth - boardWidth - padding, totalHeight - nextHeight - 2 * padding, boardWidth, nextHeight);
     xw->drawString((2 * padding), totalHeight - nextHeight - padding, "Next: ", Xwindow::Black);
     xw->drawString(totalWidth - boardWidth, totalHeight - nextHeight - padding, "Next: ", Xwindow::Black);
+    xw->drawString(2 * padding + boardWidth / 2, totalHeight - nextHeight - padding, "Hold: ", Xwindow::Black);
+    xw->drawString(totalWidth - boardWidth / 2, totalHeight - nextHeight - padding, "Hold: ", Xwindow::Black);
 }
 
 void GraphicsDisplay::drawCell(Cell &cell)

@@ -27,6 +27,7 @@ protected:
 
 public:
     Level(int levelNumber, std::string file);
+    Level(int levelNumber, std::vector<char> sequence, unsigned int sequencePosition);
     virtual ~Level();
     virtual std::shared_ptr<Block> createBlock() = 0;
     int getLevelNumber();

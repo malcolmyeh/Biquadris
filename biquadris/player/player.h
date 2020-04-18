@@ -30,7 +30,8 @@ public:
     Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
            std::shared_ptr<NextBlockBoard> nextBlockBoard,
            std::shared_ptr<HoldBlockBoard> holdBlockBoard);
-    Player(std::shared_ptr<Player> player);
+    Player(Player * other);
+    Player();
 
     // Setters
     void setCurrentBlock(std::shared_ptr<Block> block);

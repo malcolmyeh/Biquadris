@@ -8,6 +8,7 @@ class Level3 : public Level
 
 public:
     Level3(std::string file);
+    Level3(std::vector<char> sequence, unsigned int sequencePosition);
     ~Level3();
     void setRandom(bool random);
     std::shared_ptr<Block> createBlock() override;
