@@ -36,6 +36,7 @@ public:
     void dropBlock();
     void setLevel(std::shared_ptr<Level> level);
     std::shared_ptr<Player> getPlayer();
+    int getLevel();
 };
 
 #endif
