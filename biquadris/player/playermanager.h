@@ -39,6 +39,7 @@ public:
     void changeLevel(int num);
     void setRandom(bool random);
     std::shared_ptr<Player> getPlayer();
+    int getLevel();
 };
 
 #endif

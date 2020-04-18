@@ -172,3 +172,7 @@ std::shared_ptr<Player> PlayerManager::getPlayer()
 {
     return player;
 }
+
+int PlayerManager::getLevel() {
+    return this->level->getLevelNumber();
+}
