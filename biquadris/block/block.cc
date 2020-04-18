@@ -195,8 +195,9 @@ bool Block::rotate(std::string direction)
         }
     }
 
-    if (direction == "CW") {
-        
+    if (direction == "CW")
+    {
+
         // new vars
         std::vector<std::vector<int>> tempCW(this->recHeight, std::vector<int>(this->recWidth, 0));
         std::vector<Point> newPoints;
@@ -241,8 +242,9 @@ bool Block::rotate(std::string direction)
         }
 
         for (auto a : newPoints)
-        {   
-            if (std::find(this->points.begin(), this->points.end(), a) == this->points.end()) { // a is not in points
+        {
+            if (std::find(this->points.begin(), this->points.end(), a) == this->points.end())
+            { // a is not in points
                 if (this->mainBoard->isFilled(a))
                     return false;
             }
@@ -257,29 +259,37 @@ bool Block::rotate(std::string direction)
         std::swap(this->recWidth, this->recHeight);
         this->drawBlock(this->colour);
         return true;
-    } else if (direction == "CCW") {
+    }
+    else if (direction == "CCW")
+    {
         std::vector<std::vector<int>> tempCCW(this->recHeight, std::vector<int>(this->recWidth, 0));
         std::vector<Point> newPoints;
         std::vector<Point> newMinRec;
 
-        for (int i = 0; i < recWidth; ++i) {
-            for (int j = 0; j < recHeight; ++j) {
+        for (int i = 0; i < recWidth; ++i)
+        {
+            for (int j = 0; j < recHeight; ++j)
+            {
                 tempCCW[j][i] = temp[recWidth - 1 - i][j];
             }
         }
 
         Point newTopLeft{this->topLeft.getX(), this->topLeft.getY() + this->recHeight - this->recWidth};
-        for (int i = 0; i < recWidth; ++i) {
-            for (int j = 0; j < recHeight; ++j) {
+        for (int i = 0; i < recWidth; ++i)
+        {
+            for (int j = 0; j < recHeight; ++j)
+            {
                 Point p{newTopLeft.getX() + j, newTopLeft.getY() + i};
                 newMinRec.emplace_back(p);
-                if (tempCCW[j][i] == 1) {
+                if (tempCCW[j][i] == 1)
+                {
                     newPoints.emplace_back(p);
                 }
             }
         }
 
-        for (auto a : newPoints) {
+        for (auto a : newPoints)
+        {
             if (a.getX() < 0)
                 return false;
             if (a.getX() > 10)
@@ -288,8 +298,10 @@ bool Block::rotate(std::string direction)
                 return false;
         }
 
-        for (auto a : newPoints) {
-            if (std::find(this->points.begin(), this->points.end(), a) == this->points.end()) {
+        for (auto a : newPoints)
+        {
+            if (std::find(this->points.begin(), this->points.end(), a) == this->points.end())
+            {
                 if (this->mainBoard->isFilled(a))
                     return false;
             }
@@ -400,7 +412,8 @@ void Block::setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard)
     drawBlock(this->colour);
 }
 
-void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard){
+void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
+{
     this->holdBlockBoard = holdBlockBoard;
     drawBlock(this->colour);
 }
@@ -418,6 +431,14 @@ void Block::drawBlock(int colour)
         {
             Point b = a += {0, -2};
             this->nextBlockBoard->fillCell(b, colour);
+        }
+    }
+    else if (this->holdBlockBoard)
+    {
+        for (auto a : this->points)
+        {
+            Point b = a += {0, -2};
+            this->holdBlockBoard->fillCell(b, colour);
         }
     }
 }

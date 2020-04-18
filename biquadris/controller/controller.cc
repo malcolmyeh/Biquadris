@@ -5,9 +5,9 @@ Controller::Controller(bool graphics, bool curses, std::vector<std::string> scri
 {
     makeDisplays(graphics, curses);
     makeBoards();
+    initBoards();
     makeScores(startLevel);
     makeMessages();
-    initBoards();
     makePlayerManagers(startLevel, scriptFiles);
 
     // set currentPlayer to first player
@@ -49,7 +49,6 @@ void Controller::makeScores(int startLevel)
     // create Scores
     for (auto mainBoard : mainBoards)
         scores.emplace_back(std::make_shared<Score>(startLevel, mainBoard));
-
     // link to Displays
     for (auto score : scores)
     {

@@ -13,3 +13,8 @@ HoldBlockBoard::HoldBlockBoard(HoldBlockBoard *holdBlockBoard)
     cellGrid = holdBlockBoard->cellGrid;
     displays = holdBlockBoard->displays;
 }
+
+void HoldBlockBoard::setBlock(std::shared_ptr<Block> block)
+{
+    this->block = block;
+}
