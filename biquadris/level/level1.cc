@@ -1,7 +1,8 @@
 #include "level1.h"
 
 Level1::Level1(std::string file) : Level{1, file} {}
-
+Level1::Level1(std::vector<char> sequence)
+: Level{1, sequence} {}
 Level1::~Level1(){}
 
 std::shared_ptr<Block> Level1::createBlock()

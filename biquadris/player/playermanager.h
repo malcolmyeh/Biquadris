@@ -36,7 +36,8 @@ public:
     bool rotateBlock(std::string direction);
     void dropBlock();
     void holdBlock();
-    void setLevel(std::shared_ptr<Level> level);
+    void changeLevel(int num);
+    void setRandom(bool random);
     std::shared_ptr<Player> getPlayer();
 };
 

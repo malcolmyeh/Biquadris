@@ -1,8 +1,8 @@
 #include "level.h"
 
 Level::Level(int levelNumber, std::string file) : levelNumber{levelNumber}, file{file} {}
-Level::Level(int levelNumber, std::vector<char> sequence, unsigned int sequencePosition)
-    : levelNumber{levelNumber}, sequence{sequence}, sequencePosition{sequencePosition} {}
+Level::Level(int levelNumber, std::vector<char> sequence)
+    : levelNumber{levelNumber}, sequence{sequence}, sequencePosition{0} {}
 Level::~Level() {}
 
 void Level::getBlocksFromFile()
@@ -23,7 +23,11 @@ int Level::getLevelNumber()
     return levelNumber;
 }
 
-std::string Level::getFile()
+std::vector<char> Level::getSequence()
 {
-    return file;
+    return sequence;
+}
+
+void Level::setRandom(bool random){
+    this->random = random;
 }

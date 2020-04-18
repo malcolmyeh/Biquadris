@@ -41,9 +41,32 @@ void PlayerManager::setNextBlock()
     player->setNextBlock(level->createBlock());
 }
 
-void PlayerManager::setLevel(std::shared_ptr<Level> level)
+void PlayerManager::changeLevel(int num)
 {
-    this->level = level;
+    int levelNumber = level->getLevelNumber() + num;
+    if (levelNumber < 0)
+        levelNumber = 0;
+    if (levelNumber > 4)
+        levelNumber = 4;
+    std::vector<char> sequence = level->getSequence();
+    switch (levelNumber)
+    {
+    case 0:
+        level = std::make_shared<Level0>(sequence);
+        break;
+    case 1:
+        level = std::make_shared<Level1>(sequence);
+        break;
+    case 2:
+        level = std::make_shared<Level2>(sequence);
+        break;
+    case 3:
+        level = std::make_shared<Level3>(sequence);
+        break;
+    case 4:
+        level = std::make_shared<Level4>(sequence);
+        break;
+    }
     player->setLevel(level->getLevelNumber());
     if (level->getLevelNumber() >= 3)
         player = std::make_shared<Heavy>(player);
@@ -139,6 +162,12 @@ void PlayerManager::holdBlock()
         setNextBlock();
     }
 }
+
+void PlayerManager::setRandom(bool random)
+{
+    this->level->setRandom(random);
+}
+
 std::shared_ptr<Player> PlayerManager::getPlayer()
 {
     return player;

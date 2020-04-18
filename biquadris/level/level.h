@@ -24,14 +24,17 @@ protected:
     std::vector<char> sequence;
     unsigned int sequencePosition = 0;
     void getBlocksFromFile();
+    bool random;
 
 public:
     Level(int levelNumber, std::string file);
-    Level(int levelNumber, std::vector<char> sequence, unsigned int sequencePosition);
+    Level(int levelNumber, std::vector<char> sequence);
     virtual ~Level();
     virtual std::shared_ptr<Block> createBlock() = 0;
     int getLevelNumber();
-    std::string getFile();
+    std::vector<char> getSequence();
+    void setRandom(bool random);
+
 };
 
 #endif

@@ -64,7 +64,7 @@ int main(int argc, char *argv[])
     nb1->init(1);
     nb2->init(2);
     hb1->init(1);
-    hb2->init(2)
+    hb2->init(2);
     mb1->setDisplay(td);
     mb1->setDisplay(gd);
     mb2->setDisplay(td);
