@@ -67,10 +67,16 @@ void Board::refresh()
     for (auto r : cellGrid)
     {
         for (auto c : r)
-        {
             c.drawDisplays();
-        }
     }
+}
+
+void Board::restart(){
+    for (auto r : cellGrid){
+        for (auto c: r)
+            c.setColour(Xwindow::White);
+    }
+    refresh();
 }
 
 void Board::fillCell(Point point, int colour)

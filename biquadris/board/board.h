@@ -32,6 +32,7 @@ public:
     void init(int boardNumber);
     int getBoardNumber();
     void refresh();
+    void restart();
     void fillCell(Point point, int colour);
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
     Point getOrigin();

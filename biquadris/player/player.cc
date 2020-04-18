@@ -1,12 +1,6 @@
 #include "player.h"
 #include "../block/dblock.h"
-#include "../block/iblock.h"
-#include "../block/jblock.h"
-#include "../block/lblock.h"
-#include "../block/oblock.h"
-#include "../block/sblock.h"
-#include "../block/tblock.h"
-#include "../block/zblock.h"
+
 #include "../score/score.h"
 #include "../board/mainboard.h"
 #include "../board/nextblockboard.h"
@@ -17,11 +11,12 @@ Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoar
                std::shared_ptr<HoldBlockBoard> holdBlockBoard)
     : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard},
       holdBlockBoard{holdBlockBoard}, canSpecial{false},
-      isBlind{false}, isLost{false}, isDecorated{false}
+      isBlind{false}, isLost{false}, isDecorated{false},
+      rowCleared{rowCleared}, blocksDropped{0}
 {
 }
 
-Player::Player(Player * other)
+Player::Player(Player *other)
 {
     score = other->score;
     mainBoard = other->mainBoard;
@@ -33,7 +28,7 @@ Player::Player(Player * other)
     isDecorated = other->isDecorated;
 }
 
-Player::Player(){}
+Player::Player() {}
 
 void Player::setCurrentBlock(std::shared_ptr<Block> block)
 {
@@ -108,18 +103,46 @@ void Player::toggleBlind()
 
 void Player::checkRow()
 {
-    if (mainBoard->checkRow(score) > 2)
+    int rowsCleared = mainBoard->checkRow(score);
+    if (rowsCleared >= 2)
         canSpecial = true;
+    if (rowsCleared > 0)
+        rowCleared = true;
+}
+
+bool Player::getRowCleared()
+{
+    bool temp = rowCleared;
+    rowCleared = false; // this will be checked only once per drop
+    return temp;
 }
 
 bool Player::currentPlaced()
 {
     if (currentBlock->isPlaced() || currentBlock->isEmpty())
     {
+        ++blocksDropped;
+        level4Effect();
         setCurrentBlock(nextBlock);
         return true;
     }
     return false;
+}
+
+// Level 4: If 5 blocks have been dropped without clearing at least one row,
+// create and drop a Dot Block
+void Player::level4Effect()
+{
+    if (level == 4)
+    {
+        if (getRowCleared() && blocksDropped % 5 == 0)
+        {
+            std::shared_ptr<DBlock> dot = std::make_shared<DBlock>(4);
+            isLost = dot->setMainBoard(mainBoard);
+            mainBoard->addBlock(dot);
+            dot->drop();
+        }
+    }
 }
 
 void Player::setLevel(int level)

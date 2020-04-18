@@ -25,7 +25,7 @@ public:
                   std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
                   std::shared_ptr<HoldBlockBoard> holdBlockBoard,
                   std::shared_ptr<Message> message);
-    void setOpponent(std::shared_ptr<Player> opponent);
+    void setOpponent(std::shared_ptr<PlayerManager> opponentManager);
     bool getOpponentLost();
     void initBlocks();
     void forceBlock(char blockType);

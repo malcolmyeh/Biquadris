@@ -25,9 +25,9 @@ PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainB
     player->setLevel(level->getLevelNumber());
 }
 
-void PlayerManager::setOpponent(std::shared_ptr<Player> opponent)
+void PlayerManager::setOpponent(std::shared_ptr<PlayerManager> opponentManager)
 {
-    this->opponent = opponent;
+    opponent = opponentManager->getPlayer();
 }
 
 void PlayerManager::initBlocks()
@@ -173,6 +173,7 @@ std::shared_ptr<Player> PlayerManager::getPlayer()
     return player;
 }
 
-int PlayerManager::getLevel() {
+int PlayerManager::getLevel()
+{
     return this->level->getLevelNumber();
 }

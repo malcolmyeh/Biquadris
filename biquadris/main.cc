@@ -6,9 +6,8 @@
 #include <fstream>
 #include <memory>
 
-
 // Command-line Interface
-bool parseCommandLineArgs(const int argc, char *argv[], bool &graphics, bool &bonus, std::vector<std::string> &scriptFiles, int &startLevel)
+bool parseCommandLineArgs(const int argc, char *argv[], bool &graphics, bool &ncurses, std::vector<std::string> &scriptFiles, int &startLevel)
 {
     for (int i = 1; i < argc; ++i)
     {
@@ -59,21 +58,20 @@ bool parseCommandLineArgs(const int argc, char *argv[], bool &graphics, bool &bo
 
 int main(int argc, char *argv[])
 {
-    bool graphics = true, bonus = false;
+    bool graphics = true, ncurses = false;
     std::vector<std::string> scriptFiles{"sequence1.txt", "sequence2.txt"};
     int startLevel = 2;
-
-    bool valid = parseCommandLineArgs(argc, argv, graphics, bonus, scriptFiles, startLevel);
+    bool valid = parseCommandLineArgs(argc, argv, graphics, ncurses, scriptFiles, startLevel);
 
     if (valid)
     {
-        if (bonus)
+        if (ncurses)
         {
             // ncurses controller
         }
         else
         {
-            std::shared_ptr<Controller> c = std::make_shared<Controller>(graphics, scriptFiles, startLevel);
+            std::shared_ptr<Controller> c = std::make_shared<Controller>(graphics, ncurses, scriptFiles, startLevel);
             c->runGame();
         }
     }

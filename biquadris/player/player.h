@@ -21,6 +21,8 @@ protected:
     std::shared_ptr<NextBlockBoard> nextBlockBoard;
     std::shared_ptr<HoldBlockBoard> holdBlockBoard;
     bool canSpecial = false;
+    bool rowCleared = false;
+    int blocksDropped = 0;
     int level;
     bool isBlind = false;
     bool isLost = false;
@@ -47,6 +49,7 @@ public:
     std::shared_ptr<Board> getMainBoard();
     bool getIsLost();
     bool getIsDecorated();
+    bool getRowCleared();
 
     // Block functions
     virtual bool moveBlock(char direction);
@@ -54,6 +57,7 @@ public:
     void dropBlock();
     void checkRow();
     bool currentPlaced();
+    void level4Effect();
 
     // Undecorate function if Player is Decorator
     virtual std::shared_ptr<Player> getPlayer();

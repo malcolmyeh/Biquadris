@@ -1,8 +1,9 @@
 #include "level2.h"
 
 Level2::Level2(std::string file) : Level{2, file} {}
+Level2::Level2(std::vector<char> sequence): Level{2, sequence}{}
 
-Level2::~Level2(){}
+Level2::~Level2() {}
 
 std::shared_ptr<Block> Level2::createBlock()
 {
