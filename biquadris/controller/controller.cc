@@ -176,9 +176,13 @@ void Controller::runGame()
                                          "leveldown", "norandom", "random",
                                          "sequence", "restart", "remap", "hold"};
     std::string matchedCommand = "";
-
+    currentPlayer->setIsPlaying(); // set p1 to take first turn
     while (true)
     {
+        if (!currentPlayer->getIsPlaying()){ // if current player turn ends
+            changeTurn(); // change player
+            currentPlayer->setIsPlaying();
+        }
         // getOpponentLost
         std::string input;
         std::cin >> input;
@@ -325,7 +329,6 @@ void Controller::runGame()
 
         multiplier = 1;
         matchedCommand = "";
-        changeTurn();
     }
 }
 

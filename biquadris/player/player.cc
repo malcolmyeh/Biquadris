@@ -10,9 +10,8 @@ Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoar
                std::shared_ptr<NextBlockBoard> nextBlockBoard,
                std::shared_ptr<HoldBlockBoard> holdBlockBoard)
     : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard},
-      holdBlockBoard{holdBlockBoard}, canSpecial{false},
-      isBlind{false}, isLost{false},
-      rowCleared{rowCleared}, isDecorated{false}, blocksDropped{0}
+      holdBlockBoard{holdBlockBoard}, canSpecial{false}, rowCleared{false},
+      blocksDropped{0}, isBlind{false}, isLost{false}, isDecorated{false}
 {
 }
 
@@ -26,6 +25,7 @@ Player::Player(Player *other)
     isBlind = other->isBlind;
     isLost = other->isLost;
     isDecorated = other->isDecorated;
+    rowCleared = other->rowCleared;
 }
 
 Player::Player() {}
@@ -75,12 +75,20 @@ bool Player::hasHoldBlock()
 
 void Player::setHoldBlock()
 {
-    currentBlock->setHoldBlockBoard(holdBlockBoard);
-    holdBlockBoard->setBlock(currentBlock);
     if (hasHoldBlock())
-        this->currentBlock.swap(this->holdBlock);
+    {
+        std::shared_ptr<Block> tmp = holdBlock;
+        currentBlock->setHoldBlockBoard(holdBlockBoard);
+        mainBoard->removeBlock();
+        holdBlockBoard->setBlock(currentBlock);
+        this->holdBlock = this->currentBlock;
+        setCurrentBlock(tmp);
+    }
     else
     {
+        currentBlock->setHoldBlockBoard(holdBlockBoard);
+        mainBoard->removeBlock();
+        holdBlockBoard->setBlock(currentBlock);
         this->holdBlock = this->currentBlock;
         setCurrentBlock(nextBlock);
     }

@@ -64,3 +64,7 @@ int MainBoard::checkRow(std::shared_ptr<Score> score)
 void MainBoard::addBlock(std::shared_ptr<Block> block){
     blocks.emplace_back(block);
 }
+
+void MainBoard::removeBlock(){
+    blocks.pop_back();
+}

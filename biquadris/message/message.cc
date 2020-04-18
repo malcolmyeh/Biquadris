@@ -24,10 +24,17 @@ void Message::specialReady()
     drawDisplays();
 }
 
+void Message::playing()
+{
+    text.clear();
+    text.emplace_back("[PLAYING]");
+    drawDisplays();
+}
+
 void Message::clearMessage()
 {
     for (auto &display : displays)
-        display->clearMessage();
+        display->clearMessage(*this);
 }
 
 void Message::drawDisplays()

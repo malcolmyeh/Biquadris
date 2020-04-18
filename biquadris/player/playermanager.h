@@ -17,7 +17,7 @@ class PlayerManager
     std::shared_ptr<Player> opponent;
     std::shared_ptr<Level> level;
     std::shared_ptr<Message> message;
-
+    bool isPlaying = false;
     bool getCanSpecial();
 
 public:
@@ -40,6 +40,8 @@ public:
     void setRandom(bool random);
     std::shared_ptr<Player> getPlayer();
     int getLevel();
+    bool getIsPlaying();
+    void setIsPlaying();
 };
 
 #endif

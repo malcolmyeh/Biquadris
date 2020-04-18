@@ -19,7 +19,7 @@
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                              std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
                              std::shared_ptr<HoldBlockBoard> holdBlockBoard,
-                             std::shared_ptr<Message> message) : level{level}, message{message}
+                             std::shared_ptr<Message> message) : level{level}, message{message}, isPlaying{false}
 {
     this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard, holdBlockBoard);
     player->setLevel(level->getLevelNumber());
@@ -100,11 +100,19 @@ void PlayerManager::forceBlock(char blockType)
         break;
     }
     opponent->setCurrentBlock(block);
+    isPlaying = false;
+}
+
+void PlayerManager::blind()
+{
+    opponent->toggleBlind();
+    isPlaying = false;
 }
 
 void PlayerManager::makeHeavy()
 {
     opponent = std::make_shared<Heavy>(opponent, true);
+    isPlaying = false;
 }
 
 bool PlayerManager::getCanSpecial()
@@ -131,6 +139,8 @@ bool PlayerManager::moveBlock(char direction)
         setNextBlock();
         if (player->getIsDecorated())
             player = player->getPlayer();
+        if (!getCanSpecial()) // if no special, turn ends
+            isPlaying = false;
     }
 
     return checkMove;
@@ -149,6 +159,8 @@ void PlayerManager::dropBlock()
         setNextBlock();
         if (player->getIsDecorated())
             player = player->getPlayer();
+        if (!getCanSpecial()) // if no special, turn ends
+            isPlaying = false;
     }
 }
 
@@ -176,4 +188,18 @@ std::shared_ptr<Player> PlayerManager::getPlayer()
 int PlayerManager::getLevel()
 {
     return this->level->getLevelNumber();
+}
+
+void PlayerManager::setIsPlaying()
+{
+    this->isPlaying = true;
+    message->playing();
+}
+
+bool PlayerManager::getIsPlaying()
+{
+    if (!isPlaying)
+        message->clearMessage();
+    return isPlaying;   
+    
 }

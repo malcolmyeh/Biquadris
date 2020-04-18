@@ -414,6 +414,11 @@ void Block::setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard)
 
 void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
 {
+    if (this->mainBoard)
+    {
+        drawBlock(Xwindow::White);
+        this->mainBoard = nullptr;
+    }
     this->holdBlockBoard = holdBlockBoard;
     drawBlock(this->colour);
 }
@@ -433,8 +438,9 @@ void Block::drawBlock(int colour)
             this->nextBlockBoard->fillCell(b, colour);
         }
     }
-    else if (this->holdBlockBoard)
+    if (this->holdBlockBoard)
     {
+
         for (auto a : this->points)
         {
             Point b = a += {0, -2};

@@ -111,7 +111,7 @@ void TextDisplay::drawMessage(Message &message)
     draw();
 }
 
-void TextDisplay::clearMessage()
+void TextDisplay::clearMessage(Message &message)
 {
     for (int r = 26; r < 30; ++r){
         for (int c = 0; c < 28; ++c)

@@ -20,6 +20,7 @@ public:
     void toggleBlind();
     int checkRow(std::shared_ptr<Score> score);
     void addBlock(std::shared_ptr<Block> block);
+    void removeBlock();
 };
 
 #endif

@@ -14,6 +14,7 @@ public:
     Message(std::shared_ptr<Board> board);
     void playerWon();
     void specialReady();
+    void playing();
     void drawDisplays() override;
     std::vector<std::string> getText();
     void clearMessage();

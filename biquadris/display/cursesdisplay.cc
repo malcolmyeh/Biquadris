@@ -155,4 +155,4 @@ void CursesDisplay::drawMessage(Message &message)
 	for (auto line : message.getText())
 		wprintw(messageWindows[which], line.c_str());
 }
-void CursesDisplay::clearMessage() {}
+void CursesDisplay::clearMessage(Message &message) {}

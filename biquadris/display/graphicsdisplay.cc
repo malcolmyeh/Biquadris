@@ -109,6 +109,14 @@ void GraphicsDisplay::drawMessage(Message &message)
     for (unsigned int i = 0; i < message.getText().size(); ++i)
         xw->drawString(x, y + i * cellSize / 2, message.getText()[i], Xwindow::Black);
 }
-void GraphicsDisplay::clearMessage()
+void GraphicsDisplay::clearMessage(Message &message)
 {
+    int x1 = 2 * padding + boardWidth / 2;
+    int x2 = padding;
+    if (message.getBoard()->getBoardNumber() == 2){
+        x1 += boardWidth + padding;
+        x2 += boardWidth + padding;
+    }
+    xw->fillRectangle(x1, padding, boardWidth / 2, scoreHeight, Xwindow::White);
+    drawOutline(x2, padding, boardWidth, scoreHeight);
 }
