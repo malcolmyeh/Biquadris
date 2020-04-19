@@ -174,7 +174,8 @@ void Controller::runGame()
     std::vector<std::string> commands = {"left", "down", "right", "clockwise",
                                          "counterclockwise", "drop", "levelup",
                                          "leveldown", "norandom", "random",
-                                         "sequence", "restart", "remap", "hold"};
+                                         "sequence", "restart", "remap", "hold",
+                                         "I", "J", "L", "O", "S", "T", "Z"};
     std::string matchedCommand = "";
     currentPlayer->setIsPlaying(); // set p1 to take first turn
     while (true)
@@ -190,8 +191,12 @@ void Controller::runGame()
         if (isdigit(input[0]))
         { // grab multiplier. if none, default is 1
             multiplier = std::stoi(input);
+            for (int i = 0; i < std::to_string(multiplier).length(); ++i) {
+                input.erase(0, 1);
+            }
+            std::cout << input << std::endl;
         }
-
+        
         bool errorFlag = false;
 
         for (auto command : commands)
@@ -325,8 +330,35 @@ void Controller::runGame()
         { // hold command
             for (int i = 0; i < multiplier; ++i)
                 currentPlayer->holdBlock();
+        }
+        else if (matchedCommand == commands[14]) 
+        { // I
+            currentPlayer->forceBlock('I');
+        }
+        else if (matchedCommand == commands[15])
+        { // J 
+            currentPlayer->forceBlock('J');
+        }
+        else if (matchedCommand == commands[16])
+        { // L
+            currentPlayer->forceBlock('L');
+        }
+        else if (matchedCommand == commands[17])
+        { // O
+            currentPlayer->forceBlock('O');
+        }
+        else if (matchedCommand == commands[18])
+        { // S
+            currentPlayer->forceBlock('S');
+        }
+        else if (matchedCommand == commands[19])
+        { // T
+            currentPlayer->forceBlock('T');
+        }
+        else if (matchedCommand == commands[20])
+        { // Z
+            currentPlayer->forceBlock('Z');
         } // no need for else. it is verified in the matching phase.
-
         multiplier = 1;
         matchedCommand = "";
     }

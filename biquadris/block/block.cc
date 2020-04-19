@@ -320,11 +320,73 @@ bool Block::rotate(std::string direction)
 // it should be possible to drop at anytime..?? so change to void
 void Block::drop()
 {
-    while (true)
+    // while (true)
+    // {
+    //     if (!this->move('D'))
+    //         break;
+    // }
+    Point p{0, 0};
+    std::unordered_set<int> uniqueXValues;
+    for (auto a : this->points) 
     {
-        if (!this->move('D'))
-            break;
+        if (uniqueXValues.find(a.getX()) == uniqueXValues.end())
+            uniqueXValues.insert(a.getX());
     }
+    std::vector<Point> checkDown;
+    for (auto a : uniqueXValues)
+    {
+        int largestY = 0;
+        for (auto b : this->points)
+        {
+            if (b.getX() == a)
+            {
+                if (b.getY() > largestY)
+                {
+                    largestY = b.getY();
+                }
+            }
+        }
+        Point p{a, largestY};
+        checkDown.emplace_back(p);
+    }
+
+    int down = 1;
+    bool stop = false;
+    while(true) {
+        for (auto a : checkDown)
+        {
+            if (a.getY() + down > 17) {
+                stop = true;
+                break;
+            }
+            Point q{a.getX(), a.getY() + down};
+            if (this->mainBoard->isFilled(q)) {
+                stop = true;
+                break;
+            }
+        }
+        if (stop) {
+            break;
+        } else {
+            ++down;
+        }
+    }
+    this->drawBlock(Xwindow::White);
+    p = {0, down - 1};
+    for (auto &a : this->points)
+    {
+        a += p;
+    }
+    for (auto &a : this->minRec)
+    {
+        a += p;
+        // if (std::find(this->points.begin(), this->points.end(), a) != this->points.end()) { // if a is in points
+
+        // }
+    }
+    this->topLeft += p;
+    this->printCellCoordinates();
+    this->drawBlock(this->colour);
 }
 
 // returns true if a block cannot go down further

@@ -8,5 +8,5 @@ DBlock::DBlock(int level) : Block{Xwindow::Brown, level} {
     this->minRec = v;
     this->recWidth = 1;
     this->recHeight = 1;
-    this->topLeft = {0, 3};
+    this->topLeft = {5, 3};
 }
