@@ -24,6 +24,7 @@ protected:
     std::shared_ptr<NextBlockBoard> nextBlockBoard;
     std::shared_ptr<HoldBlockBoard> holdBlockBoard;
     int level;
+    int rotation = 0;
     
     // protected method for the loops at the end of each ctor
 public:

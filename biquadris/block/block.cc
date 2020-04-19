@@ -258,6 +258,9 @@ bool Block::rotate(std::string direction)
         this->topLeft = newTopLeft;
         std::swap(this->recWidth, this->recHeight);
         this->drawBlock(this->colour);
+        rotation += 90;
+        if (rotation >= 360)
+            rotation = rotation % 360;
         return true;
     }
     else if (direction == "CCW")
@@ -313,6 +316,9 @@ bool Block::rotate(std::string direction)
         this->topLeft = newTopLeft;
         std::swap(this->recWidth, this->recHeight);
         this->drawBlock(this->colour);
+        rotation += 270;
+        if (rotation >= 360)
+            rotation = rotation % 360;
         return true;
     }
 }
@@ -391,6 +397,7 @@ int Block::getLevel()
 
 bool Block::setMainBoard(std::shared_ptr<MainBoard> mainBoard)
 {
+    std::cout << "setMainBoard" << std::endl;
     drawBlock(Xwindow::White);
     if (!this->mainBoard)
         this->mainBoard = mainBoard;
@@ -400,9 +407,11 @@ bool Block::setMainBoard(std::shared_ptr<MainBoard> mainBoard)
         this->holdBlockBoard = nullptr;
     if (isValid())
     {
+        std::cout << "VALID" << std::endl;
         drawBlock(this->colour);
         return true;
     }
+    std::cout << "INVALID" << std::endl;
     return false;
 }
 
@@ -414,11 +423,16 @@ void Block::setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard)
 
 void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
 {
-    if (this->mainBoard)
+    if (this->mainBoard) // rotate block to original position
     {
         drawBlock(Xwindow::White);
+        for (int r = rotation; r >= 0; r -= 90){
+            rotate("CCW");
+        }
         this->mainBoard = nullptr;
     }
+    if (this->nextBlockBoard)
+        this->nextBlockBoard = nullptr;
     this->holdBlockBoard = holdBlockBoard;
     drawBlock(this->colour);
 }
@@ -429,46 +443,46 @@ void Block::drawBlock(int colour)
     {
         for (auto a : this->points)
             this->mainBoard->fillCell(a, colour);
+            }
+            else if (this->nextBlockBoard)
+            {
+                for (auto a : this->points)
+                {
+                    Point b = a += {0, -2};
+                    this->nextBlockBoard->fillCell(b, colour);
+                }
+            }
+            if (this->holdBlockBoard)
+            {
+
+                for (auto a : this->points)
+                {
+                    Point b = a += {0, -2};
+                    this->holdBlockBoard->fillCell(b, colour);
+                }
+            }
     }
-    else if (this->nextBlockBoard)
+
+    void Block::printCellCoordinates()
+    {
+        for (auto a : this->points)
+            std::cout << "{" << a.getX() << "," << a.getY() << "} ";
+        std::cout << std::endl;
+    }
+
+    bool Block::isEmpty()
+    {
+        return this->points.empty();
+    }
+
+    bool Block::isValid()
     {
         for (auto a : this->points)
         {
-            Point b = a += {0, -2};
-            this->nextBlockBoard->fillCell(b, colour);
+            if (mainBoard->isFilled(a))
+            {
+                return false;
+            }
         }
+        return true;
     }
-    if (this->holdBlockBoard)
-    {
-
-        for (auto a : this->points)
-        {
-            Point b = a += {0, -2};
-            this->holdBlockBoard->fillCell(b, colour);
-        }
-    }
-}
-
-void Block::printCellCoordinates()
-{
-    for (auto a : this->points)
-        std::cout << "{" << a.getX() << "," << a.getY() << "} ";
-    std::cout << std::endl;
-}
-
-bool Block::isEmpty()
-{
-    return this->points.empty();
-}
-
-bool Block::isValid()
-{
-    for (auto a : this->points)
-    {
-        if (mainBoard->isFilled(a))
-        {
-            return false;
-        }
-    }
-    return true;
-}
