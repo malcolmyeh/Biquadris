@@ -77,7 +77,7 @@ void GraphicsDisplay::drawOutline(int x, int y, int width, int height)
 void GraphicsDisplay::drawNormalCell(int x, int y, int colour)
 {
     xw->fillRectangle(x, y, cellSize, cellSize, colour);
-    // drawOutline(x, y, cellSize, cellSize);
+    drawOutline(x, y, cellSize, cellSize);
 }
 
 void GraphicsDisplay::drawBlindCell(int x, int y)

@@ -1,5 +1,5 @@
 #include "controller.h"
-#include <unordered_map>
+#include <vector>
 
 Controller::Controller(bool graphics, bool curses, std::vector<std::string> scriptFiles, int startLevel = 0)
 {
@@ -179,8 +179,14 @@ void Controller::runGame()
                                          "leveldown", "norandom", "random",
                                          "sequence", "restart", "remap", "hold",
                                          "I", "J", "L", "O", "S", "T", "Z"};
+    std::vector<std::string> fileInput;
+    bool readFileInput = false;
     std::string matchedCommand = "";
     currentPlayer->setIsPlaying(); // set p1 to take first turn
+    // on downwards, see if is lost every movement
+    //   on horizontal or rtate, check after all are done
+    // possible code improvement: since multiplier, match and errorFlag are within loop, they do not
+    //   have to be constantly reset
     while (true)
     {   
         if (currentPlayer->getIsLost())
@@ -192,7 +198,16 @@ void Controller::runGame()
         }
         // getOpponentLost
         std::string input;
-        std::cin >> input;
+        if (readFileInput) {
+            if (fileInput.empty()) {
+                readFileInput = false;
+            } else {
+                input = fileInput[0];
+                fileInput.erase(fileInput.begin(), fileInput.begin() + 1);
+            }
+        } else {
+            std::cin >> input;
+        }
         int multiplier = 1;
         if (isdigit(input[0]))
         { // grab multiplier. if none, default is 1
@@ -277,6 +292,22 @@ void Controller::runGame()
         }
         else if (matchedCommand == commands[10])
         { // sequence
+            std::string filename;
+            std::cin >> filename;
+            std::ifstream infile{filename};
+            if (!infile.good()) {
+                multiplier = 1;
+                matchedCommand = "";
+                std::cerr << "File either does not exist, or cannot be opened." << std::endl;
+                continue;
+            }
+
+            // file exists - move on
+            while (infile >> filename) {
+                std::cout << filename << std::endl;
+                fileInput.emplace_back(filename);
+            }
+            readFileInput = true;
         }
         else if (matchedCommand == commands[11])
         { // restart
