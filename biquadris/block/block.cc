@@ -663,3 +663,53 @@ void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
     this->holdBlockBoard = holdBlockBoard;
     drawBlock(this->colour);
 }
+
+void Block::drawBlock(int colour)
+{
+    if (this->mainBoard)
+    {
+        for (auto a : this->points)
+            this->mainBoard->fillCell(a, colour);
+    }
+    else if (this->nextBlockBoard)
+    {
+        for (auto a : this->points)
+        {
+            Point b = a += {0, -2};
+            this->nextBlockBoard->fillCell(b, colour);
+        }
+    }
+    else if (this->holdBlockBoard)
+    {
+
+        for (auto a : this->points)
+        {
+            Point b = a += {0, -2};
+            this->holdBlockBoard->fillCell(b, colour);
+        }
+    }
+}
+
+void Block::printCellCoordinates()
+{
+    for (auto a : this->points)
+        std::cout << "{" << a.getX() << "," << a.getY() << "} ";
+    std::cout << std::endl;
+}
+
+bool Block::isEmpty()
+{
+    return this->points.empty();
+}
+
+bool Block::isValid()
+{
+    for (auto a : this->points)
+    {
+        if (mainBoard->isFilled(a))
+        {
+            return false;
+        }
+    }
+    return true;
+}
