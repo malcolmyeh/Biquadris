@@ -1,6 +1,10 @@
 #include "level.h"
 
-Level::Level(int levelNumber, std::string file) : levelNumber{levelNumber}, file{file} {}
+Level::Level(int levelNumber, std::string file) : levelNumber{levelNumber}, file{file} {
+    std::cout << file << std::endl;
+    this->getBlocksFromFile();
+    std::cout << file << std::endl;
+}
 Level::Level(int levelNumber, std::vector<char> sequence)
     : levelNumber{levelNumber}, sequence{sequence}, sequencePosition{0} {}
 Level::~Level() {}

@@ -9,6 +9,7 @@ Controller::Controller(bool graphics, bool curses, std::vector<std::string> scri
     makeScores(startLevel);
     makeMessages();
     makePlayerManagers(startLevel, scriptFiles);
+    // std::cout << scriptFiles[0] << std::endl;
 
     // set currentPlayer to first player
     currentPlayer = playerManagers.front();
@@ -88,6 +89,7 @@ void Controller::makePlayerManagers(int startLevel, std::vector<std::string> scr
             std::make_shared<PlayerManager>(scores[i],
                                             mainBoards[i], createLevel(startLevel, scriptFiles[i]), nextBlockBoards[i], holdBlockBoards[i],
                                             messages[i]));
+        // std::cout << scriptFiles[0] << std::endl;
         playerManagers[i]->initBlocks();
     }
 
@@ -182,7 +184,9 @@ void Controller::runGame()
     std::string matchedCommand = "";
     currentPlayer->setIsPlaying(); // set p1 to take first turn
     while (true)
-    {
+    {   
+        if (currentPlayer->getIsLost())
+            break;
         if (!currentPlayer->getIsPlaying())
         {                 // if current player turn ends
             changeTurn(); // change player
@@ -225,6 +229,9 @@ void Controller::runGame()
 
         // change something in command array to remap. the if statement maps to a function. we may have to move the matching
         //   to a function for easier remapping
+
+        // for anything horizontal - check at end if they lost or not
+        // for anything going down - check if they lost or not after each action
         if (matchedCommand == commands[0])
         { // move left
             for (int i = 0; i < multiplier; ++i)
@@ -374,7 +381,9 @@ std::shared_ptr<Level> Controller::createLevel(int levelNumber, std::string file
     switch (levelNumber)
     {
     case 0:
+        std::cout << file << std::endl;
         level = std::make_shared<Level0>(file);
+        std::cout << file << std::endl;
         break;
     case 1:
         level = std::make_shared<Level1>(file);
