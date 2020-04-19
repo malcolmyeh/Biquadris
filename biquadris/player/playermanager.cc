@@ -131,7 +131,6 @@ bool PlayerManager::getCanSpecial()
 
 bool PlayerManager::getIsLost()
 {
-    std::cout << "PlayerManager::getIsLost()" << std::endl;
     bool isLost = player->getIsLost();
     if (isLost)
     {

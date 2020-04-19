@@ -32,14 +32,8 @@ Player::Player() {}
 
 void Player::setCurrentBlock(std::shared_ptr<Block> block)
 {
-    std::cout << "setCurrentBlock" << std::endl;
     currentBlock = block;
     isLost = !currentBlock->setMainBoard(mainBoard);
-    if (isLost)
-        std::cout << "LOST" << std::endl;
-    else
-        std::cout << "NOT LOST" << std::endl;
-
     mainBoard->addBlock(currentBlock);
 }
 
@@ -83,17 +77,19 @@ void Player::setHoldBlock()
 {
     if (hasHoldBlock())
     {
-        std::shared_ptr<Block> tmp = holdBlock;
-        currentBlock->setHoldBlockBoard(holdBlockBoard);
+        std::shared_ptr<Block> oldHoldBlock = holdBlock;
+        std::shared_ptr<Block> oldCurrentBlock = currentBlock;
         mainBoard->removeBlock();
+        currentBlock->setHoldBlockBoard(holdBlockBoard); // erases current from main, draws in hold
         holdBlockBoard->setBlock(currentBlock);
         this->holdBlock = this->currentBlock;
-        setCurrentBlock(tmp);
+        setCurrentBlock(oldHoldBlock);                          // erases hold, draws in main, but erases new hold block too
+        oldCurrentBlock->drawBlock(oldCurrentBlock->getColour()); // redraw erased hold block cells
     }
     else
     {
-        currentBlock->setHoldBlockBoard(holdBlockBoard);
         mainBoard->removeBlock();
+        currentBlock->setHoldBlockBoard(holdBlockBoard);
         holdBlockBoard->setBlock(currentBlock);
         this->holdBlock = this->currentBlock;
         setCurrentBlock(nextBlock);
@@ -172,7 +168,6 @@ std::shared_ptr<MainBoard> Player::getMainBoard()
 
 bool Player::getIsLost()
 {
-    std::cout << "getIsLost()" << std::endl;
     return isLost;
 }
 
@@ -190,4 +185,3 @@ std::shared_ptr<Block> Player::getCurrentBlock()
 {
     return currentBlock;
 }
-

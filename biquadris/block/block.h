@@ -35,6 +35,7 @@ public:
     bool isPlaced();          //
     bool clearPoint(int row); // get rid of all y = row. return true if block is empty
     int getLevel();
+    int getColour();
     bool setMainBoard(std::shared_ptr<MainBoard> mainBoard);
     void setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard);
     void setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard);

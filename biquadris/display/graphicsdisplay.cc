@@ -23,9 +23,26 @@ GraphicsDisplay::GraphicsDisplay(int cellSize) : cellSize{cellSize}
     xw = std::make_unique<Xwindow>(totalWidth, totalHeight);
 
     // initialize area/text that is static
+    drawBoardArea();
     drawScoreArea(1);
     drawScoreArea(2);
     drawNextBlockArea();
+}
+
+void GraphicsDisplay::drawBoardArea()
+{
+    drawOutline(padding, padding + scoreHeight, boardWidth, boardHeight);
+    drawOutline(2 * padding + boardWidth, padding + scoreHeight, boardWidth, boardHeight);
+    for (int i = cellSize; i < boardWidth; i += cellSize)
+    {
+        xw->drawLine(padding + i, padding + scoreHeight, padding + i, padding + scoreHeight + boardHeight);
+        xw->drawLine(2 * padding + boardWidth + i, padding + scoreHeight, 2 * padding + boardWidth + i, padding + scoreHeight);
+    }
+    for (int i = cellSize; i < boardHeight; i += cellSize)
+    {
+        xw->drawLine(padding, padding + scoreHeight + i, padding + boardWidth, padding + scoreHeight + i);
+        xw->drawLine(2 * padding + boardWidth,padding + scoreHeight + i, 2 * padding + boardWidth, padding + scoreHeight + i);
+    }
 }
 
 void GraphicsDisplay::drawScoreArea(int boardNumber)
@@ -76,18 +93,12 @@ void GraphicsDisplay::drawOutline(int x, int y, int width, int height)
 
 void GraphicsDisplay::drawNormalCell(int x, int y, int colour)
 {
-    xw->fillRectangle(x, y, cellSize, cellSize, colour);
-    // drawOutline(x, y, cellSize, cellSize);
+    xw->fillRectangle(x + gridOffset, y+gridOffset, cellSize - cellBorder, cellSize - cellBorder, colour);
 }
 
 void GraphicsDisplay::drawBlindCell(int x, int y)
 {
-    xw->fillRectangle(x, y, cellSize, cellSize, Xwindow::Black);
-}
-
-void GraphicsDisplay::eraseCell(int x, int y)
-{
-    xw->fillRectangle(x, y, cellSize, cellSize, Xwindow::White);
+    xw->fillRectangle(x + gridOffset, y+gridOffset, cellSize - cellBorder, cellSize - cellBorder, Xwindow::Black);
 }
 
 void GraphicsDisplay::drawScore(Score &score)
@@ -113,7 +124,8 @@ void GraphicsDisplay::clearMessage(Message &message)
 {
     int x1 = 2 * padding + boardWidth / 2;
     int x2 = padding;
-    if (message.getBoard()->getBoardNumber() == 2){
+    if (message.getBoard()->getBoardNumber() == 2)
+    {
         x1 += boardWidth + padding;
         x2 += boardWidth + padding;
     }
