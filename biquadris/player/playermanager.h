@@ -42,7 +42,7 @@ public:
     void initBlocks();
     void setNextBlock();
     void forceBlock(char blockType);
-    bool moveBlock(char direction);
+    bool moveBlock(char direction, int magnitude = 1);
     bool rotateBlock(std::string direction);
     void dropBlock();
     void holdBlock();

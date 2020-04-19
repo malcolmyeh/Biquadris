@@ -10,8 +10,7 @@ Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoar
                std::shared_ptr<NextBlockBoard> nextBlockBoard,
                std::shared_ptr<HoldBlockBoard> holdBlockBoard)
     : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard},
-      holdBlockBoard{holdBlockBoard}, canSpecial{false}, rowCleared{false},
-      blocksDropped{0}, isBlind{false}, isLost{false}, isDecorated{false}
+      holdBlockBoard{holdBlockBoard}, canSpecial{false}, isBlind{false}, isLost{false}, isDecorated{false}
 {
 }
 
@@ -25,7 +24,6 @@ Player::Player(Player *other)
     isBlind = other->isBlind;
     isLost = other->isLost;
     isDecorated = other->isDecorated;
-    rowCleared = other->rowCleared;
 }
 
 Player::Player() {}
@@ -43,9 +41,9 @@ void Player::setNextBlock(std::shared_ptr<Block> block)
     nextBlock->setNextBlockBoard(nextBlockBoard);
 }
 
-bool Player::moveBlock(char direction)
+bool Player::moveBlock(char direction, int magnitude)
 {
-    bool checkMove = currentBlock->move(direction);
+    bool checkMove = currentBlock->move(direction, magnitude);
     if (direction == 'D')
     {
         checkRow();
@@ -83,7 +81,7 @@ void Player::setHoldBlock()
         currentBlock->setHoldBlockBoard(holdBlockBoard); // erases current from main, draws in hold
         holdBlockBoard->setBlock(currentBlock);
         this->holdBlock = this->currentBlock;
-        setCurrentBlock(oldHoldBlock);                          // erases hold, draws in main, but erases new hold block too
+        setCurrentBlock(oldHoldBlock);                            // erases hold, draws in main, but erases new hold block too
         oldCurrentBlock->drawBlock(oldCurrentBlock->getColour()); // redraw erased hold block cells
     }
     else
@@ -117,48 +115,24 @@ void Player::checkRow()
     int rowsCleared = mainBoard->checkRow(score);
     if (rowsCleared >= 2)
         canSpecial = true;
-    if (rowsCleared > 0)
-        rowCleared = true;
-}
 
-bool Player::getRowCleared()
-{
-    bool temp = rowCleared;
-    rowCleared = false; // this will be checked only once per drop
-    return temp;
 }
 
 bool Player::currentPlaced()
 {
     if (currentBlock->isPlaced() || currentBlock->isEmpty())
     {
-        ++blocksDropped;
-        level4Effect();
         setCurrentBlock(nextBlock);
         return true;
     }
     return false;
 }
 
-// Level 4: If 5 blocks have been dropped without clearing at least one row,
-// create and drop a Dot Block
-void Player::level4Effect()
-{
-    if (level == 4)
-    {
-        if (getRowCleared() && blocksDropped % 5 == 0)
-        {
-            std::shared_ptr<DBlock> dot = std::make_shared<DBlock>(4);
-            isLost = dot->setMainBoard(mainBoard);
-            mainBoard->addBlock(dot);
-            dot->drop();
-        }
-    }
-}
 
 void Player::setLevel(int level)
 {
     this->level = level;
+    score->changeLevel(level);
 }
 
 std::shared_ptr<MainBoard> Player::getMainBoard()

@@ -8,7 +8,7 @@
 
 // public:
 //     HeavyPlayer(std::shared_ptr<Player> player, bool isDecorated = true);
-//     bool moveBlock(char direction, int value) override;
+//     bool moveBlock(char direction, int magnitude = 1) override;
 //     std::shared_ptr<Player> getPlayer() override;
 // };
 

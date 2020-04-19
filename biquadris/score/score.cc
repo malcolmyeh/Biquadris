@@ -6,7 +6,7 @@ Score::Score(int level, std::shared_ptr<Board> board) : Subject{board},  level{l
 
 void Score::updateScoreRow()
 {
-    this->currentScore += level * level;
+    this->currentScore += (level+1) * (level + 1);
     if (currentScore > highScore)
         highScore = currentScore;
     drawDisplays();

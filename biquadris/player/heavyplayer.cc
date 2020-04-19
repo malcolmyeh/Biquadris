@@ -5,7 +5,7 @@
 // {
 // }
 
-// bool HeavyPlayer::moveBlock(char direction, int value)
+// bool HeavyPlayer::moveBlock(char direction, int magnitude)
 // {
 //     bool check;
 //     if (direction == 'L' || direction == 'R')

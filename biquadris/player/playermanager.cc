@@ -69,6 +69,7 @@ void PlayerManager::changeLevel(int num)
     player->setLevel(level->getLevelNumber());
     // if (level->getLevelNumber() >= 3)
     //     player = std::make_shared<HeavyLevel>(player);
+
 }
 
 void PlayerManager::forceBlock(char blockType)
@@ -138,9 +139,9 @@ bool PlayerManager::getIsLost()
     }
     return isLost;
 }
-bool PlayerManager::moveBlock(char direction)
+bool PlayerManager::moveBlock(char direction, int magnitude)
 {
-    bool checkMove = player->moveBlock(direction);
+    bool checkMove = player->moveBlock(direction, magnitude);
     if (player->currentPlaced() && !player->getIsLost())
     {
         setNextBlock();
