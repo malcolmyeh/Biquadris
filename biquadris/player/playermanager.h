@@ -14,7 +14,7 @@ class Message;
 class PlayerManager
 {
     std::shared_ptr<Player> player;
-    std::shared_ptr<Player> opponent;
+    std::shared_ptr<PlayerManager> opponentManager;
     std::shared_ptr<Level> level;
     std::shared_ptr<Message> message;
     bool isPlaying = false;
@@ -25,23 +25,32 @@ public:
                   std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
                   std::shared_ptr<HoldBlockBoard> holdBlockBoard,
                   std::shared_ptr<Message> message);
+
+    // Setters
     void setOpponent(std::shared_ptr<PlayerManager> opponentManager);
-    bool getOpponentLost();
+    void setIsPlaying();
+    void setRandom(bool random);
+    void changeLevel(int num);
+
+    // Getters
+    bool getIsLost();
+    int getLevel();
+    bool getIsPlaying();
+    std::shared_ptr<Player> getPlayer();
+
+    // Block functions
     void initBlocks();
-    void forceBlock(char blockType);
-    void blind();
-    void makeHeavy();
     void setNextBlock();
+    void forceBlock(char blockType);
     bool moveBlock(char direction);
     bool rotateBlock(std::string direction);
     void dropBlock();
     void holdBlock();
-    void changeLevel(int num);
-    void setRandom(bool random);
-    std::shared_ptr<Player> getPlayer();
-    int getLevel();
-    bool getIsPlaying();
-    void setIsPlaying();
+
+    // Special Actions
+    void forceOpponentBlock(char blockType);
+    void blind();
+    void makeHeavy();
 };
 
 #endif

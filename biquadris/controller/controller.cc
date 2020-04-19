@@ -18,12 +18,15 @@ void Controller::makeDisplays(bool graphics, bool curses)
 {
     std::vector<std::shared_ptr<View>> p1Displays;
     std::vector<std::shared_ptr<View>> p2Displays;
-    p1Displays.emplace_back(std::make_shared<TextDisplay>());
-    p2Displays.emplace_back(std::make_shared<TextDisplay>());
+    std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
+
+    p1Displays.emplace_back(td);
+    p2Displays.emplace_back(td);
     if (graphics)
     {
-        p1Displays.emplace_back(std::make_shared<GraphicsDisplay>());
-        p2Displays.emplace_back(std::make_shared<GraphicsDisplay>());
+        std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
+        p1Displays.emplace_back(gd);
+        p2Displays.emplace_back(gd);
     }
     // if (curses)
     // {
@@ -150,7 +153,7 @@ void Controller::changeTurn()
         currentPlayer = playerManagers.front();
 }
 
-// returns true if the command starts with input, ie. prefix
+// returns true if the command starts with input, iwwe. prefix
 //   use of mismatch was found from:
 //   https://stackoverflow.com/questions/7913835/check-if-one-string-is-a-prefix-of-another
 bool startsWith(std::string input, std::string command)
@@ -180,7 +183,8 @@ void Controller::runGame()
     currentPlayer->setIsPlaying(); // set p1 to take first turn
     while (true)
     {
-        if (!currentPlayer->getIsPlaying()){ // if current player turn ends
+        if (!currentPlayer->getIsPlaying())
+        {                 // if current player turn ends
             changeTurn(); // change player
             currentPlayer->setIsPlaying();
         }

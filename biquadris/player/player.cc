@@ -32,8 +32,14 @@ Player::Player() {}
 
 void Player::setCurrentBlock(std::shared_ptr<Block> block)
 {
+    std::cout << "setCurrentBlock" << std::endl;
     currentBlock = block;
     isLost = !currentBlock->setMainBoard(mainBoard);
+    if (isLost)
+        std::cout << "LOST" << std::endl;
+    else
+        std::cout << "NOT LOST" << std::endl;
+
     mainBoard->addBlock(currentBlock);
 }
 
@@ -166,6 +172,7 @@ std::shared_ptr<Board> Player::getMainBoard()
 
 bool Player::getIsLost()
 {
+    std::cout << "getIsLost()" << std::endl;
     return isLost;
 }
 

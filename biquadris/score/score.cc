@@ -28,7 +28,7 @@ void Score::changeLevel(int level)
 void Score::resetScore()
 {
     currentScore = 0;
-    // need to draw?
+    drawDisplays();
 }
 
 void Score::drawDisplays()

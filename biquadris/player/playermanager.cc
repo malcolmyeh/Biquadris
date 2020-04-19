@@ -27,7 +27,7 @@ PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainB
 
 void PlayerManager::setOpponent(std::shared_ptr<PlayerManager> opponentManager)
 {
-    opponent = opponentManager->getPlayer();
+    this->opponentManager = opponentManager;
 }
 
 void PlayerManager::initBlocks()
@@ -99,19 +99,24 @@ void PlayerManager::forceBlock(char blockType)
         block = std::make_shared<TBlock>(level->getLevelNumber());
         break;
     }
-    opponent->setCurrentBlock(block);
+    player->setCurrentBlock(block);
+}
+
+void PlayerManager::forceOpponentBlock(char blockType)
+{
+    opponentManager->forceBlock(blockType);
     isPlaying = false;
 }
 
 void PlayerManager::blind()
 {
-    opponent->toggleBlind();
+    opponentManager->getPlayer()->toggleBlind();
     isPlaying = false;
 }
 
 void PlayerManager::makeHeavy()
 {
-    opponent = std::make_shared<Heavy>(opponent, true);
+    opponentManager->getPlayer() = std::make_shared<Heavy>(opponentManager->getPlayer(), true);
     isPlaying = false;
 }
 
@@ -123,14 +128,16 @@ bool PlayerManager::getCanSpecial()
     return canSpecial;
 }
 
-bool PlayerManager::getOpponentLost()
+bool PlayerManager::getIsLost()
 {
-    bool opponentLost = opponent->getIsLost();
-    if (opponentLost)
-        message->playerWon();
-    return opponentLost;
+    std::cout << "PlayerManager::getIsLost()" << std::endl;
+    bool isLost = player->getIsLost();
+    if (isLost)
+    {
+        opponentManager->message->playerWon();
+    }
+    return isLost;
 }
-
 bool PlayerManager::moveBlock(char direction)
 {
     bool checkMove = player->moveBlock(direction);
@@ -200,6 +207,5 @@ bool PlayerManager::getIsPlaying()
 {
     if (!isPlaying)
         message->clearMessage();
-    return isPlaying;   
-    
+    return isPlaying;
 }
