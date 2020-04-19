@@ -46,14 +46,15 @@ public:
     // Getters
     bool hasHoldBlock();
     bool getCanSpecial();
-    std::shared_ptr<Board> getMainBoard();
+    std::shared_ptr<MainBoard> getMainBoard();
     bool getIsLost();
     bool getIsDecorated();
     bool getRowCleared();
+    std::shared_ptr<Block> getCurrentBlock();
 
     // Block functions
     virtual bool moveBlock(char direction);
-    bool rotateBlock(std::string direction);
+    virtual bool rotateBlock(std::string direction);
     void dropBlock();
     void checkRow();
     bool currentPlaced();

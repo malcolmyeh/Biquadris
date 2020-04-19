@@ -165,7 +165,7 @@ void Player::setLevel(int level)
     this->level = level;
 }
 
-std::shared_ptr<Board> Player::getMainBoard()
+std::shared_ptr<MainBoard> Player::getMainBoard()
 {
     return mainBoard;
 }
@@ -185,3 +185,9 @@ std::shared_ptr<Player> Player::getPlayer()
 {
     return std::make_shared<Player>(this);
 }
+
+std::shared_ptr<Block> Player::getCurrentBlock()
+{
+    return currentBlock;
+}
+
