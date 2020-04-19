@@ -182,7 +182,9 @@ void Controller::runGame()
     std::string matchedCommand = "";
     currentPlayer->setIsPlaying(); // set p1 to take first turn
     while (true)
-    {
+    {   
+        if (currentPlayer->getIsLost())
+            break;
         if (!currentPlayer->getIsPlaying())
         {                 // if current player turn ends
             changeTurn(); // change player
