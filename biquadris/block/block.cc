@@ -324,10 +324,8 @@ bool Block::move(char direction, int magnitude)
         }
         this->topLeft += p;
         this->printCellCoordinates();
+        this->drawBlock(this->colour);
     }
-    this->drawBlock(this->colour);
-    // ********************************* the end bracket for the for loop can be placed here to
-    //   only draw once, if preferred
     return true;
 }
 

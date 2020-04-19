@@ -215,7 +215,7 @@ void Controller::runGame()
             for (unsigned int i = 0; i < std::to_string(multiplier).length(); ++i) {
                 input.erase(0, 1);
             }
-            std::cout << input << std::endl;
+            // std::cout << input << std::endl;
         }
         
         bool errorFlag = false;
@@ -249,21 +249,21 @@ void Controller::runGame()
         //   to a function for easier remapping
         if (matchedCommand == commands[0])
         { // move left
-            for (int i = 0; i < multiplier; ++i)
-                currentPlayer->moveBlock('L');
-            // currentPlayer->moveBlock('L', multiplier);
+            // for (int i = 0; i < multiplier; ++i)
+            //     currentPlayer->moveBlock('L');
+            currentPlayer->moveBlock('L', multiplier);
         }
         else if (matchedCommand == commands[1])
         { // move down
-            for (int i = 0; i < multiplier; ++i)
-                currentPlayer->moveBlock('D');
-            // currentPlayer->moveBlock('D', multiplier);
+            // for (int i = 0; i < multiplier; ++i)
+            //     currentPlayer->moveBlock('D');
+            currentPlayer->moveBlock('D', multiplier);
         }
         else if (matchedCommand == commands[2])
         { // move right
-            for (int i = 0; i < multiplier; ++i)
-                currentPlayer->moveBlock('R');
-            // currentPlayer->moveBlock('R', multiplier);
+            // for (int i = 0; i < multiplier; ++i)
+            //     currentPlayer->moveBlock('R');
+            currentPlayer->moveBlock('R', multiplier);
         }
         else if (matchedCommand == commands[3])
         { // rotate clockwise
