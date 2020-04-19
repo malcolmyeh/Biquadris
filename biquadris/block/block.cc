@@ -665,46 +665,46 @@ void Block::drawBlock(int colour)
     {
         for (auto a : this->points)
             this->mainBoard->fillCell(a, colour);
-            }
-            else if (this->nextBlockBoard)
-            {
-                for (auto a : this->points)
-                {
-                    Point b = a += {0, -2};
-                    this->nextBlockBoard->fillCell(b, colour);
-                }
-            }
-            if (this->holdBlockBoard)
-            {
-
-                for (auto a : this->points)
-                {
-                    Point b = a += {0, -2};
-                    this->holdBlockBoard->fillCell(b, colour);
-                }
-            }
-    }
-
-    void Block::printCellCoordinates()
-    {
-        for (auto a : this->points)
-            std::cout << "{" << a.getX() << "," << a.getY() << "} ";
-        std::cout << std::endl;
-    }
-
-    bool Block::isEmpty()
-    {
-        return this->points.empty();
-    }
-
-    bool Block::isValid()
+        }
+    else if (this->nextBlockBoard)
     {
         for (auto a : this->points)
         {
-            if (mainBoard->isFilled(a))
-            {
-                return false;
-            }
+            Point b = a += {0, -2};
+            this->nextBlockBoard->fillCell(b, colour);
         }
-        return true;
     }
+    if (this->holdBlockBoard)
+    {
+
+        for (auto a : this->points)
+        {
+            Point b = a += {0, -2};
+            this->holdBlockBoard->fillCell(b, colour);
+        }
+    }
+}
+
+void Block::printCellCoordinates()
+{
+    for (auto a : this->points)
+        std::cout << "{" << a.getX() << "," << a.getY() << "} ";
+    std::cout << std::endl;
+}
+
+bool Block::isEmpty()
+{
+    return this->points.empty();
+}
+
+bool Block::isValid()
+{
+    for (auto a : this->points)
+    {
+        if (mainBoard->isFilled(a))
+        {
+            return false;
+        }
+    }
+    return true;
+}
