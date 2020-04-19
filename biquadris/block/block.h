@@ -29,12 +29,14 @@ protected:
     // protected method for the loops at the end of each ctor
 public:
     Block(int colour, int level);
-    bool move(char direction); // change the colour
+    // bool move(char direction); // change the colour
+    bool move (char direction, int magnitude = 1);
     bool rotate(std::string direction);
     void drop();
     bool isPlaced();          //
     bool clearPoint(int row); // get rid of all y = row. return true if block is empty
     int getLevel();
+    int getColour();
     bool setMainBoard(std::shared_ptr<MainBoard> mainBoard);
     void setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard);
     void setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard);

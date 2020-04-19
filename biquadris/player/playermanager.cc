@@ -14,7 +14,6 @@
 #include "../block/tblock.h"
 #include "../block/zblock.h"
 #include "../message/message.h"
-#include "heavy.h"
 
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                              std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
@@ -68,8 +67,9 @@ void PlayerManager::changeLevel(int num)
         break;
     }
     player->setLevel(level->getLevelNumber());
-    if (level->getLevelNumber() >= 3)
-        player = std::make_shared<Heavy>(player);
+    // if (level->getLevelNumber() >= 3)
+    //     player = std::make_shared<HeavyLevel>(player);
+
 }
 
 void PlayerManager::forceBlock(char blockType)
@@ -99,6 +99,8 @@ void PlayerManager::forceBlock(char blockType)
         block = std::make_shared<TBlock>(level->getLevelNumber());
         break;
     }
+    player->getMainBoard()->removeBlock();
+    player->getCurrentBlock()->drawBlock(Xwindow::White);
     player->setCurrentBlock(block);
 }
 
@@ -114,11 +116,11 @@ void PlayerManager::blind()
     isPlaying = false;
 }
 
-void PlayerManager::makeHeavy()
-{
-    opponentManager->getPlayer() = std::make_shared<Heavy>(opponentManager->getPlayer(), true);
-    isPlaying = false;
-}
+// void PlayerManager::makeHeavy()
+// {
+//     opponentManager->getPlayer() = std::make_shared<HeavyPlayer>(opponentManager->getPlayer());
+//     isPlaying = false;
+// }
 
 bool PlayerManager::getCanSpecial()
 {
@@ -130,7 +132,6 @@ bool PlayerManager::getCanSpecial()
 
 bool PlayerManager::getIsLost()
 {
-    std::cout << "PlayerManager::getIsLost()" << std::endl;
     bool isLost = player->getIsLost();
     if (isLost)
     {
@@ -138,9 +139,9 @@ bool PlayerManager::getIsLost()
     }
     return isLost;
 }
-bool PlayerManager::moveBlock(char direction)
+bool PlayerManager::moveBlock(char direction, int magnitude)
 {
-    bool checkMove = player->moveBlock(direction);
+    bool checkMove = player->moveBlock(direction, magnitude);
     if (player->currentPlaced() && !player->getIsLost())
     {
         setNextBlock();

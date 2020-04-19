@@ -71,9 +71,11 @@ void Board::refresh()
     }
 }
 
-void Board::restart(){
-    for (auto r : cellGrid){
-        for (auto c: r)
+void Board::restart()
+{
+    for (auto r : cellGrid)
+    {
+        for (auto c : r)
             c.setColour(Xwindow::White);
     }
     refresh();
@@ -81,7 +83,9 @@ void Board::restart(){
 
 void Board::fillCell(Point point, int colour)
 {
-    cellGrid[point.getY()][point.getX()].setColour(colour);
+    if (cellGrid[point.getY()][point.getX()].getColour() != colour)
+        cellGrid[point.getY()][point.getX()]
+            .setColour(colour);
     cellGrid[point.getY()][point.getX()].drawDisplays();
 }
 
@@ -94,4 +98,3 @@ bool Board::isFilled(Point point)
 {
     return cellGrid[point.getY()][point.getX()].isFilled();
 }
-

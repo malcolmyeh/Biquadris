@@ -1,8 +1,16 @@
-// #ifndef PLAYERDECORATOR_H
-// #define PLAYER_DECORATOR_H
+#ifndef PLAYERDECORATOR_H
+#define PLAYERDECORATOR_H
 
-// class PlayerDecorator: public Player {
+#include "player.h"
 
-// }
+class PlayerDecorator : public Player
+{
+protected:
+    std::shared_ptr<Player> player;
 
-// #endif
+public:
+    PlayerDecorator(std::shared_ptr<Player> player,  bool isDecorated);
+    void undecorate();
+};
+
+#endif

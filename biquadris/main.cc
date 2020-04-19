@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
     bool valid = true;
 
     std::vector<std::string> args(argv + 1, argv + argc);
-    for (int i = 0; i < args.size(); ++i) {
+    for (unsigned i = 0; i < args.size(); ++i) {
         std:: string flag = args[i];
         try {
             if (flag == "-text") 
@@ -82,7 +82,7 @@ int main(int argc, char *argv[])
             {
                 if (i + 1 < args.size()) {
                     // verify it doesn't contain letters
-                    for (int j = 0; j < args[i + 1].length(); ++j) {
+                    for (unsigned int j = 0; j < args[i + 1].length(); ++j) {
                         if (!isdigit(args[i + 1][j]))
                             throw "Seed should be an unsigned integer.";
                     }
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
             {
                 if (i + 1 < args.size()) {
                     // verify that it doesn't contain letters
-                    for (int j = 0; j < args[i + 1].length(); ++j) {
+                    for (unsigned int j = 0; j < args[i + 1].length(); ++j) {
                         if (!isdigit(args[i + 1][j]))
                             throw "Level must be a number between 0 and 4 inclusive.";
                     }
