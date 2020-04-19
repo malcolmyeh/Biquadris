@@ -36,12 +36,12 @@ void GraphicsDisplay::drawBoardArea()
     for (int i = cellSize; i < boardWidth; i += cellSize)
     {
         xw->drawLine(padding + i, padding + scoreHeight, padding + i, padding + scoreHeight + boardHeight);
-        xw->drawLine(2 * padding + boardWidth + i, padding + scoreHeight, 2 * padding + boardWidth + i, padding + scoreHeight);
+        xw->drawLine(2 * padding + boardWidth + i, padding + scoreHeight, 2 * padding + boardWidth + i, padding + scoreHeight+boardHeight);
     }
     for (int i = cellSize; i < boardHeight; i += cellSize)
     {
         xw->drawLine(padding, padding + scoreHeight + i, padding + boardWidth, padding + scoreHeight + i);
-        xw->drawLine(2 * padding + boardWidth,padding + scoreHeight + i, 2 * padding + boardWidth, padding + scoreHeight + i);
+        xw->drawLine(padding + boardWidth + padding, padding + scoreHeight + i, totalWidth - padding,  padding + scoreHeight + i);
     }
 }
 
