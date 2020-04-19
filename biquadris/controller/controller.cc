@@ -231,6 +231,11 @@ void Controller::runGame()
                 matchedCommand = command;
         }
 
+        if (matchedCommand == "") {
+            std::cerr << "No commands matched." << std::endl;
+            continue;
+        }
+
         if (errorFlag)
         {
             std::cerr << "Unable to match command. Please try again." << std::endl;
@@ -316,8 +321,12 @@ void Controller::runGame()
         else if (matchedCommand == commands[12])
         { // remapping
             matchedCommand = "";
+            std::cout << "MATCHED COMMAND IS: " << matchedCommand << std::endl;
             std::string oldCommand;
             std::cin >> oldCommand;
+            std::cout << "OLD COMMAND IS:" << oldCommand << std::endl;
+            std::string newCommand;
+            std::cin >> newCommand;
             for (auto command : commands)
             {
                 if (startsWith(oldCommand, command) && matchedCommand != "")
@@ -325,8 +334,15 @@ void Controller::runGame()
                     errorFlag = true;
                     break;
                 }
-                if (startsWith(input, command))
+                if (startsWith(oldCommand, command)) {
                     matchedCommand = command;
+                    std::cout << "MATCHED COMMAND JUST CHANGED TO:" << matchedCommand << std::endl;
+                }
+            }
+            std::cout << "MATCHED COMMAND IS: " << matchedCommand << std::endl;
+            if (matchedCommand == "") {
+                std::cerr << "Old command did not match anything." << std::endl;
+                continue;
             }
 
             if (errorFlag)
@@ -337,8 +353,7 @@ void Controller::runGame()
                 errorFlag = false;
                 continue;
             }
-            std::string newCommand;
-            std::cin >> newCommand;
+            
             for (auto a : commands)
             {
                 if (a == newCommand)
