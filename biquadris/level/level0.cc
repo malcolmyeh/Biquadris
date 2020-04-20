@@ -5,35 +5,35 @@ Level0::Level0(std::vector<char> sequence)
 : Level{0, sequence}{}
 Level0::~Level0() {}
 
-std::shared_ptr<Block> Level0::createBlock()
+std::unique_ptr<Block> Level0::createBlock()
 {
     if (sequencePosition >= sequence.size())
     {
         sequencePosition = 0;
     }
-    std::shared_ptr<Block> block;
+    std::unique_ptr<Block> block;
     switch (sequence.at(sequencePosition))
     {
     case 'I':
-        block = std::make_shared<IBlock>(levelNumber);
+        block = std::make_unique<IBlock>(levelNumber);
         break;
     case 'J':
-        block = std::make_shared<JBlock>(levelNumber);
+        block = std::make_unique<JBlock>(levelNumber);
         break;
     case 'L':
-        block = std::make_shared<LBlock>(levelNumber);
+        block = std::make_unique<LBlock>(levelNumber);
         break;
     case 'O':
-        block = std::make_shared<OBlock>(levelNumber);
+        block = std::make_unique<OBlock>(levelNumber);
         break;
     case 'S':
-        block = std::make_shared<SBlock>(levelNumber);
+        block = std::make_unique<SBlock>(levelNumber);
         break;
     case 'Z':
-        block = std::make_shared<ZBlock>(levelNumber);
+        block = std::make_unique<ZBlock>(levelNumber);
         break;
     case 'T':
-        block = std::make_shared<TBlock>(levelNumber);
+        block = std::make_unique<TBlock>(levelNumber);
         break;
     }
     ++sequencePosition;

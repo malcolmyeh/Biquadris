@@ -9,7 +9,7 @@ public:
     Level3(std::string file);
     Level3(std::vector<char> sequence);
     ~Level3();
-    std::shared_ptr<Block> createBlock() override;
+    std::unique_ptr<Block> createBlock() override;
 };
 
 #endif

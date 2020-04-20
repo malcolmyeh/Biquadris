@@ -3,7 +3,7 @@
 #include "../display/window.h"
 
 DBlock::DBlock(int level) : Block{Xwindow::Brown, level} {
-    std::vector<Point> v = {{5, 3}};
+    std::vector<Point> v = {{5, 0}};
     this->points = v;
     this->minRec = v;
     this->recWidth = 1;

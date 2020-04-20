@@ -7,174 +7,16 @@
 #include "../board/nextblockboard.h"
 
 // ctor
-Block::Block(int colour, int level) : colour{colour}, level{level}, rotation{0}
-{
-    printCellCoordinates();
-}
+Block::Block(int colour, int level) : colour{colour}, level{level}, rotation{0}{}
 
 // this function returns true if it is possible to move in direction (x, y) and false otherwise
 //   if move is valid, unfill cells, then refill them after the points have shifted internally
 
-// MAKE SURE I CHECK FOR BOUNDARIES AND SEG FAULTS ASAP
-// bool Block::move(char direction)
-// {
-//     // translation vector
-//     Point p{0, 0};
-
-//     // check for collision with an intermediate block
-//     if (direction == 'D')
-//     {
-//         // create a set of unique X values which the piece occupies
-//         std::unordered_set<int> uniqueXValues;
-//         for (auto a : this->points)
-//         {
-//             if (uniqueXValues.find(a.getX()) == uniqueXValues.end())
-//                 uniqueXValues.insert(a.getX());
-//         }
-
-//         // now that the set is created, find the lowermost points for each unique X
-//         std::vector<Point> checkDown;
-//         for (auto a : uniqueXValues)
-//         {
-//             int largestY = 0;
-//             for (auto b : this->points)
-//             {
-//                 if (b.getX() == a)
-//                 {
-//                     if (b.getY() > largestY)
-//                     {
-//                         largestY = b.getY();
-//                     }
-//                 }
-//             }
-//             Point p{a, largestY};
-//             checkDown.emplace_back(p);
-//         }
-
-//         // vector of lowest bound of piece created. check one below.
-//         for (auto a : checkDown)
-//         {
-//             // check bottom boundary
-//             if (a.getY() + 1 > 17)
-//                 return false;
-//             // check if piece is occupying
-//             Point q{a.getX(), a.getY() + 1};
-//             if (this->mainBoard->isFilled(q)) // if one of these points are filled->false
-//                 return false;
-//         }
-
-//         // empty the current cells
-//         this->printCellCoordinates();
-//         this->drawBlock(Xwindow::White);
-
-//         p = {0, 1};
-//     }
-//     else if (direction == 'L')
-//     {
-//         std::unordered_set<int> uniqueYValues;
-//         for (auto a : this->points)
-//         {
-//             if (uniqueYValues.find(a.getY()) == uniqueYValues.end()) // it is not there? insert
-//                 uniqueYValues.insert(a.getY());
-//         }
-
-//         std::vector<Point> checkLeft;
-//         for (auto a : uniqueYValues)
-//         {
-//             int smallestX = 10;
-//             for (auto b : this->points)
-//             {
-//                 if (b.getY() == a)
-//                 {
-//                     if (b.getX() < smallestX)
-//                     {
-//                         smallestX = b.getX();
-//                     }
-//                 }
-//             }
-//             Point p{smallestX, a};
-//             checkLeft.emplace_back(p);
-//         }
-
-//         for (auto a : checkLeft)
-//         {
-//             if (a.getX() - 1 < 0)
-//                 return false;
-//             Point q{a.getX() - 1, a.getY()};
-//             if (this->mainBoard->isFilled(q))
-//                 return false;
-//         }
-
-//         this->printCellCoordinates();
-//         this->drawBlock(Xwindow::White);
-//         p = {-1, 0};
-//     }
-//     else if (direction == 'R')
-//     {
-//         // create a set of unique Y values that the piece occupies
-//         std::unordered_set<int> uniqueYValues;
-//         for (auto a : this->points)
-//         {
-//             if (uniqueYValues.find(a.getY()) == uniqueYValues.end())
-//                 uniqueYValues.insert(a.getY());
-//         }
-
-//         // set is created. now we find the rightmost point for each Y
-//         std::vector<Point> checkRight;
-//         for (auto a : uniqueYValues)
-//         {
-//             int largestX = 0;
-//             for (auto b : this->points)
-//             {
-//                 if (b.getY() == a)
-//                 {
-//                     if (b.getX() > largestX)
-//                     {
-//                         largestX = b.getX();
-//                     }
-//                 }
-//             }
-//             Point p{largestX, a};
-//             checkRight.emplace_back(p);
-//         }
-
-//         // check one cell to the right if they are occupied or nah
-//         for (auto a : checkRight)
-//         {
-//             if (a.getX() + 1 > 10)
-//                 return false;
-//             Point q{a.getX() + 1, a.getY()};
-//             // if (this->board->isFilled(a.getX() + 1, a.getY()))
-//             if (this->mainBoard->isFilled(q))
-//                 return false;
-//         }
-
-//         this->printCellCoordinates();
-//         this->drawBlock(Xwindow::White);
-//         p = {1, 0};
-//     }
-
-//     for (auto &a : this->points)
-//     {
-//         a += p;
-//     }
-//     for (auto &a : this->minRec)
-//     {
-//         a += p;
-//         // if (std::find(this->points.begin(), this->points.end(), a) != this->points.end()) { // if a is in points
-
-//         // }
-//     }
-//     this->topLeft += p;
-//     this->printCellCoordinates();
-//     this->drawBlock(this->colour);
-//     return true;
-// }
-
 // true for full movement carried out. false otherwise.
 bool Block::move(char direction, int magnitude)
 {
-    for (int i = 0; i < magnitude; ++i) {
+    for (int i = 0; i < magnitude; ++i)
+    {
         // translation vector
         Point p{0, 0};
 
@@ -618,7 +460,8 @@ int Block::getLevel()
     return this->level;
 }
 
-int Block::getColour(){
+int Block::getColour()
+{
     return this->colour;
 }
 
@@ -647,7 +490,6 @@ void Block::setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard)
 
 void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
 {
-    std::cout << "setHoldBlockBoard" << std::endl;
     if (this->mainBoard) // rotate block to original position
     {
 
@@ -655,7 +497,6 @@ void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
         {
             rotate("CCW");
         }
-        std::cout << "erasing from main ..." << std::endl;
         drawBlock(Xwindow::White);
         this->mainBoard = nullptr;
     }

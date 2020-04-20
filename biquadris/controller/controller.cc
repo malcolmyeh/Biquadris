@@ -1,4 +1,6 @@
 #include "controller.h"
+#include "../player/heavylevel.h"
+#include "../player/level4effect.h"
 #include <vector>
 
 Controller::Controller(bool graphics, bool curses, std::vector<std::string> scriptFiles, int startLevel = 0)
@@ -18,10 +20,10 @@ void Controller::makeDisplays(bool graphics, bool curses)
 {
     std::vector<std::shared_ptr<View>> p1Displays;
     std::vector<std::shared_ptr<View>> p2Displays;
-    std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
+    // std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
 
-    p1Displays.emplace_back(td);
-    p2Displays.emplace_back(td);
+    // p1Displays.emplace_back(td);
+    // p2Displays.emplace_back(td);
     if (graphics)
     {
         std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
@@ -89,6 +91,16 @@ void Controller::makePlayerManagers(int startLevel, std::vector<std::string> scr
                                             mainBoards[i], createLevel(startLevel, scriptFiles[i]), nextBlockBoards[i], holdBlockBoards[i],
                                             messages[i]));
         playerManagers[i]->initBlocks();
+    }
+    if (startLevel >= 3)
+    {
+        for (auto playerManager : playerManagers)
+            playerManager->setPlayer(std::make_shared<HeavyLevel>(playerManager->getPlayer()));
+    }
+    if (startLevel == 4)
+    {
+        for (auto playerManager : playerManagers)
+            playerManager->setPlayer(std::make_shared<Level4Effect>(playerManager->getPlayer()));
     }
 
     // set each Players as each other's opponents
@@ -178,7 +190,8 @@ void Controller::runGame()
                                          "counterclockwise", "drop", "levelup",
                                          "leveldown", "norandom", "random",
                                          "sequence", "restart", "remap", "hold",
-                                         "I", "J", "L", "O", "S", "T", "Z"};
+                                         "I", "J", "L", "O", "S", "T", "Z", "blind",
+                                         "heavy", "force"};
     std::vector<std::string> fileInput;
     bool readFileInput = false;
     std::string matchedCommand = "";
@@ -188,7 +201,7 @@ void Controller::runGame()
     // possible code improvement: since multiplier, match and errorFlag are within loop, they do not
     //   have to be constantly reset
     while (true)
-    {   
+    {
         if (currentPlayer->getIsLost())
             break;
         if (!currentPlayer->getIsPlaying())
@@ -198,26 +211,33 @@ void Controller::runGame()
         }
         // getOpponentLost
         std::string input;
-        if (readFileInput) {
-            if (fileInput.empty()) {
+        if (readFileInput)
+        {
+            if (fileInput.empty())
+            {
                 readFileInput = false;
-            } else {
+            }
+            else
+            {
                 input = fileInput[0];
                 fileInput.erase(fileInput.begin(), fileInput.begin() + 1);
             }
-        } else {
+        }
+        else
+        {
             std::cin >> input;
         }
         int multiplier = 1;
         if (isdigit(input[0]))
         { // grab multiplier. if none, default is 1
             multiplier = std::stoi(input);
-            for (unsigned int i = 0; i < std::to_string(multiplier).length(); ++i) {
+            for (unsigned int i = 0; i < std::to_string(multiplier).length(); ++i)
+            {
                 input.erase(0, 1);
             }
             std::cout << input << std::endl;
         }
-        
+
         bool errorFlag = false;
 
         for (auto command : commands)
@@ -231,7 +251,8 @@ void Controller::runGame()
                 matchedCommand = command;
         }
 
-        if (matchedCommand == "") {
+        if (matchedCommand == "")
+        {
             std::cerr << "No commands matched." << std::endl;
             continue;
         }
@@ -303,7 +324,8 @@ void Controller::runGame()
             std::string filename;
             std::cin >> filename;
             std::ifstream infile{filename};
-            if (!infile.good()) {
+            if (!infile.good())
+            {
                 multiplier = 1;
                 matchedCommand = "";
                 std::cerr << "File either does not exist, or cannot be opened." << std::endl;
@@ -311,7 +333,8 @@ void Controller::runGame()
             }
 
             // file exists - move on
-            while (infile >> filename) {
+            while (infile >> filename)
+            {
                 std::cout << filename << std::endl;
                 fileInput.emplace_back(filename);
             }
@@ -337,13 +360,15 @@ void Controller::runGame()
                     errorFlag = true;
                     break;
                 }
-                if (startsWith(oldCommand, command)) {
+                if (startsWith(oldCommand, command))
+                {
                     matchedCommand = command;
                     std::cout << "MATCHED COMMAND JUST CHANGED TO:" << matchedCommand << std::endl;
                 }
             }
             std::cout << "MATCHED COMMAND IS: " << matchedCommand << std::endl;
-            if (matchedCommand == "") {
+            if (matchedCommand == "")
+            {
                 std::cerr << "Old command did not match anything." << std::endl;
                 continue;
             }
@@ -356,7 +381,7 @@ void Controller::runGame()
                 errorFlag = false;
                 continue;
             }
-            
+
             for (auto a : commands)
             {
                 if (a == newCommand)
@@ -386,12 +411,12 @@ void Controller::runGame()
             for (int i = 0; i < multiplier; ++i)
                 currentPlayer->holdBlock();
         }
-        else if (matchedCommand == commands[14]) 
+        else if (matchedCommand == commands[14])
         { // I
             currentPlayer->forceBlock('I');
         }
         else if (matchedCommand == commands[15])
-        { // J 
+        { // J
             currentPlayer->forceBlock('J');
         }
         else if (matchedCommand == commands[16])
@@ -414,6 +439,20 @@ void Controller::runGame()
         { // Z
             currentPlayer->forceBlock('Z');
         } // no need for else. it is verified in the matching phase.
+        else if (matchedCommand == commands[21])
+        { // blind
+            currentPlayer->blind();
+        }
+        else if (matchedCommand == commands[22])
+        { // heavy
+            currentPlayer->makeHeavy();
+        }
+        else if (matchedCommand == commands[23])
+        { // force
+            char blockType;
+            std::cin >> blockType;
+            currentPlayer->forceOpponentBlock(blockType);
+        }
         multiplier = 1;
         matchedCommand = "";
     }
@@ -438,7 +477,6 @@ std::shared_ptr<Level> Controller::createLevel(int levelNumber, std::string file
         break;
     case 4:
         level = std::make_shared<Level4>(file);
-        break;
     }
     return level;
 }

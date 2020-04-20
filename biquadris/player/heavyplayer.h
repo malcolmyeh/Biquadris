@@ -1,17 +1,17 @@
-// #ifndef HEAVYLEVEL_H
-// #define HEAVYLEVEL_H
+#ifndef HEAVYPLAYER_H
+#define HEAVYPLAYER_H
 
-// #include "playerdecorator.h"
+#include "playerdecorator.h"
 
-// class HeavyPlayer : public PlayerDecorator
-// {
+class HeavyPlayer : public PlayerDecorator
+{
 
-// public:
-//     HeavyPlayer(std::shared_ptr<Player> player, bool isDecorated = true);
-//     bool moveBlock(char direction, int magnitude = 1) override;
-//     std::shared_ptr<Player> getPlayer() override;
-// };
+public:
+    HeavyPlayer(std::shared_ptr<Player> player, bool isDecorated = true);
+    bool moveBlock(char direction, int magnitude = 1) override;
+    std::shared_ptr<Player> getPlayer() override;
+};
 
-// #endif
+#endif
 
-// // Move left or right will move Block down 2
+// Move left or right will move Block down 2

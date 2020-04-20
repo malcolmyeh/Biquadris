@@ -1,6 +1,5 @@
 #include "player.h"
 #include "../block/dblock.h"
-
 #include "../score/score.h"
 #include "../board/mainboard.h"
 #include "../board/nextblockboard.h"
@@ -14,7 +13,23 @@ Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoar
 {
 }
 
-Player::Player(Player *other)
+Player::Player(std::shared_ptr<Player> player)
+{
+    this->currentBlock = player->currentBlock;
+    this->nextBlock = player->nextBlock;
+    this->holdBlock = player->holdBlock;
+    this->score = player->score;
+    this->mainBoard = player->mainBoard;
+    this->nextBlockBoard = player->nextBlockBoard;
+    this->holdBlockBoard = player->holdBlockBoard;
+    this->canSpecial = player->canSpecial;
+    this->level = player->level;
+    this->isBlind = player->isBlind;
+    this->isLost = player->isLost;
+    this->isDecorated = player->isDecorated;
+}
+
+Player::Player(Player *other) // fix
 {
     score = other->score;
     mainBoard = other->mainBoard;
@@ -43,7 +58,7 @@ void Player::setNextBlock(std::shared_ptr<Block> block)
 
 bool Player::moveBlock(char direction, int magnitude)
 {
-    bool checkMove = currentBlock->move(direction, magnitude);
+    bool checkMove = getCurrentBlock()->move(direction, magnitude);
     if (direction == 'D')
     {
         checkRow();
@@ -53,12 +68,12 @@ bool Player::moveBlock(char direction, int magnitude)
 
 bool Player::rotateBlock(std::string direction)
 {
-    return currentBlock->rotate(direction);
+    return getCurrentBlock()->rotate(direction);
 }
 
 void Player::dropBlock()
 {
-    currentBlock->drop();
+    getCurrentBlock()->drop();
     checkRow();
     if (isBlind)
         toggleBlind();
@@ -66,8 +81,14 @@ void Player::dropBlock()
 
 bool Player::hasHoldBlock()
 {
+
+    std::cout << "Player::hasHoldBlock" << std::endl;
     if (this->holdBlock)
+    {
+        std::cout << "player has hold";
         return true;
+    }
+
     return false;
 }
 
@@ -115,19 +136,17 @@ void Player::checkRow()
     int rowsCleared = mainBoard->checkRow(score);
     if (rowsCleared >= 2)
         canSpecial = true;
-
 }
 
 bool Player::currentPlaced()
 {
-    if (currentBlock->isPlaced() || currentBlock->isEmpty())
+    if (getCurrentBlock()->isPlaced() || getCurrentBlock()->isEmpty())
     {
-        setCurrentBlock(nextBlock);
+        setCurrentBlock(getNextBlock());
         return true;
     }
     return false;
 }
-
 
 void Player::setLevel(int level)
 {
@@ -158,4 +177,27 @@ std::shared_ptr<Player> Player::getPlayer()
 std::shared_ptr<Block> Player::getCurrentBlock()
 {
     return currentBlock;
+}
+
+std::shared_ptr<Block> Player::getNextBlock()
+{
+    return nextBlock;
+}
+std::shared_ptr<Block> Player::getHoldBlock()
+{
+    return holdBlock;
+}
+
+std::shared_ptr<NextBlockBoard> Player::getNextBlockBoard()
+{
+    return nextBlockBoard;
+}
+std::shared_ptr<HoldBlockBoard> Player::getHoldBlockBoard()
+{
+    return holdBlockBoard;
+}
+
+std::shared_ptr<Score> Player::getScore()
+{
+    return score;
 }

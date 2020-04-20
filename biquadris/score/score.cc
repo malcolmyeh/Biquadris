@@ -2,11 +2,11 @@
 #include "../display/window.h"
 #include "../display/view.h"
 
-Score::Score(int level, std::shared_ptr<Board> board) : Subject{board},  level{level}, currentScore{0}, highScore{0} {}
+Score::Score(int level, std::shared_ptr<Board> board) : Subject{board}, level{level}, currentScore{0}, highScore{0} {}
 
 void Score::updateScoreRow()
 {
-    this->currentScore += (level+1) * (level + 1);
+    this->currentScore += (level + 1) * (level + 1);
     if (currentScore > highScore)
         highScore = currentScore;
     drawDisplays();
@@ -22,7 +22,13 @@ void Score::updateScoreBlock(int level)
 
 void Score::changeLevel(int level)
 {
-    this->level = level;
+
+    if (level == 4)
+    {
+        this->level = 4;
+    }
+    else
+        this->level = level;
     drawDisplays();
 }
 void Score::resetScore()

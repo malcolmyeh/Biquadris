@@ -8,7 +8,7 @@ public:
     Level2(std::string file);
     Level2(std::vector<char> sequence);
     ~Level2();
-    std::shared_ptr<Block> createBlock() override;
+    std::unique_ptr<Block> createBlock() override;
 };
 
 #endif
