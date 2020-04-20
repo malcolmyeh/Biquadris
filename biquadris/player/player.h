@@ -22,6 +22,8 @@ protected:
     std::shared_ptr<HoldBlockBoard> holdBlockBoard;
     bool canSpecial = false;
     int level;
+    bool rowCleared = false;
+    int blocksDropped = 0;
     bool isBlind = false;
     bool isLost = false;
     bool isDecorated = false; // is decorated by opponent
@@ -29,7 +31,7 @@ protected:
 public:
     Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
            std::shared_ptr<NextBlockBoard> nextBlockBoard,
-           std::shared_ptr<HoldBlockBoard> holdBlockBoard);
+           std::shared_ptr<HoldBlockBoard> holdBlockBoard, int level);
     Player(Player *other);
     Player(std::shared_ptr<Player> player);
     Player();
@@ -38,16 +40,16 @@ public:
     virtual void setCurrentBlock(std::shared_ptr<Block> block);
     virtual void setNextBlock(std::shared_ptr<Block> block);
     virtual void setHoldBlock();
-    void setLevel(int level);
-    void toggleCanSpecial();
-    void toggleBlind();
+    virtual void setLevel(int level);
+    virtual void toggleCanSpecial();
+    virtual void toggleBlind();
 
     // Getters
     virtual bool hasHoldBlock();
-    bool getCanSpecial();
-    bool getIsLost();
-    bool getIsDecorated();
-    bool getRowCleared();
+    virtual bool getCanSpecial();
+    virtual bool getIsLost();
+    virtual bool getIsDecorated();
+    virtual bool getRowCleared();
     virtual std::shared_ptr<Block> getCurrentBlock();
     virtual std::shared_ptr<Block> getNextBlock();
     virtual std::shared_ptr<Block> getHoldBlock();
@@ -55,6 +57,7 @@ public:
     virtual std::shared_ptr<NextBlockBoard> getNextBlockBoard();
     virtual std::shared_ptr<HoldBlockBoard> getHoldBlockBoard();
     virtual std::shared_ptr<Score> getScore();
+    virtual int getLevel();
 
     // Block functions
     virtual bool moveBlock(char direction, int magnitude = 1);
@@ -62,7 +65,7 @@ public:
     virtual void dropBlock();
     virtual void checkRow();
     virtual bool currentPlaced();
-    void level4Effect();
+    virtual void level4Effect();
 
     // Undecorate function if Player is Decorator
     virtual std::shared_ptr<Player> getPlayer();

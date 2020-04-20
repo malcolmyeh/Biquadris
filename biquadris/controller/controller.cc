@@ -1,6 +1,5 @@
 #include "controller.h"
 #include "../player/heavylevel.h"
-#include "../player/level4effect.h"
 #include <vector>
 
 Controller::Controller(bool graphics, bool curses, std::vector<std::string> scriptFiles, int startLevel = 0)
@@ -41,19 +40,19 @@ void Controller::makeDisplays(bool graphics, bool curses)
 
 void Controller::makeBoards()
 {
-    mainBoards.emplace_back(std::make_shared<MainBoard>());
-    mainBoards.emplace_back(std::make_shared<MainBoard>());
-    nextBlockBoards.emplace_back(std::make_shared<NextBlockBoard>());
-    nextBlockBoards.emplace_back(std::make_shared<NextBlockBoard>());
-    holdBlockBoards.emplace_back(std::make_shared<HoldBlockBoard>());
-    holdBlockBoards.emplace_back(std::make_shared<HoldBlockBoard>());
+    mainBoards.emplace_back(std::make_shared<MainBoard>(1));
+    mainBoards.emplace_back(std::make_shared<MainBoard>(2));
+    nextBlockBoards.emplace_back(std::make_shared<NextBlockBoard>(1));
+    nextBlockBoards.emplace_back(std::make_shared<NextBlockBoard>(2));
+    holdBlockBoards.emplace_back(std::make_shared<HoldBlockBoard>(1));
+    holdBlockBoards.emplace_back(std::make_shared<HoldBlockBoard>(2));
 }
 
 void Controller::makeScores(int startLevel)
 {
     // create Scores
     for (auto mainBoard : mainBoards)
-        scores.emplace_back(std::make_shared<Score>(startLevel, mainBoard));
+        scores.emplace_back(std::make_shared<Score>(startLevel, mainBoard->getBoardNumber()));
     // link to Displays
     for (auto score : scores)
     {
@@ -69,7 +68,7 @@ void Controller::makeScores(int startLevel)
 void Controller::makeMessages()
 {
     for (auto mainBoard : mainBoards)
-        messages.emplace_back(std::make_shared<Message>(mainBoard));
+        messages.emplace_back(std::make_shared<Message>(mainBoard->getBoardNumber()));
 
     for (auto message : messages)
     {
@@ -96,11 +95,6 @@ void Controller::makePlayerManagers(int startLevel, std::vector<std::string> scr
     {
         for (auto playerManager : playerManagers)
             playerManager->setPlayer(std::make_shared<HeavyLevel>(playerManager->getPlayer()));
-    }
-    if (startLevel == 4)
-    {
-        for (auto playerManager : playerManagers)
-            playerManager->setPlayer(std::make_shared<Level4Effect>(playerManager->getPlayer()));
     }
 
     // set each Players as each other's opponents

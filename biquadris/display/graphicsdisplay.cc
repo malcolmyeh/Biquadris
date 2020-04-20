@@ -70,10 +70,10 @@ void GraphicsDisplay::drawNextBlockArea()
 
 void GraphicsDisplay::drawCell(Cell &cell)
 {
-    Point adjusted = cell.getPoint() + cell.getBoard()->getOrigin();
+    Point adjusted = cell.getPoint() + cell.getOrigin();
     int x = adjusted.getX() * cellSize + padding;
     int y = adjusted.getY() * cellSize + padding;
-    if (cell.getBoard()->getBoardNumber() == 2)
+    if (cell.getBoardNumber() == 2)
         x += boardWidth + padding;
     if (cell.getIsBlind())
         drawBlindCell(x, y);
@@ -104,9 +104,9 @@ void GraphicsDisplay::drawBlindCell(int x, int y)
 void GraphicsDisplay::drawScore(Score &score)
 {
     int x = padding * 4;
-    if (score.getBoard()->getBoardNumber() == 2)
+    if (score.getBoardNumber() == 2)
         x += boardWidth + padding;
-    drawScoreArea(score.getBoard()->getBoardNumber());
+    drawScoreArea(score.getBoardNumber());
     xw->drawString(x, padding * 2, score.getLevel(), Xwindow::Black);
     xw->drawString(x, padding * 3, score.getScore(), Xwindow::Black);
 }
@@ -115,7 +115,7 @@ void GraphicsDisplay::drawMessage(Message &message)
 {
     int x = 2 * padding + boardWidth / 2;
     int y = 2 * padding;
-    if (message.getBoard()->getBoardNumber() == 2)
+    if (message.getBoardNumber() == 2)
         x += boardWidth + padding;
     for (unsigned int i = 0; i < message.getText().size(); ++i)
         xw->drawString(x, y + i * cellSize / 2, message.getText()[i], Xwindow::Black);
@@ -124,7 +124,7 @@ void GraphicsDisplay::clearMessage(Message &message)
 {
     int x1 = 2 * padding + boardWidth / 2;
     int x2 = padding;
-    if (message.getBoard()->getBoardNumber() == 2)
+    if (message.getBoardNumber() == 2)
     {
         x1 += boardWidth + padding;
         x2 += boardWidth + padding;

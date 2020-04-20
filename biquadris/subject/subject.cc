@@ -1,11 +1,16 @@
 #include "subject.h"
+#include <iostream>
 
-Subject::Subject(std::shared_ptr<Board> board) : board{board} {}
+// Subject::Subject(int boadNumber) : boardNumber{boardNumber} {
+//   std::cout << "subject created board: " << this->boardNumber << std::endl;
+// }
 
-std::shared_ptr<Board> Subject::getBoard()
-{
-  return board;
-}
+// int Subject::getBoardNumber()
+// {
+//   return boardNumber;
+// }
+
+Subject::Subject(){}
 
 void Subject::attach(std::shared_ptr<View> display)
 {

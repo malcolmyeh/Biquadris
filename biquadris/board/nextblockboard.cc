@@ -5,7 +5,10 @@
 #include <memory>
 #include <iostream>
 
-NextBlockBoard::NextBlockBoard() : Board{2, 4, Point{1, 23}} {}
+NextBlockBoard::NextBlockBoard() : Board{2, 4, Point{1, 23}, 0} {}
+
+NextBlockBoard::NextBlockBoard(int boardNumber) :
+ Board{2, 4, Point{1, 23}, boardNumber} {}
 
 NextBlockBoard::NextBlockBoard(NextBlockBoard *nextBlockBoard)
 {

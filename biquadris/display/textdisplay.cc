@@ -32,10 +32,10 @@ void TextDisplay::drawStatic(std::string str, int r)
 
 void TextDisplay::drawCell(Cell &cell)
 {
-    Point adjusted = cell.getPoint() + cell.getBoard()->getOrigin();
+    Point adjusted = cell.getPoint() + cell.getOrigin();
     int c = adjusted.getX();
     int r = adjusted.getY();
-    if (cell.getBoard()->getBoardNumber() == 2)
+    if (cell.getBoardNumber() == 2)
     {
         c += 16;
     }
@@ -84,7 +84,7 @@ void TextDisplay::drawScore(Score &score)
 {
     // score cna't be more than 6 digits or will be out of index (seg fault)
     int c = 7;
-    if (score.getBoard()->getBoardNumber() == 2)
+    if (score.getBoardNumber() == 2)
     {
         c += 16;
     }
@@ -99,7 +99,7 @@ void TextDisplay::drawMessage(Message &message)
 {
     int c = 0;
     int r = 26;
-    if (message.getBoard()->getBoardNumber() == 2)
+    if (message.getBoardNumber() == 2)
     {
         c += 16;
     }

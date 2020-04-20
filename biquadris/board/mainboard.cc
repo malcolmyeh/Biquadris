@@ -8,7 +8,9 @@
 #include <memory>
 #include <iostream>
 
-MainBoard::MainBoard() : Board{18, 11, Point{0, 3}}, isBlind{false} {}
+MainBoard::MainBoard() : Board{18, 11, Point{0, 3}, 0}, isBlind{false} {}
+
+MainBoard::MainBoard(int boardNumber) : Board{18, 11, Point{0, 3}, boardNumber}, isBlind{false} {}
 
 MainBoard::MainBoard(MainBoard *mainBoard)
 {

@@ -15,10 +15,12 @@ class Cell : public Subject
     // std::shared_ptr<Point> point;
     int colour;
     Point point;
+    Point origin;
+    int boardNumber;
 
 public:
     // Cell(std::shared_ptr<Point> point, int colour, std::shared_ptr<Board> board);
-    Cell(Point point, int colour, std::shared_ptr<Board> board);
+    Cell(Point point, int colour,int boardNumber, Point origin);
     ~Cell();
     void setColour(int colour);
     int getColour();
@@ -28,6 +30,8 @@ public:
     bool getIsBlind();
     // std::shared_ptr<Point> getPoint();
     Point getPoint();
+    Point getOrigin();
+    int getBoardNumber();
 };
 
 #endif

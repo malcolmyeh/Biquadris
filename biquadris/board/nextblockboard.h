@@ -7,12 +7,12 @@
 
 class NextBlockBoard : public Board
 {
-    int boardNumber = 0;
     std::vector<std::vector<Cell>> cellGrid;
     std::vector<std::shared_ptr<View>> displays;
 
 public:
     NextBlockBoard();
+    NextBlockBoard(int boardNumber);
     NextBlockBoard(NextBlockBoard *nextBlockBoard);
 };
 

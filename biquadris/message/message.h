@@ -9,9 +9,11 @@ class Player;
 class Message : public Subject
 {
     std::vector<std::string> text;
+    int boardNumber;
 
 public:
-    Message(std::shared_ptr<Board> board);
+    Message(int boardNumber);
+    int getBoardNumber();
     void playerWon();
     void specialReady();
     void playing();

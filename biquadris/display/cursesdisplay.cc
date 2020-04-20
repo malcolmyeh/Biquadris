@@ -61,8 +61,8 @@ CursesDisplay::~CursesDisplay()
 void CursesDisplay::drawCell(Cell &cell)
 {
 	WINDOW *window;
-	int which = cell.getBoard->getBoardNumber() - 1;
-	if (cell.getBoard()->getOrigin == Point{1, 23})
+	int which = cell.getBoardNumber() - 1;
+	if (cell.getOrigin == Point{1, 23})
 	{
 		window = nextBlockWindows[which];
 	}
@@ -141,7 +141,7 @@ void CursesDisplay::drawCell(Cell &cell)
 }
 void CursesDisplay::drawScore(Score &score)
 {
-	int which = score.getBoard->getBoardNumber() - 1;
+	int which = score.getBoardNumber() - 1;
 	wclear(scoreWindows[which]);
 	wprintw(scoreWindows[which], "Level:%*d", 5, score.getLevel());
 	wprintw(scoreWindows[which], "Score:%*d", 5, score.getScore());
@@ -150,7 +150,7 @@ void CursesDisplay::drawScore(Score &score)
 }
 void CursesDisplay::drawMessage(Message &message)
 {
-	int which = message.getBoard->getBoardNumber() - 1;
+	int which = message.getBoardNumber() - 1;
 	wclear(messageWindows[which]);
 	for (auto line : message.getText())
 		wprintw(messageWindows[which], line.c_str());

@@ -7,11 +7,11 @@
 
 Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                std::shared_ptr<NextBlockBoard> nextBlockBoard,
-               std::shared_ptr<HoldBlockBoard> holdBlockBoard)
+               std::shared_ptr<HoldBlockBoard> holdBlockBoard, int level)
     : score{score}, mainBoard{mainBoard}, nextBlockBoard{nextBlockBoard},
-      holdBlockBoard{holdBlockBoard}, canSpecial{false}, isBlind{false}, isLost{false}, isDecorated{false}
-{
-}
+      holdBlockBoard{holdBlockBoard}, canSpecial{false}, level{level}, rowCleared{false},
+      blocksDropped{0}, isBlind{false}, isLost{false}, isDecorated{false}
+{}
 
 Player::Player(std::shared_ptr<Player> player)
 {
@@ -39,6 +39,7 @@ Player::Player(Player *other) // fix
     isBlind = other->isBlind;
     isLost = other->isLost;
     isDecorated = other->isDecorated;
+    level = other->level;
 }
 
 Player::Player() {}
@@ -82,10 +83,8 @@ void Player::dropBlock()
 bool Player::hasHoldBlock()
 {
 
-    std::cout << "Player::hasHoldBlock" << std::endl;
     if (this->holdBlock)
     {
-        std::cout << "player has hold";
         return true;
     }
 
@@ -142,12 +141,36 @@ bool Player::currentPlaced()
 {
     if (getCurrentBlock()->isPlaced() || getCurrentBlock()->isEmpty())
     {
+        ++blocksDropped;
+        level4Effect();
         setCurrentBlock(getNextBlock());
         return true;
     }
     return false;
 }
 
+// Level 4: If 5 blocks have been dropped without clearing at least one row,
+// create and drop a Dot Block
+void Player::level4Effect()
+{
+
+    if (getLevel() == 4)
+    {
+        if (!getRowCleared() && blocksDropped % 5 == 0)
+        {
+            std::shared_ptr<DBlock> dot = std::make_shared<DBlock>(4);
+            isLost = dot->setMainBoard(mainBoard);
+            mainBoard->addBlock(dot);
+            dot->drop();
+        }
+    }
+}
+bool Player::getRowCleared()
+{
+    bool temp = rowCleared;
+    rowCleared = false; // this will be checked only once per drop
+    return temp;
+}
 void Player::setLevel(int level)
 {
     this->level = level;
@@ -200,4 +223,9 @@ std::shared_ptr<HoldBlockBoard> Player::getHoldBlockBoard()
 std::shared_ptr<Score> Player::getScore()
 {
     return score;
+}
+
+int Player::getLevel()
+{
+    return level;
 }

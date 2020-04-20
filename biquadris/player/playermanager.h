@@ -14,13 +14,14 @@ class Message;
 class PlayerManager
 {
     std::shared_ptr<Player> player;
-    std::shared_ptr<PlayerManager> opponentManager;
+    std::weak_ptr<PlayerManager> opponentManager;
     std::shared_ptr<Level> level;
     std::shared_ptr<Message> message;
     bool isPlaying = false;
     bool getCanSpecial();
 
 public:
+    PlayerManager();
     PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                   std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
                   std::shared_ptr<HoldBlockBoard> holdBlockBoard,
@@ -52,6 +53,8 @@ public:
     void forceOpponentBlock(char blockType);
     void blind();
     void makeHeavy();
+
+    std::shared_ptr<PlayerManager> getOpponent();
 };
 
 #endif

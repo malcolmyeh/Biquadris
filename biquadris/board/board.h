@@ -25,7 +25,8 @@ protected:
 
 public:
     Board();
-    Board(int rows, int cols, Point origin);
+    Board(int boardNumber);
+    Board(int rows, int cols, Point origin, int boardNumberSubject);
     Board(Board *board);
     void clear();
     void setDisplay(std::shared_ptr<View> display);

@@ -16,6 +16,7 @@ class MainBoard : public Board
 
 public:
     MainBoard();
+    MainBoard(int boardNumber);
     MainBoard(MainBoard *mainBoard);
     void toggleBlind();
     int checkRow(std::shared_ptr<Score> score);

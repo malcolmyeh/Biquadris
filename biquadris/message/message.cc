@@ -2,12 +2,12 @@
 #include "../board/board.h"
 #include "../display/view.h"
 
-Message::Message(std::shared_ptr<Board> board) : Subject{board} {}
+Message::Message(int boardNumber) :boardNumber{boardNumber} {}
 
 void Message::playerWon()
 {
     text.clear();
-    text.emplace_back("P" + std::to_string(board->getBoardNumber()) + " has won!");
+    text.emplace_back("P" + std::to_string(boardNumber) + " has won!");
     text.emplace_back("");
     text.emplace_back("Restart");
     text.emplace_back("Quit");
@@ -46,4 +46,8 @@ void Message::drawDisplays()
 std::vector<std::string> Message::getText()
 {
     return text;
+}
+
+int Message::getBoardNumber(){
+    return boardNumber;
 }

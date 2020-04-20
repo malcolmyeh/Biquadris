@@ -50,9 +50,8 @@ void PlayerDecorator::setNextBlock(std::shared_ptr<Block> block)
 }
 void PlayerDecorator::setHoldBlock()
 {
-    if (hasHold)
+    if (hasHoldBlock())
     {
-        std::cout << "HAS HOLD BLOCK" << std::endl;
         std::shared_ptr<Block> oldHoldBlock = getHoldBlock();
         std::shared_ptr<Block> oldCurrentBlock = getCurrentBlock();
         getMainBoard()->removeBlock();
@@ -64,17 +63,78 @@ void PlayerDecorator::setHoldBlock()
     }
     else
     {
-        std::cout << "NO HOLD BLOCK " << std::endl;
         getMainBoard()->removeBlock();
         getCurrentBlock()->setHoldBlockBoard(getHoldBlockBoard());
         getHoldBlockBoard()->setBlock(getCurrentBlock());
         getHoldBlock() = getCurrentBlock();
         setCurrentBlock(getNextBlock());
-        hasHold = true;
+
     }
 }
 
 void PlayerDecorator::dropBlock()
 {
     player->dropBlock();
+}
+
+int PlayerDecorator::getLevel()
+{
+    return player->getLevel();
+}
+
+void PlayerDecorator::setLevel(int level)
+{
+    player->setLevel(level);
+}
+
+void PlayerDecorator::toggleCanSpecial()
+{
+    player->toggleCanSpecial();
+}
+void PlayerDecorator::toggleBlind()
+{
+    player->toggleBlind();
+}
+
+bool PlayerDecorator::hasHoldBlock()
+{
+    return player->hasHoldBlock();
+}
+bool PlayerDecorator::getCanSpecial()
+{
+    return player->getCanSpecial();
+}
+bool PlayerDecorator::getIsLost()
+{
+    return player->getIsLost();
+}
+bool PlayerDecorator::getIsDecorated()
+{
+    return player->getIsDecorated();
+}
+bool PlayerDecorator::getRowCleared()
+{
+    return player->getRowCleared();
+}
+
+bool PlayerDecorator::moveBlock(char direction, int magnitude) {
+    return player->moveBlock(direction, magnitude);
+}
+bool PlayerDecorator::rotateBlock(std::string direction) {
+    return player->rotateBlock(direction);
+}
+
+void PlayerDecorator::checkRow() {
+    player->checkRow();
+}
+bool PlayerDecorator::currentPlaced() {
+    return player->currentPlaced();
+}
+void PlayerDecorator::level4Effect() {
+    player->level4Effect();
+}
+
+// Undecorate function if Player is Decorator
+std::shared_ptr<Player> PlayerDecorator::getPlayer() {
+    return player;
 }

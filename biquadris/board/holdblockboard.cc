@@ -5,8 +5,8 @@
 #include <memory>
 #include <iostream>
 
-HoldBlockBoard::HoldBlockBoard() : Board{2, 4, Point{6, 23}} {}
-
+HoldBlockBoard::HoldBlockBoard() : Board{2, 4, Point{6, 23}, 0} {}
+HoldBlockBoard::HoldBlockBoard(int boardNumber) : Board{2, 4, Point{6, 23}, boardNumber} {}
 HoldBlockBoard::HoldBlockBoard(HoldBlockBoard *holdBlockBoard)
 {
     boardNumber = holdBlockBoard->boardNumber;

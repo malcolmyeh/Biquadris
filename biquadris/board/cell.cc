@@ -2,8 +2,9 @@
 #include "../display/window.h"
 #include "../display/view.h"
 
-Cell::Cell(Point point, int colour, std::shared_ptr<Board> board)
-    : Subject{board}, colour{colour}, point{point} {}
+Cell::Cell(Point point, int colour, int boardNumber, Point origin)
+    : boardNumber{boardNumber}, colour{colour}, point{point}, origin{origin}{
+    }
 
 void Cell::setColour(int colour)
 {
@@ -40,4 +41,12 @@ bool Cell::getIsBlind()
 int Cell::getColour()
 {
     return this->colour;
+}
+
+Point Cell::getOrigin(){
+    return this->origin;
+}
+
+int Cell::getBoardNumber(){
+    return this->boardNumber;
 }

@@ -23,8 +23,7 @@ PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainB
                              std::shared_ptr<HoldBlockBoard> holdBlockBoard,
                              std::shared_ptr<Message> message) : level{level}, message{message}, isPlaying{false}
 {
-    this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard, holdBlockBoard);
-    player->setLevel(level->getLevelNumber());
+    this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard, holdBlockBoard, level->getLevelNumber());
 }
 
 void PlayerManager::setOpponent(std::shared_ptr<PlayerManager> opponentManager)
@@ -74,8 +73,7 @@ void PlayerManager::changeLevel(int num)
         break;
     case 4:
         level = std::make_shared<Level4>(sequence);
-        // set Level 4 effect decorator
-        setPlayer(std::make_shared<Level4Effect>(getPlayer()));
+        // should already have heavy, since coming from Level 3
         break;
     }
 }
@@ -116,7 +114,7 @@ void PlayerManager::forceOpponentBlock(char blockType)
 {
     if (player->getCanSpecial())
     {
-        opponentManager->forceBlock(blockType);
+        getOpponent()->forceBlock(blockType);
         isPlaying = false;
         player->toggleCanSpecial();
     }
@@ -126,7 +124,7 @@ void PlayerManager::blind()
 {
     if (player->getCanSpecial())
     {
-        opponentManager->getPlayer()->toggleBlind();
+        getOpponent()->getPlayer()->toggleBlind();
         isPlaying = false;
         player->toggleCanSpecial();
     }
@@ -136,7 +134,7 @@ void PlayerManager::makeHeavy()
 {
     if (player->getCanSpecial())
     {
-        opponentManager->setPlayer(std::make_shared<HeavyPlayer>(opponentManager->getPlayer()));
+        getOpponent()->setPlayer(std::make_shared<HeavyPlayer>(getOpponent()->getPlayer()));
         isPlaying = false;
         player->toggleCanSpecial();
     }
@@ -155,7 +153,7 @@ bool PlayerManager::getIsLost()
     bool isLost = player->getIsLost();
     if (isLost)
     {
-        opponentManager->message->playerWon();
+        getOpponent()->message->playerWon();
     }
     return isLost;
 }
@@ -236,4 +234,9 @@ bool PlayerManager::getIsPlaying()
     if (!isPlaying)
         message->clearMessage();
     return isPlaying;
+}
+
+std::shared_ptr<PlayerManager> PlayerManager::getOpponent()
+{
+    return opponentManager.lock();
 }

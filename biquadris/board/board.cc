@@ -7,7 +7,10 @@
 
 Board::Board() {}
 
-Board::Board(int rows, int cols, Point origin) : origin{origin}, rows{rows}, cols{cols} {}
+Board::Board(int boardNumber) : boardNumber{boardNumber} {}
+
+Board::Board(int rows, int cols, Point origin, int boardNumber)
+ : origin{origin}, rows{rows}, cols{cols}, boardNumber{boardNumber}{}
 
 Board::Board(Board *board)
 {
@@ -52,7 +55,7 @@ void Board::init(int boardNumber)
         for (int c = 0; c < cols; ++c)
         {
             std::shared_ptr<Point> point = std::make_shared<Point>(c, r);
-            Cell cell(Point{c, r}, Xwindow::White, std::make_shared<Board>(this));
+            Cell cell(Point{c, r}, Xwindow::White, boardNumber, origin);
             for (auto display : displays)
                 cell.attach(display);
             cell.drawDisplays();

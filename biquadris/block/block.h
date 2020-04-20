@@ -20,9 +20,9 @@ protected:
     int recWidth;
     int recHeight;
     Point topLeft;
-    std::shared_ptr<MainBoard> mainBoard = nullptr;
-    std::shared_ptr<NextBlockBoard> nextBlockBoard;
-    std::shared_ptr<HoldBlockBoard> holdBlockBoard;
+    std::weak_ptr<MainBoard> mainBoard;
+    std::weak_ptr<NextBlockBoard> nextBlockBoard;
+    std::weak_ptr<HoldBlockBoard> holdBlockBoard;
     int level;
     int rotation = 0;
     
@@ -44,17 +44,12 @@ public:
     bool isEmpty();
     bool isValid(); // checks if any of the Points are already filled, to be called right after
                     // creation before it gets drawn
+    std::shared_ptr<MainBoard> getMainBoard();
+    std::shared_ptr<NextBlockBoard> getNextBlockBoard();
+    std::shared_ptr<HoldBlockBoard> getHoldBlockBoard();
     /// TESTING ///
     void printCellCoordinates();
     //////////////
 };
-
-// NOTE: how do we know when a piece is "set"? So that we can release the next one?
-
-/*
-
-EXTRA CREDIT: MAKE A STASH WHERE YOU CAN SAVE A PIECE
-
-*/
 
 #endif

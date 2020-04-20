@@ -2,7 +2,7 @@
 #include "../display/window.h"
 #include "../display/view.h"
 
-Score::Score(int level, std::shared_ptr<Board> board) : Subject{board}, level{level}, currentScore{0}, highScore{0} {}
+Score::Score(int level, int boardNumber) : boardNumber{boardNumber}, level{level}, currentScore{0}, highScore{0} {}
 
 void Score::updateScoreRow()
 {
@@ -50,4 +50,8 @@ std::string Score::getLevel()
 std::string Score::getScore()
 {
     return std::to_string(currentScore);
+}
+
+int Score::getBoardNumber(){
+    return boardNumber;
 }
