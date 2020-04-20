@@ -2,6 +2,8 @@
 #define CURSESDISPLAY_H
 
 #include "view.h"
+#include <ncurses.h>
+#include <tuple>
 
 class CursesDisplay : public View {
 

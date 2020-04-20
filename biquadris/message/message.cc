@@ -34,13 +34,13 @@ void Message::playing()
 void Message::clearMessage()
 {
     for (auto &display : displays)
-        display->clearMessage(*this);
+        display.lock()->clearMessage(*this);
 }
 
 void Message::drawDisplays()
 {
     for (auto &display : displays)
-        display->drawMessage(*this);
+        display.lock()->drawMessage(*this);
 }
 
 std::vector<std::string> Message::getText()

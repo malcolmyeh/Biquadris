@@ -8,6 +8,7 @@ class DBlock : public Block
 {
 public:
     DBlock(int level);
+    void reset() override;
 };
 
 #endif

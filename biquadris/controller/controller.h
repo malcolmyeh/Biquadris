@@ -10,6 +10,7 @@
 
 #include "../display/graphicsdisplay.h"
 #include "../display/textdisplay.h"
+#include "../display/cursesdisplay.h"
 #include "../board/mainboard.h"
 #include "../board/nextblockboard.h"
 #include "../board/holdblockboard.h"

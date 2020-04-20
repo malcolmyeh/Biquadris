@@ -4,9 +4,11 @@
 #include "../point/point.h"
 #include "block.h"
 
-class IBlock : public Block {
+class IBlock : public Block
+{
 public:
     IBlock(int level);
+    void reset() override;
 };
 
 #endif

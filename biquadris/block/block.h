@@ -24,7 +24,6 @@ protected:
     std::weak_ptr<NextBlockBoard> nextBlockBoard;
     std::weak_ptr<HoldBlockBoard> holdBlockBoard;
     int level;
-    int rotation = 0;
     
     // protected method for the loops at the end of each ctor
 public:
@@ -47,9 +46,8 @@ public:
     std::shared_ptr<MainBoard> getMainBoard();
     std::shared_ptr<NextBlockBoard> getNextBlockBoard();
     std::shared_ptr<HoldBlockBoard> getHoldBlockBoard();
-    /// TESTING ///
-    void printCellCoordinates();
-    //////////////
+
+    virtual void reset() = 0;
 };
 
 #endif

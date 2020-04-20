@@ -40,7 +40,7 @@ void Score::resetScore()
 void Score::drawDisplays()
 {
     for (auto &display : displays)
-        display->drawScore(*this);
+        display.lock()->drawScore(*this);
 }
 
 std::string Score::getLevel()

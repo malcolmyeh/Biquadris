@@ -1,13 +1,9 @@
-//////////////////////////////////////////////////////
-// remove printCellCoordinates and other debug output
-//////////////////////////////////////////////////////
-
 #include "block.h"
 #include "../board/mainboard.h"
 #include "../board/nextblockboard.h"
 
 // ctor
-Block::Block(int colour, int level) : colour{colour}, level{level}, rotation{0} {}
+Block::Block(int colour, int level) : colour{colour}, level{level} {}
 
 // this function returns true if it is possible to move in direction (x, y) and false otherwise
 //   if move is valid, unfill cells, then refill them after the points have shifted internally
@@ -63,7 +59,6 @@ bool Block::move(char direction, int magnitude)
             }
 
             // empty the current cells
-            this->printCellCoordinates();
             this->drawBlock(Xwindow::White);
 
             p = {0, 1};
@@ -104,7 +99,6 @@ bool Block::move(char direction, int magnitude)
                     return false;
             }
 
-            this->printCellCoordinates();
             this->drawBlock(Xwindow::White);
             p = {-1, 0};
         }
@@ -148,7 +142,6 @@ bool Block::move(char direction, int magnitude)
                     return false;
             }
 
-            this->printCellCoordinates();
             this->drawBlock(Xwindow::White);
             p = {1, 0};
         }
@@ -165,7 +158,6 @@ bool Block::move(char direction, int magnitude)
             // }
         }
         this->topLeft += p;
-        this->printCellCoordinates();
     }
     this->drawBlock(this->colour);
     // ********************************* the end bracket for the for loop can be placed here to
@@ -177,8 +169,6 @@ bool Block::move(char direction, int magnitude)
 //   if any of the new position cells are filled, then it's not a valid rotation
 bool Block::rotate(std::string direction)
 {
-    this->printCellCoordinates();
-
     std::vector<std::vector<int>> temp(this->recWidth, std::vector<int>(this->recHeight, 0));
     // convert the block's coordinates into a matrix of 1s and 0s
     for (unsigned int i = 0; i < this->minRec.size(); ++i)
@@ -250,14 +240,13 @@ bool Block::rotate(std::string direction)
         }
         this->drawBlock(Xwindow::White);
         this->points = newPoints;
-        this->printCellCoordinates();
         this->minRec = newMinRec;
         this->topLeft = newTopLeft;
         std::swap(this->recWidth, this->recHeight);
         this->drawBlock(this->colour);
-        rotation += 90;
-        if (rotation >= 360)
-            rotation = rotation % 360;
+        // rotation += 90;
+        // if (rotation >= 360)
+        //     rotation = rotation % 360;
         return true;
     }
     else if (direction == "CCW")
@@ -308,16 +297,16 @@ bool Block::rotate(std::string direction)
         }
         this->drawBlock(Xwindow::White);
         this->points = newPoints;
-        this->printCellCoordinates();
         this->minRec = newMinRec;
         this->topLeft = newTopLeft;
         std::swap(this->recWidth, this->recHeight);
         this->drawBlock(this->colour);
-        rotation += 270;
-        if (rotation >= 360)
-            rotation = rotation % 360;
+        // rotation += 270;
+        // if (rotation >= 360)
+        //     rotation = rotation % 360;
         return true;
     }
+    return false;
 }
 
 // it should be possible to drop at anytime..?? so change to void
@@ -394,7 +383,6 @@ void Block::drop()
         // }
     }
     this->topLeft += p;
-    this->printCellCoordinates();
     this->drawBlock(this->colour);
 }
 
@@ -468,12 +456,12 @@ int Block::getColour()
 bool Block::setMainBoard(std::shared_ptr<MainBoard> mainBoard)
 {
     drawBlock(Xwindow::White);
-    if (!getMainBoard())
+    if (this->mainBoard.expired())
         this->mainBoard = mainBoard;
-    // if (getNextBlockBoard())
-    //     nextBlockBoard = nullptr;
-    // if (getHoldBlockBoard())
-    //     holdBlockBoard = nullptr;
+    if (!nextBlockBoard.expired())
+        nextBlockBoard.reset();
+    if (!holdBlockBoard.expired())
+        holdBlockBoard.reset();
     if (isValid())
     {
         drawBlock(this->colour);
@@ -490,15 +478,15 @@ void Block::setNextBlockBoard(std::shared_ptr<NextBlockBoard> nextBlockBoard)
 
 void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
 {
-    if (getMainBoard()) // rotate block to original position
+    if (!mainBoard.expired()) // rotate block to original position
     {
-
-        for (int r = rotation; r > 0; r -= 90)
-        {
-            rotate("CCW");
-        }
+        // for (int r = rotation; r > 0; r -= 90)
+        // {
+        //     rotate("CCW");
+        // }
+        this->reset();
         drawBlock(Xwindow::White);
-        getMainBoard() = nullptr;
+        mainBoard.reset();
     }
 
     this->holdBlockBoard = holdBlockBoard;
@@ -507,12 +495,13 @@ void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
 
 void Block::drawBlock(int colour)
 {
-    if (getMainBoard())
+
+    if (!mainBoard.expired())
     {
         for (auto a : this->points)
             getMainBoard()->fillCell(a, colour);
     }
-    else if (getNextBlockBoard())
+    else if (!nextBlockBoard.expired())
     {
         for (auto a : this->points)
         {
@@ -520,7 +509,7 @@ void Block::drawBlock(int colour)
             getNextBlockBoard()->fillCell(b, colour);
         }
     }
-    else if (getHoldBlockBoard())
+    else if (!holdBlockBoard.expired())
     {
 
         for (auto a : this->points)
@@ -529,13 +518,6 @@ void Block::drawBlock(int colour)
             getHoldBlockBoard()->fillCell(b, colour);
         }
     }
-}
-
-void Block::printCellCoordinates()
-{
-    for (auto a : this->points)
-        std::cout << "{" << a.getX() << "," << a.getY() << "} ";
-    std::cout << std::endl;
 }
 
 bool Block::isEmpty()
@@ -555,12 +537,15 @@ bool Block::isValid()
     return true;
 }
 
-std::shared_ptr<MainBoard> Block::getMainBoard(){
+std::shared_ptr<MainBoard> Block::getMainBoard()
+{
     return mainBoard.lock();
 }
-std::shared_ptr<NextBlockBoard> Block::getNextBlockBoard(){
+std::shared_ptr<NextBlockBoard> Block::getNextBlockBoard()
+{
     return nextBlockBoard.lock();
 }
-std::shared_ptr<HoldBlockBoard> Block::getHoldBlockBoard(){
+std::shared_ptr<HoldBlockBoard> Block::getHoldBlockBoard()
+{
     return holdBlockBoard.lock();
 }

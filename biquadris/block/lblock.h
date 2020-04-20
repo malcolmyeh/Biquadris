@@ -4,9 +4,11 @@
 #include "../point/point.h"
 #include "block.h"
 
-class LBlock : public Block {
+class LBlock : public Block
+{
 public:
     LBlock(int level);
+    void reset() override;
 };
 
 #endif

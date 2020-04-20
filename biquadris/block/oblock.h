@@ -4,9 +4,11 @@
 #include "../point/point.h"
 #include "block.h"
 
-class OBlock : public Block {
+class OBlock : public Block
+{
 public:
     OBlock(int level);
+    void reset() override;
 };
 
 #endif

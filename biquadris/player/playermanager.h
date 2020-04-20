@@ -21,7 +21,7 @@ class PlayerManager
     bool getCanSpecial();
 
 public:
-    PlayerManager();
+    // Constructor
     PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                   std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
                   std::shared_ptr<HoldBlockBoard> holdBlockBoard,
@@ -39,6 +39,8 @@ public:
     int getLevel();
     bool getIsPlaying();
     std::shared_ptr<Player> getPlayer();
+    std::shared_ptr<PlayerManager> getOpponent();
+    std::shared_ptr<Message> getMessage();
 
     // Block functions
     void initBlocks();
@@ -53,8 +55,6 @@ public:
     void forceOpponentBlock(char blockType);
     void blind();
     void makeHeavy();
-
-    std::shared_ptr<PlayerManager> getOpponent();
 };
 
 #endif

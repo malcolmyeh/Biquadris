@@ -151,17 +151,14 @@ bool PlayerManager::getCanSpecial()
 bool PlayerManager::getIsLost()
 {
     bool isLost = player->getIsLost();
+
     if (isLost)
-    {
-        getOpponent()->message->playerWon();
-    }
+        getOpponent()->getMessage()->playerWon();
     return isLost;
 }
 bool PlayerManager::moveBlock(char direction, int magnitude)
 {
     bool checkMove = player->moveBlock(direction, magnitude);
-    if (player->getCurrentBlock() != nullptr)
-        player->getCurrentBlock()->printCellCoordinates();
     if (player->currentPlaced() && !player->getIsLost())
     {
         setNextBlock();
@@ -239,4 +236,8 @@ bool PlayerManager::getIsPlaying()
 std::shared_ptr<PlayerManager> PlayerManager::getOpponent()
 {
     return opponentManager.lock();
+}
+
+std::shared_ptr<Message> PlayerManager::getMessage(){
+    return message;
 }

@@ -144,8 +144,8 @@ int main(int argc, char *argv[])
         }
         else
         {
-            std::shared_ptr<Controller> c = std::make_shared<Controller>(graphics, ncurses, scriptFiles, startLevel);
-            c->runGame();
+            Controller c(graphics, ncurses, scriptFiles, startLevel);
+            c.runGame();
         }
         std::cout << "Thanks for playing :D" << std::endl;
     }

@@ -22,6 +22,7 @@ bool HeavyLevel::moveBlock(char direction, int magnitude)
 bool HeavyLevel::rotateBlock(std::string direction){
     bool check = player->rotateBlock(direction);
     player->moveBlock('D', 1);
+    return check;
 }
 
 std::shared_ptr<Player> HeavyLevel::getPlayer()

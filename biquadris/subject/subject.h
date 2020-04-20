@@ -9,7 +9,7 @@ class Board;
 class Subject
 {
   protected:
-  std::vector<std::shared_ptr<View>> displays;
+  std::vector<std::weak_ptr<View>> displays;
   // std::shared_ptr<Board> board;
   // int boardNumber;
 

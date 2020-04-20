@@ -16,17 +16,17 @@ class Board
 {
 
 protected:
-    int boardNumber;
     std::vector<std::vector<Cell>> cellGrid;
     std::vector<std::shared_ptr<View>> displays;
-    Point origin; // Where the Board is located on the Display
     int rows;
     int cols;
+    Point origin; // Where the Board is located on the Display
+    int boardNumber;
 
 public:
     Board();
     Board(int boardNumber);
-    Board(int rows, int cols, Point origin, int boardNumberSubject);
+    Board(int rows, int cols, Point origin, int boardNumber);
     Board(Board *board);
     void clear();
     void setDisplay(std::shared_ptr<View> display);

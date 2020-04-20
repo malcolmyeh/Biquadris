@@ -50,26 +50,7 @@ void PlayerDecorator::setNextBlock(std::shared_ptr<Block> block)
 }
 void PlayerDecorator::setHoldBlock()
 {
-    if (hasHoldBlock())
-    {
-        std::shared_ptr<Block> oldHoldBlock = getHoldBlock();
-        std::shared_ptr<Block> oldCurrentBlock = getCurrentBlock();
-        getMainBoard()->removeBlock();
-        getCurrentBlock()->setHoldBlockBoard(getHoldBlockBoard()); // erases current from main, draws in hold
-        getHoldBlockBoard()->setBlock(getCurrentBlock());
-        getHoldBlock() = getCurrentBlock();
-        setCurrentBlock(oldHoldBlock);                            // erases hold, draws in main, but erases new hold block too
-        oldCurrentBlock->drawBlock(oldCurrentBlock->getColour()); // redraw erased hold block cells
-    }
-    else
-    {
-        getMainBoard()->removeBlock();
-        getCurrentBlock()->setHoldBlockBoard(getHoldBlockBoard());
-        getHoldBlockBoard()->setBlock(getCurrentBlock());
-        getHoldBlock() = getCurrentBlock();
-        setCurrentBlock(getNextBlock());
-
-    }
+    player->setHoldBlock();
 }
 
 void PlayerDecorator::dropBlock()
@@ -117,24 +98,30 @@ bool PlayerDecorator::getRowCleared()
     return player->getRowCleared();
 }
 
-bool PlayerDecorator::moveBlock(char direction, int magnitude) {
+bool PlayerDecorator::moveBlock(char direction, int magnitude)
+{
     return player->moveBlock(direction, magnitude);
 }
-bool PlayerDecorator::rotateBlock(std::string direction) {
+bool PlayerDecorator::rotateBlock(std::string direction)
+{
     return player->rotateBlock(direction);
 }
 
-void PlayerDecorator::checkRow() {
+void PlayerDecorator::checkRow()
+{
     player->checkRow();
 }
-bool PlayerDecorator::currentPlaced() {
+bool PlayerDecorator::currentPlaced()
+{
     return player->currentPlaced();
 }
-void PlayerDecorator::level4Effect() {
+void PlayerDecorator::level4Effect()
+{
     player->level4Effect();
 }
 
 // Undecorate function if Player is Decorator
-std::shared_ptr<Player> PlayerDecorator::getPlayer() {
+std::shared_ptr<Player> PlayerDecorator::getPlayer()
+{
     return player;
 }

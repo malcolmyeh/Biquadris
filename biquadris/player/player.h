@@ -26,13 +26,14 @@ protected:
     int blocksDropped = 0;
     bool isBlind = false;
     bool isLost = false;
-    bool isDecorated = false; // is decorated by opponent
+    bool isDecorated = false; // is decorated by Opponent PlayerManager
 
 public:
+    // Constructors
     Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
            std::shared_ptr<NextBlockBoard> nextBlockBoard,
            std::shared_ptr<HoldBlockBoard> holdBlockBoard, int level);
-    Player(Player *other);
+    Player(Player *player);
     Player(std::shared_ptr<Player> player);
     Player();
 
@@ -58,6 +59,8 @@ public:
     virtual std::shared_ptr<HoldBlockBoard> getHoldBlockBoard();
     virtual std::shared_ptr<Score> getScore();
     virtual int getLevel();
+    // Undecorate function if Player is Decorator
+    virtual std::shared_ptr<Player> getPlayer();
 
     // Block functions
     virtual bool moveBlock(char direction, int magnitude = 1);
@@ -66,8 +69,5 @@ public:
     virtual void checkRow();
     virtual bool currentPlaced();
     virtual void level4Effect();
-
-    // Undecorate function if Player is Decorator
-    virtual std::shared_ptr<Player> getPlayer();
 };
 #endif

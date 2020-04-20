@@ -1,10 +1,14 @@
 #include "cursesdisplay.h"
 #include <ncurses.h>
-
+using namespace std;
 CursesDisplay::CursesDisplay()
 {
 	initscr();
 	initColours();
+	initScoreWindows();
+	initNextBlockWindows();
+	initBoardWindows();
+	initMessageWindows();
 }
 
 void CursesDisplay::initColours()
@@ -62,7 +66,7 @@ void CursesDisplay::drawCell(Cell &cell)
 {
 	WINDOW *window;
 	int which = cell.getBoardNumber() - 1;
-	if (cell.getOrigin == Point{1, 23})
+	if (cell.getOrigin() == Point{1, 23})
 	{
 		window = nextBlockWindows[which];
 	}

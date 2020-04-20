@@ -5,10 +5,11 @@
 
 class Score : public Subject
 {
+
+    int boardNumber;
     int level;
     int currentScore;
     int highScore;
-    int boardNumber;
 
 public:
     Score(int level, int boardNumber);

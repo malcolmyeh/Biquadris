@@ -34,6 +34,8 @@ void Controller::makeDisplays(bool graphics, bool curses)
     //     p1Displays.emplace_back(std::make_shared<CursesDisplay>());
     //     p2Displays.emplace_back(std::make_shared<CursesDisplay>());
     // }
+    // p1Displays.emplace_back(std::make_shared<CursesDisplay>());
+    // p2Displays.emplace_back(std::make_shared<CursesDisplay>());
     displays.emplace_back(p1Displays);
     displays.emplace_back(p2Displays);
 }
