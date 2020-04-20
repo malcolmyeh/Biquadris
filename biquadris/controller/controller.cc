@@ -178,7 +178,7 @@ void Controller::runGame()
                                          "counterclockwise", "drop", "levelup",
                                          "leveldown", "norandom", "random",
                                          "sequence", "restart", "remap", "hold",
-                                         "I", "J", "L", "O", "S", "T", "Z"};
+                                         "I", "J", "L", "O", "S", "T", "Z", "quit"};
     std::vector<std::string> fileInput;
     bool readFileInput = false;
     std::string matchedCommand = "";
@@ -207,6 +207,8 @@ void Controller::runGame()
             }
         } else {
             std::cin >> input;
+            if (cin.eof())
+                break;
         }
         int multiplier = 1;
         if (isdigit(input[0]))
@@ -413,6 +415,10 @@ void Controller::runGame()
         else if (matchedCommand == commands[20])
         { // Z
             currentPlayer->forceBlock('Z');
+        }
+        else if (matchedCommand == commands[21])
+        { // quit
+            break;
         } // no need for else. it is verified in the matching phase.
         multiplier = 1;
         matchedCommand = "";
