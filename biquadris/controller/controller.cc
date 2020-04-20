@@ -207,7 +207,7 @@ void Controller::runGame()
             }
         } else {
             std::cin >> input;
-            if (cin.eof())
+            if (std::cin.eof())
                 break;
         }
         int multiplier = 1;
