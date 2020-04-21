@@ -7,7 +7,6 @@ class PlayerDecorator : public Player
 {
 protected:
     std::shared_ptr<Player> player;
-    bool hasHold = false;
 
 public:
     // Constructors

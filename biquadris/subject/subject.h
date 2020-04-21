@@ -4,7 +4,6 @@
 #include <memory>
 
 class View;
-class Board;
 
 class Subject
 {

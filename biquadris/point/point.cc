@@ -13,16 +13,6 @@ int Point::getY() const
     return this->y;
 }
 
-void Point::setX(int x)
-{
-    this->x = x;
-}
-
-void Point::setY(int y)
-{
-    this->y = y;
-}
-
 Point Point::operator+(const Point &other) const
 {
     Point sum{this->getX() + other.getX(), this->getY() + other.getY()};

@@ -297,7 +297,10 @@ void Controller::runGame()
         }
         else if (matchedCommand == commands[8])
         { // no random
+            std::string file;
+            std::cin >> file;
             currentPlayer->setRandom(false);
+            currentPlayer->setLevel(createLevel(currentPlayer->getLevel(), file));
         }
         else if (matchedCommand == commands[9])
         { // random

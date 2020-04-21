@@ -16,7 +16,6 @@
 #include "../message/message.h"
 #include "heavyplayer.h"
 #include "heavylevel.h"
-#include "level4effect.h"
 
 ////////////////////////////// CONSTRUCTORS //////////////////////////////
 
@@ -83,6 +82,11 @@ void PlayerManager::changeLevel(int num)
         // TODO: turn Level4Effect into decorator and add here
         break;
     }
+}
+
+void PlayerManager::setLevel(std::shared_ptr<Level> level)
+{
+    this->level = level;
 }
 
 void PlayerManager::setPlayer(std::shared_ptr<Player> player)
@@ -160,7 +164,7 @@ void PlayerManager::forceBlock(char blockType)
         break;
     }
     player->getMainBoard()->removeBlock();
-    player->getCurrentBlock()->drawBlock(Xwindow::White);
+    // player->getCurrentBlock()->drawBlock(Xwindow::White);
     player->setCurrentBlock(block);
 }
 

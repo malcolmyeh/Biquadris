@@ -44,6 +44,7 @@ void MainBoard::addBlock(std::shared_ptr<Block> block)
 
 void MainBoard::removeBlock()
 {
+    blocks.back()->drawBlock(Xwindow::White);
     blocks.pop_back();
 }
 

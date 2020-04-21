@@ -33,6 +33,7 @@ public:
     void setRandom(bool random);
     void changeLevel(int num);
     void setPlayer(std::shared_ptr<Player> player);
+    void setLevel(std::shared_ptr<Level> level);
 
     // Getters
     bool getIsLost();
