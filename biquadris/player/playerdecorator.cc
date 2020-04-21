@@ -40,7 +40,7 @@ bool PlayerDecorator::getCanSpecial() { return player->getCanSpecial(); }
 
 bool PlayerDecorator::getIsLost() { return player->getIsLost(); }
 
-bool PlayerDecorator::getIsDecorated() { return player->getIsDecorated(); }
+bool PlayerDecorator::getIsDecorated() { return isDecorated; }
 
 bool PlayerDecorator::getRowCleared() { return player->getRowCleared(); }
 

@@ -195,7 +195,7 @@ void PlayerManager::dropBlock()
     {
         setNextBlock();
         if (player->getIsDecorated()) // if decorated by player, remove decorator
-            player = player->getPlayer();
+            setPlayer(player->getPlayer());
         if (!getCanSpecial()) // if no special, turn ends
             isPlaying = false;
     }

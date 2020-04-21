@@ -23,9 +23,6 @@ void Controller::makeDisplays(bool graphics, bool curses)
 
     if (curses)
     {
-        // std::shared_ptr<CursesDisplay> cd = std::make_shared<CursesDisplay>();
-        // p1Displays.emplace_back(cd);
-        // p2Displays.emplace_back(cd);
         p1Displays.emplace_back(std::make_shared<CursesDisplay>());
         p2Displays.emplace_back(std::make_shared<CursesDisplay>());
     }
@@ -139,6 +136,29 @@ void Controller::initBoards()
     }
 }
 
+std::shared_ptr<Level> Controller::createLevel(int levelNumber, std::string file)
+{
+    std::shared_ptr<Level> level;
+    switch (levelNumber)
+    {
+    case 0:
+        level = std::make_shared<Level0>(file);
+        break;
+    case 1:
+        level = std::make_shared<Level1>(file);
+        break;
+    case 2:
+        level = std::make_shared<Level2>(file);
+        break;
+    case 3:
+        level = std::make_shared<Level3>(file);
+        break;
+    case 4:
+        level = std::make_shared<Level4>(file);
+    }
+    return level;
+}
+
 void Controller::restart()
 {
     for (auto message : messages)
@@ -221,6 +241,7 @@ void Controller::gameEnd()
         }
         else if (matchedCommand == commands[1])
         { // quit
+            std::cout << "QUIT ENTERED" << std::endl;
             break;
         }
         matchedCommand = "";
@@ -338,7 +359,8 @@ void Controller::runGame()
         }
         else if (matchedCommand == commands[5])
         { // drop piece
-            for (int i = 0; i < multiplier; ++i){
+            for (int i = 0; i < multiplier; ++i)
+            {
                 currentPlayer->dropBlock();
                 if (currentPlayer->getIsLost())
                     break;
@@ -507,27 +529,4 @@ void Controller::runGame()
         multiplier = 1;
         matchedCommand = "";
     }
-}
-
-std::shared_ptr<Level> Controller::createLevel(int levelNumber, std::string file)
-{
-    std::shared_ptr<Level> level;
-    switch (levelNumber)
-    {
-    case 0:
-        level = std::make_shared<Level0>(file);
-        break;
-    case 1:
-        level = std::make_shared<Level1>(file);
-        break;
-    case 2:
-        level = std::make_shared<Level2>(file);
-        break;
-    case 3:
-        level = std::make_shared<Level3>(file);
-        break;
-    case 4:
-        level = std::make_shared<Level4>(file);
-    }
-    return level;
 }

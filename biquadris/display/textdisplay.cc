@@ -82,15 +82,19 @@ void TextDisplay::drawCell(Cell &cell)
 
 void TextDisplay::drawScore(Score &score)
 {
-    int c = 7;
+    int c = 0;
     if (score.getBoardNumber() == 2)
     {
         c += 16;
     }
-    for (unsigned int i = 0; i < score.getLevel().length(); ++i)
-        charGrid[0][c + i] = score.getLevel()[i];
-    for (unsigned int i = 0; i < score.getScore().length(); ++i)
-        charGrid[1][c + i] = score.getScore()[i];
+
+    std::string levelstr = "Level: " + score.getLevel();
+    std::string scorestr = "Score: " + score.getScore();
+
+    for (unsigned int i = 0; i < levelstr.length(); ++i)
+        charGrid[0][c + i] = levelstr[i];
+    for (unsigned int i = 0; i < scorestr.length(); ++i)
+        charGrid[1][c + i] = scorestr[i];
     draw();
 }
 
@@ -101,9 +105,13 @@ void TextDisplay::drawHighScore(Score &score)
     {
         c += 16;
     }
-    std::string str = "HiScr: " + score.getHighScore();
-    for (unsigned int i = 0; i < str.length(); ++i)
-        charGrid[0][c + 1] = str[i];
+
+    std::string levelstr = "HiScr: " + score.getHighScore();
+
+    for (unsigned int i = 0; i < levelstr.length(); ++i)
+        charGrid[0][c + i] = levelstr[i];
+
+    draw();
 }
 
 void TextDisplay::drawMessage(Message &message)
