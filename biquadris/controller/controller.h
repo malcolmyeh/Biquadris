@@ -51,6 +51,7 @@ public:
     Controller(bool graphics, bool curses, std::vector<std::string> scriptFiles,
                int startLevel);
     void runGame();
+    void gameEnd();
 };
 
 #endif

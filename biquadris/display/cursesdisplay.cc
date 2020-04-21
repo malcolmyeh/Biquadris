@@ -9,6 +9,7 @@ CursesDisplay::CursesDisplay()
 	initNextBlockWindows();
 	initBoardWindows();
 	initMessageWindows();
+	refresh();
 }
 
 void CursesDisplay::initColours()
@@ -22,31 +23,50 @@ void CursesDisplay::initColours()
 	init_pair(6, COLOR_YELLOW, COLOR_BLACK);
 	init_pair(7, COLOR_MAGENTA, COLOR_BLACK);
 	init_pair(8, COLOR_CYAN, COLOR_BLACK);
-	initScoreWindows();
 }
 
 void CursesDisplay::initScoreWindows()
 {
-	scoreWindows.emplace_back(newwin(3, 11, 0, 0));
-	scoreWindows.emplace_back(newwin(3, 11, 0, 16));
+	scoreWindows.emplace_back(newwin(4, 13, 2, 5));
+	scoreWindows.emplace_back(newwin(4, 13, 2, 33));
+	for (auto scoreWindow : scoreWindows)
+	{
+		box(scoreWindow, 0, 0);
+		wrefresh(scoreWindow);
+	}
 }
 
 void CursesDisplay::initNextBlockWindows()
 {
-	nextBlockWindows.emplace_back(newwin(4, 11, 22, 0));
-	nextBlockWindows.emplace_back(newwin(4, 11, 22, 16));
+	nextBlockWindows.emplace_back(newwin(5, 13, 6, 19));
+	nextBlockWindows.emplace_back(newwin(5, 13, 6, 47));
+	for (auto nextBlockWindow : nextBlockWindows)
+	{
+		box(nextBlockWindow, 0, 0);
+		wrefresh(nextBlockWindow);
+	}
 }
 
 void CursesDisplay::initBoardWindows()
-{ 
-	boardWindows.emplace_back(newwin(18, 11, 3, 0));
-	boardWindows.emplace_back(newwin(18, 11, 3, 16));
+{
+	boardWindows.emplace_back(newwin(20, 13, 6, 5));
+	boardWindows.emplace_back(newwin(20, 13, 6, 33));
+	for (auto boardWindow : boardWindows)
+	{
+		box(boardWindow, 0, 0);
+		wrefresh(boardWindow);
+	}
 }
 
 void CursesDisplay::initMessageWindows()
 {
-	messageWindows.emplace_back(newwin(4, 11, 25, 0));
-	messageWindows.emplace_back(newwin(4, 11, 25, 16));
+	messageWindows.emplace_back(newwin(6, 13, 11, 19));
+	messageWindows.emplace_back(newwin(6, 13, 11, 47));
+	for (auto messageWindow : messageWindows)
+	{
+		box(messageWindow, 0, 0);
+		wrefresh(messageWindow);
+	}
 }
 
 CursesDisplay::~CursesDisplay()
@@ -66,20 +86,32 @@ void CursesDisplay::drawCell(Cell &cell)
 {
 	WINDOW *window;
 	int which = cell.getBoardNumber() - 1;
+
+	int r = cell.getPoint().getY();
+	int c = cell.getPoint().getX();
 	if (cell.getOrigin() == Point{1, 23})
-	{
+	{ // if cell belongs to nextBlockBoard
 		window = nextBlockWindows[which];
+		c += 2;
+		r += 2;
 	}
-	else
+	else if (cell.getOrigin() == Point{6, 23})
+	{ // if cell belongs to holdBlockBoard
+		window = nextBlockWindows[which];
+		c += 8;
+		r += 2;
+	}
+	else // if cell belongs to mainBoard
 	{
 		window = boardWindows[which];
+		c += 1;
+		r += 1;
 	}
 	if (cell.getIsBlind())
 	{
-		wattron(window, COLOR_PAIR(2));
-		mvwaddch(window, cell.getPoint().getY(),
-				 cell.getPoint().getX(), '?');
-		wattroff(window, COLOR_PAIR(2));
+		wattron(window, COLOR_PAIR(5));
+		mvwaddch(window, r, c, '?');
+		wattroff(window, COLOR_PAIR(5));
 	}
 	else if (cell.isFilled())
 	{
@@ -87,50 +119,44 @@ void CursesDisplay::drawCell(Cell &cell)
 		{
 		case Xwindow::Cyan:
 			wattron(window, COLOR_PAIR(8));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'I');
+			mvwaddch(window, r, c, 'I');
 			wattroff(window, COLOR_PAIR(8));
 			break;
 		case Xwindow::Blue:
 			wattron(window, COLOR_PAIR(4));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'J');
+			mvwaddch(window, r, c, 'J');
 			wattroff(window, COLOR_PAIR(4));
 			break;
 		case Xwindow::Orange:
 			wattron(window, COLOR_PAIR(5));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'L');
+			mvwaddch(window, r, c, 'L');
 			wattroff(window, COLOR_PAIR(5));
 			break;
 		case Xwindow::Yellow:
 			wattron(window, COLOR_PAIR(6));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'O');
+			mvwaddch(window, r, c, 'O');
 			wattroff(window, COLOR_PAIR(6));
 			break;
 		case Xwindow::Green:
 			wattron(window, COLOR_PAIR(3));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'S');
+			mvwaddch(window, r, c, 'S');
 			wattroff(window, COLOR_PAIR(3));
 			break;
 		case Xwindow::Red:
 			wattron(window, COLOR_PAIR(2));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'Z');
+
+			mvwaddch(window, r, c, 'Z');
 			wattroff(window, COLOR_PAIR(2));
+
 			break;
 		case Xwindow::Magenta:
 			wattron(window, COLOR_PAIR(7));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'T');
+			mvwaddch(window, r, c, 'T');
 			wattroff(window, COLOR_PAIR(7));
 			break;
 		case Xwindow::Brown:
 			wattron(window, COLOR_PAIR(1));
-			mvwaddch(window, cell.getPoint().getY(),
-					 cell.getPoint().getX(), 'D');
+			mvwaddch(window, r, c, 'D');
 			wattroff(window, COLOR_PAIR(1));
 			break;
 		}
@@ -138,25 +164,35 @@ void CursesDisplay::drawCell(Cell &cell)
 	else
 	{
 		wattron(window, COLOR_PAIR(1));
-		mvwaddch(window, cell.getPoint().getY(),
-				 cell.getPoint().getX(), ' ');
+		mvwaddch(window, r, c, ' ');
 		wattroff(window, COLOR_PAIR(1));
 	}
+	wrefresh(window);
 }
+
 void CursesDisplay::drawScore(Score &score)
 {
 	int which = score.getBoardNumber() - 1;
-	wclear(scoreWindows[which]);
-	wprintw(scoreWindows[which], "Level:%*d", 5, score.getLevel());
-	wprintw(scoreWindows[which], "Score:%*d", 5, score.getScore());
-	wprintw(scoreWindows[which], "-----------");
+
+	mvwprintw(scoreWindows[which], 1, 1, "Level: %d", std::stoi(score.getLevel()));
+	mvwprintw(scoreWindows[which], 2, 1, "Score: %d", std::stoi(score.getScore()));
 	wrefresh(scoreWindows[which]);
 }
 void CursesDisplay::drawMessage(Message &message)
 {
 	int which = message.getBoardNumber() - 1;
-	wclear(messageWindows[which]);
-	for (auto line : message.getText())
-		wprintw(messageWindows[which], line.c_str());
+	for (unsigned int i = 0; i < message.getText().size(); ++i)
+	{
+		mvwprintw(messageWindows[which], i + 1, 1, message.getText()[i].c_str());
+	}
+	wrefresh(messageWindows[which]);
 }
-void CursesDisplay::clearMessage(Message &message) {}
+
+void CursesDisplay::clearMessage(Message &message)
+{
+	int which = message.getBoardNumber() - 1;
+	wclear(messageWindows[which]);
+	box(messageWindows[which], 0, 0);
+
+	wrefresh(messageWindows[which]);
+}

@@ -28,13 +28,13 @@ void Controller::makeDisplays(bool graphics, bool curses)
         p1Displays.emplace_back(gd);
         p2Displays.emplace_back(gd);
     }
-    // if (curses)
-    // {
-    //     p1Displays.emplace_back(std::make_shared<CursesDisplay>());
-    //     p2Displays.emplace_back(std::make_shared<CursesDisplay>());
-    // }
-    // p1Displays.emplace_back(std::make_shared<CursesDisplay>());
-    // p2Displays.emplace_back(std::make_shared<CursesDisplay>());
+    if (curses)
+    {
+        p1Displays.emplace_back(std::make_shared<CursesDisplay>());
+        p2Displays.emplace_back(std::make_shared<CursesDisplay>());
+    }
+    p1Displays.emplace_back(std::make_shared<CursesDisplay>());
+    p2Displays.emplace_back(std::make_shared<CursesDisplay>());
     displays.emplace_back(p1Displays);
     displays.emplace_back(p2Displays);
 }
@@ -167,6 +167,10 @@ bool startsWith(std::string input, std::string command)
 {
     return (input.length() <= command.length()) &&
            (std::mismatch(input.begin(), input.end(), command.begin()).first == input.end());
+}
+
+void Controller::gameEnd(){
+    
 }
 
 void Controller::runGame()
@@ -421,10 +425,7 @@ void Controller::runGame()
         { // Z
             currentPlayer->forceBlock('Z');
         }
-        else if (matchedCommand == commands[21])
-        { // quit
-            break;
-        } // no need for else. it is verified in the matching phase.
+        
         else if (matchedCommand == commands[21])
         { // blind
             currentPlayer->blind();
@@ -439,6 +440,10 @@ void Controller::runGame()
             std::cin >> blockType;
             currentPlayer->forceOpponentBlock(blockType);
         }
+        else if (matchedCommand == commands[24])
+        { // quit
+            break;
+        } // no need for else. it is verified in the matching phase.
         multiplier = 1;
         matchedCommand = "";
     }

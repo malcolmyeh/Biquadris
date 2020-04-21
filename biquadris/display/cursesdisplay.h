@@ -12,7 +12,6 @@ class CursesDisplay : public View {
     std::vector<WINDOW *> boardWindows;
     std::vector<WINDOW *> messageWindows;
 
-    WINDOW *scoreWindow2;
     void initColours();
     void initScoreWindows();
     void initNextBlockWindows();
