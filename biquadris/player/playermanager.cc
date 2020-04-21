@@ -85,11 +85,6 @@ void PlayerManager::changeLevel(int num)
     }
 }
 
-void PlayerManager::setRandom(bool random)
-{
-    this->level->setRandom(random);
-}
-
 void PlayerManager::setPlayer(std::shared_ptr<Player> player)
 {
     this->player = player;
