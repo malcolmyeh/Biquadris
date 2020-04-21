@@ -35,13 +35,17 @@ void GraphicsDisplay::drawBoardArea()
     drawOutline(2 * padding + boardWidth, padding + scoreHeight, boardWidth, boardHeight);
     for (int i = cellSize; i < boardWidth; i += cellSize)
     {
-        xw->drawLine(padding + i, padding + scoreHeight, padding + i, padding + scoreHeight + boardHeight);
-        xw->drawLine(2 * padding + boardWidth + i, padding + scoreHeight, 2 * padding + boardWidth + i, padding + scoreHeight+boardHeight);
+        xw->drawLine(padding + i, padding + scoreHeight, padding + i,
+                     padding + scoreHeight + boardHeight);
+        xw->drawLine(2 * padding + boardWidth + i, padding + scoreHeight,
+                     2 * padding + boardWidth + i, padding + scoreHeight + boardHeight);
     }
     for (int i = cellSize; i < boardHeight; i += cellSize)
     {
-        xw->drawLine(padding, padding + scoreHeight + i, padding + boardWidth, padding + scoreHeight + i);
-        xw->drawLine(padding + boardWidth + padding, padding + scoreHeight + i, totalWidth - padding,  padding + scoreHeight + i);
+        xw->drawLine(padding, padding + scoreHeight + i, padding + boardWidth,
+                     padding + scoreHeight + i);
+        xw->drawLine(padding + boardWidth + padding, padding + scoreHeight + i,
+                     totalWidth - padding, padding + scoreHeight + i);
     }
 }
 
@@ -61,11 +65,16 @@ void GraphicsDisplay::drawScoreArea(int boardNumber)
 void GraphicsDisplay::drawNextBlockArea()
 {
     drawOutline(padding, totalHeight - nextHeight - 2 * padding, boardWidth, nextHeight);
-    drawOutline(totalWidth - boardWidth - padding, totalHeight - nextHeight - 2 * padding, boardWidth, nextHeight);
-    xw->drawString((2 * padding), totalHeight - nextHeight - padding, "Next: ", Xwindow::Black);
-    xw->drawString(totalWidth - boardWidth, totalHeight - nextHeight - padding, "Next: ", Xwindow::Black);
-    xw->drawString(2 * padding + boardWidth / 2, totalHeight - nextHeight - padding, "Hold: ", Xwindow::Black);
-    xw->drawString(totalWidth - boardWidth / 2, totalHeight - nextHeight - padding, "Hold: ", Xwindow::Black);
+    drawOutline(totalWidth - boardWidth - padding, totalHeight - nextHeight - 2 * padding,
+                boardWidth, nextHeight);
+    xw->drawString((2 * padding), totalHeight - nextHeight - padding, "Next: ",
+                   Xwindow::Black);
+    xw->drawString(totalWidth - boardWidth, totalHeight - nextHeight - padding, "Next: ",
+                   Xwindow::Black);
+    xw->drawString(2 * padding + boardWidth / 2, totalHeight - nextHeight - padding, "Hold: ",
+                   Xwindow::Black);
+    xw->drawString(totalWidth - boardWidth / 2, totalHeight - nextHeight - padding, "Hold: ",
+                   Xwindow::Black);
 }
 
 void GraphicsDisplay::drawCell(Cell &cell)
@@ -93,12 +102,14 @@ void GraphicsDisplay::drawOutline(int x, int y, int width, int height)
 
 void GraphicsDisplay::drawNormalCell(int x, int y, int colour)
 {
-    xw->fillRectangle(x + gridOffset, y+gridOffset, cellSize - cellBorder, cellSize - cellBorder, colour);
+    xw->fillRectangle(x + gridOffset, y + gridOffset, cellSize - cellBorder,
+                      cellSize - cellBorder, colour);
 }
 
 void GraphicsDisplay::drawBlindCell(int x, int y)
 {
-    xw->fillRectangle(x + gridOffset, y+gridOffset, cellSize - cellBorder, cellSize - cellBorder, Xwindow::Black);
+    xw->fillRectangle(x + gridOffset, y + gridOffset, cellSize - cellBorder,
+                      cellSize - cellBorder, Xwindow::Black);
 }
 
 void GraphicsDisplay::drawScore(Score &score)
@@ -120,6 +131,7 @@ void GraphicsDisplay::drawMessage(Message &message)
     for (unsigned int i = 0; i < message.getText().size(); ++i)
         xw->drawString(x, y + i * cellSize / 2, message.getText()[i], Xwindow::Black);
 }
+
 void GraphicsDisplay::clearMessage(Message &message)
 {
     int x1 = 2 * padding + boardWidth / 2;

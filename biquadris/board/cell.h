@@ -10,26 +10,31 @@ class Point;
 class Board;
 class Cell : public Subject
 {
-
     Point point;
     int colour;
     int boardNumber;
-    Point origin;
-
+    Point origin; // Board offset
     bool isBlind = false;
 
 public:
+    // Constructor
     Cell(Point point, int colour, int boardNumber, Point origin);
     ~Cell();
+
+    // Setters
     void setColour(int colour);
+    void toggleBlind();
+
+    // Getters
     int getColour();
     bool isFilled();
-    void toggleBlind();
-    void drawDisplays() override;
     bool getIsBlind();
     Point getPoint();
     Point getOrigin();
     int getBoardNumber();
+
+    // Notify Observers
+    void drawDisplays() override;
 };
 
 #endif

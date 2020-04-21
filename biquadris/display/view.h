@@ -6,14 +6,15 @@
 #include "../score/score.h"
 #include "../message/message.h"
 
-class Cell; 
+class Cell;
 class Score;
 class Message;
 
+// Observer Class
 class View
 {
-
 public:
+    // Notify
     virtual void drawCell(Cell &cell) = 0;
     virtual void drawScore(Score &score) = 0;
     virtual void drawMessage(Message &message) = 0;

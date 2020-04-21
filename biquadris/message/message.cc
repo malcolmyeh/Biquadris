@@ -2,7 +2,23 @@
 #include "../board/board.h"
 #include "../display/view.h"
 
-Message::Message(int boardNumber) :boardNumber{boardNumber} {}
+////////////////////////////// CONSTRUCTOR //////////////////////////////
+
+Message::Message(int boardNumber) : boardNumber{boardNumber} {}
+
+////////////////////////////// GETTERS //////////////////////////////
+
+int Message::getBoardNumber() { return boardNumber; }
+
+std::vector<std::string> Message::getText() { return text; }
+
+////////////////////////////// NOTIFY OBSERVERS //////////////////////////////
+
+void Message::drawDisplays()
+{
+    for (auto &display : displays)
+        display.lock()->drawMessage(*this);
+}
 
 void Message::playerWon()
 {
@@ -35,19 +51,4 @@ void Message::clearMessage()
 {
     for (auto &display : displays)
         display.lock()->clearMessage(*this);
-}
-
-void Message::drawDisplays()
-{
-    for (auto &display : displays)
-        display.lock()->drawMessage(*this);
-}
-
-std::vector<std::string> Message::getText()
-{
-    return text;
-}
-
-int Message::getBoardNumber(){
-    return boardNumber;
 }

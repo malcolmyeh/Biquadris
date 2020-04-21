@@ -3,6 +3,8 @@
 
 #include "playerdecorator.h"
 
+// Move left or right will move Block down 2
+
 class HeavyPlayer : public PlayerDecorator
 {
 
@@ -13,5 +15,3 @@ public:
 };
 
 #endif
-
-// Move left or right will move Block down 2

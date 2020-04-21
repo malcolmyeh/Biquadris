@@ -1,14 +1,4 @@
 #include "subject.h"
-#include <iostream>
-
-// Subject::Subject(int boadNumber) : boardNumber{boardNumber} {
-//   std::cout << "subject created board: " << this->boardNumber << std::endl;
-// }
-
-// int Subject::getBoardNumber()
-// {
-//   return boardNumber;
-// }
 
 Subject::Subject(){}
 

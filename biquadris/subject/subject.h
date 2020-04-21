@@ -8,15 +8,13 @@ class Board;
 
 class Subject
 {
-  protected:
+protected:
   std::vector<std::weak_ptr<View>> displays;
-  // std::shared_ptr<Board> board;
-  // int boardNumber;
 
 public:
   Subject();
-  // int getBoardNumber();
   void attach(std::shared_ptr<View> display);
+  // Notify observers
   virtual void drawDisplays() = 0;
 };
 

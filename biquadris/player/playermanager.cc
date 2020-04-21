@@ -18,6 +18,8 @@
 #include "heavylevel.h"
 #include "level4effect.h"
 
+////////////////////////////// CONSTRUCTORS //////////////////////////////
+
 PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                              std::shared_ptr<Level> level, std::shared_ptr<NextBlockBoard> nextBlockBoard,
                              std::shared_ptr<HoldBlockBoard> holdBlockBoard,
@@ -26,29 +28,33 @@ PlayerManager::PlayerManager(std::shared_ptr<Score> score, std::shared_ptr<MainB
     this->player = std::make_shared<Player>(score, mainBoard, nextBlockBoard, holdBlockBoard, level->getLevelNumber());
 }
 
+////////////////////////////// SETTERS //////////////////////////////
+
 void PlayerManager::setOpponent(std::shared_ptr<PlayerManager> opponentManager)
 {
     this->opponentManager = opponentManager;
 }
 
-void PlayerManager::initBlocks()
+void PlayerManager::setIsPlaying()
 {
-    player->setCurrentBlock(level->createBlock());
-    player->setNextBlock(level->createBlock());
+    this->isPlaying = true;
+    message->playing();
 }
 
-void PlayerManager::setNextBlock()
+void PlayerManager::setRandom(bool random)
 {
-    player->setNextBlock(level->createBlock());
+    this->level->setRandom(random);
 }
 
 void PlayerManager::changeLevel(int num)
 {
     int levelNumber = level->getLevelNumber() + num;
+
     if (levelNumber < 0)
         levelNumber = 0;
     if (levelNumber > 4)
         levelNumber = 4;
+
     player->setLevel(num + level->getLevelNumber());
 
     // assuming num is +-1, undecorate if current Level >= 3
@@ -74,8 +80,61 @@ void PlayerManager::changeLevel(int num)
     case 4:
         level = std::make_shared<Level4>(sequence);
         // should already have heavy, since coming from Level 3
+        // TODO: turn Level4Effect into decorator and add here
         break;
     }
+}
+
+void PlayerManager::setRandom(bool random)
+{
+    this->level->setRandom(random);
+}
+
+void PlayerManager::setPlayer(std::shared_ptr<Player> player)
+{
+    this->player = player;
+}
+
+////////////////////////////// GETTERS //////////////////////////////
+
+int PlayerManager::getLevel() { return this->level->getLevelNumber(); }
+
+bool PlayerManager::getIsLost()
+{
+    bool isLost = player->getIsLost();
+
+    if (isLost)
+        getOpponent()->getMessage()->playerWon();
+    return isLost;
+}
+
+bool PlayerManager::getIsPlaying()
+{
+    if (!isPlaying)
+        message->clearMessage();
+    return isPlaying;
+}
+
+std::shared_ptr<Player> PlayerManager::getPlayer() { return player; }
+
+std::shared_ptr<PlayerManager> PlayerManager::getOpponent()
+{
+    return opponentManager.lock();
+}
+
+std::shared_ptr<Message> PlayerManager::getMessage() { return message; }
+
+////////////////////////////// BLOCK FUNCTIONS //////////////////////////////
+
+void PlayerManager::initBlocks()
+{
+    player->setCurrentBlock(level->createBlock());
+    player->setNextBlock(level->createBlock());
+}
+
+void PlayerManager::setNextBlock()
+{
+    player->setNextBlock(level->createBlock());
 }
 
 void PlayerManager::forceBlock(char blockType)
@@ -110,52 +169,6 @@ void PlayerManager::forceBlock(char blockType)
     player->setCurrentBlock(block);
 }
 
-void PlayerManager::forceOpponentBlock(char blockType)
-{
-    if (player->getCanSpecial())
-    {
-        getOpponent()->forceBlock(blockType);
-        isPlaying = false;
-        player->toggleCanSpecial();
-    }
-}
-
-void PlayerManager::blind()
-{
-    if (player->getCanSpecial())
-    {
-        getOpponent()->getPlayer()->toggleBlind();
-        isPlaying = false;
-        player->toggleCanSpecial();
-    }
-}
-
-void PlayerManager::makeHeavy()
-{
-    if (player->getCanSpecial())
-    {
-        getOpponent()->setPlayer(std::make_shared<HeavyPlayer>(getOpponent()->getPlayer()));
-        isPlaying = false;
-        player->toggleCanSpecial();
-    }
-}
-
-bool PlayerManager::getCanSpecial()
-{
-    bool canSpecial = player->getCanSpecial();
-    if (canSpecial)
-        message->specialReady();
-    return canSpecial;
-}
-
-bool PlayerManager::getIsLost()
-{
-    bool isLost = player->getIsLost();
-
-    if (isLost)
-        getOpponent()->getMessage()->playerWon();
-    return isLost;
-}
 bool PlayerManager::moveBlock(char direction, int magnitude)
 {
     bool checkMove = player->moveBlock(direction, magnitude);
@@ -200,44 +213,43 @@ void PlayerManager::holdBlock()
     }
 }
 
-void PlayerManager::setRandom(bool random)
+////////////////////////////// SPECIAL ACTIONS //////////////////////////////
+
+bool PlayerManager::getCanSpecial()
 {
-    this->level->setRandom(random);
+    bool canSpecial = player->getCanSpecial();
+    if (canSpecial)
+        message->specialReady();
+    return canSpecial;
 }
 
-std::shared_ptr<Player> PlayerManager::getPlayer()
+void PlayerManager::forceOpponentBlock(char blockType)
 {
-    return player;
+    if (player->getCanSpecial())
+    {
+        getOpponent()->forceBlock(blockType);
+        isPlaying = false;
+        player->toggleCanSpecial();
+    }
 }
 
-void PlayerManager::setPlayer(std::shared_ptr<Player> player)
+void PlayerManager::blind()
 {
-    this->player = player;
+    if (player->getCanSpecial())
+    {
+        getOpponent()->getPlayer()->toggleBlind();
+        isPlaying = false;
+        player->toggleCanSpecial();
+    }
 }
 
-int PlayerManager::getLevel()
+void PlayerManager::makeHeavy()
 {
-    return this->level->getLevelNumber();
-}
-
-void PlayerManager::setIsPlaying()
-{
-    this->isPlaying = true;
-    message->playing();
-}
-
-bool PlayerManager::getIsPlaying()
-{
-    if (!isPlaying)
-        message->clearMessage();
-    return isPlaying;
-}
-
-std::shared_ptr<PlayerManager> PlayerManager::getOpponent()
-{
-    return opponentManager.lock();
-}
-
-std::shared_ptr<Message> PlayerManager::getMessage(){
-    return message;
+    if (player->getCanSpecial())
+    {
+        getOpponent()->setPlayer(
+            std::make_shared<HeavyPlayer>(getOpponent()->getPlayer()));
+        isPlaying = false;
+        player->toggleCanSpecial();
+    }
 }

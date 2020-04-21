@@ -7,10 +7,8 @@
 
 class NextBlockBoard : public Board
 {
-    std::vector<std::vector<Cell>> cellGrid;
-    std::vector<std::shared_ptr<View>> displays;
-
 public:
+    // Constructors
     NextBlockBoard();
     NextBlockBoard(int boardNumber);
     NextBlockBoard(NextBlockBoard *nextBlockBoard);

@@ -28,11 +28,9 @@ class PlayerManager;
 
 class Controller
 {
-    std::vector<std::shared_ptr<PlayerManager>> playerManagers; // two element vector
-
+    std::vector<std::shared_ptr<PlayerManager>> playerManagers;
     std::shared_ptr<PlayerManager> currentPlayer;
     std::vector<std::vector<std::shared_ptr<View>>> displays;
-
     std::vector<std::shared_ptr<MainBoard>> mainBoards;
     std::vector<std::shared_ptr<NextBlockBoard>> nextBlockBoards;
     std::vector<std::shared_ptr<HoldBlockBoard>> holdBlockBoards;

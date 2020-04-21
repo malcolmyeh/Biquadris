@@ -20,7 +20,6 @@ void Controller::makeDisplays(bool graphics, bool curses)
     std::vector<std::shared_ptr<View>> p1Displays;
     std::vector<std::shared_ptr<View>> p2Displays;
     // std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
-
     // p1Displays.emplace_back(td);
     // p2Displays.emplace_back(td);
     if (graphics)
@@ -170,15 +169,6 @@ bool startsWith(std::string input, std::string command)
            (std::mismatch(input.begin(), input.end(), command.begin()).first == input.end());
 }
 
-// std::string match(std::vector<std::string> commands, std::string input) {
-//     std::string match = "";
-//     for (command : commands) {
-//         if (startsWith(input, command) && match != "") {
-
-//         }
-//     }
-// }
-
 void Controller::runGame()
 {
     // we can build a map later to support macros and remapping
@@ -268,20 +258,14 @@ void Controller::runGame()
         //   to a function for easier remapping
         if (matchedCommand == commands[0])
         { // move left
-            // for (int i = 0; i < multiplier; ++i)
-            //     currentPlayer->moveBlock('L');
             currentPlayer->moveBlock('L', multiplier);
         }
         else if (matchedCommand == commands[1])
         { // move down
-            // for (int i = 0; i < multiplier; ++i)
-            //     currentPlayer->moveBlock('D');
             currentPlayer->moveBlock('D', multiplier);
         }
         else if (matchedCommand == commands[2])
         { // move right
-            // for (int i = 0; i < multiplier; ++i)
-            //     currentPlayer->moveBlock('R');
             currentPlayer->moveBlock('R', multiplier);
         }
         else if (matchedCommand == commands[3])

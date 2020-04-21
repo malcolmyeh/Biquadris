@@ -1,6 +1,5 @@
 #include "textdisplay.h"
-// #include "../board/cell.h"
-// #include "../board/board.h"
+
 #include "../board/board.h"
 
 #include <iostream>
@@ -26,6 +25,7 @@ TextDisplay::TextDisplay()
 
 void TextDisplay::drawStatic(std::string str, int r)
 {
+    // draws for both boards
     for (unsigned int i = 0; i < str.length(); ++i)
         charGrid[r][i] = charGrid[r][16 + i] = str[i];
 }
@@ -82,7 +82,6 @@ void TextDisplay::drawCell(Cell &cell)
 
 void TextDisplay::drawScore(Score &score)
 {
-    // score cna't be more than 6 digits or will be out of index (seg fault)
     int c = 7;
     if (score.getBoardNumber() == 2)
     {
@@ -120,9 +119,10 @@ void TextDisplay::clearMessage(Message &message)
     draw();
 }
 
+// Prints to screen
 void TextDisplay::draw()
 {
-    std::cout << "\033[2J\033[1;1H";
+    std::cout << "\033[2J\033[1;1H"; // Clear screen
     for (auto r : this->charGrid)
     {
         for (auto c : r)

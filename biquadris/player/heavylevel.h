@@ -3,6 +3,8 @@
 
 #include "playerdecorator.h"
 
+// Any Move or Rotate moves Block down 1
+
 class HeavyLevel : public PlayerDecorator
 {
 
@@ -14,5 +16,3 @@ public:
 };
 
 #endif
-
-// Any Move or Rotate moves Block down 1

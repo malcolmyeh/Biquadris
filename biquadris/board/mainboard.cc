@@ -8,9 +8,12 @@
 #include <memory>
 #include <iostream>
 
+////////////////////////////// CONSTRUCTORS //////////////////////////////
+
 MainBoard::MainBoard() : Board{18, 11, Point{0, 3}, 0}, isBlind{false} {}
 
-MainBoard::MainBoard(int boardNumber) : Board{18, 11, Point{0, 3}, boardNumber}, isBlind{false} {}
+MainBoard::MainBoard(int boardNumber)
+    : Board{18, 11, Point{0, 3}, boardNumber}, isBlind{false} {}
 
 MainBoard::MainBoard(MainBoard *mainBoard)
 {
@@ -19,6 +22,8 @@ MainBoard::MainBoard(MainBoard *mainBoard)
     displays = mainBoard->displays;
     isBlind = mainBoard->isBlind;
 }
+
+////////////////////////////// SETTERS //////////////////////////////
 
 void MainBoard::toggleBlind()
 {
@@ -32,6 +37,18 @@ void MainBoard::toggleBlind()
     }
 }
 
+void MainBoard::addBlock(std::shared_ptr<Block> block)
+{
+    blocks.emplace_back(block);
+}
+
+void MainBoard::removeBlock()
+{
+    blocks.pop_back();
+}
+
+////////////////////////////// BOARD FUNCTIONS //////////////////////////////
+
 bool MainBoard::rowIsFilled(std::vector<Cell> row)
 {
     for (auto c : row)
@@ -42,16 +59,23 @@ bool MainBoard::rowIsFilled(std::vector<Cell> row)
     return true;
 }
 
+// checks if each row is full, removes the point on the blocks that belong
+// on that row, moves all blocks down and updates score based on the rows and
+// blocks cleared
 int MainBoard::checkRow(std::shared_ptr<Score> score)
 {
     int rowsCleared = 0;
-    for (std::vector<std::vector<Cell>>::reverse_iterator row = cellGrid.rbegin(); row != cellGrid.rend(); ++row)
+    // loop through each row
+    for (std::vector<std::vector<Cell>>::reverse_iterator row = cellGrid.rbegin();
+         row != cellGrid.rend(); ++row)
     {
         while (rowIsFilled(*row))
         {
             ++rowsCleared;
+            // loop through each block
             for (auto block : blocks)
             {
+                // if block has point on Y...
                 if (block->clearPoint(row->front().getPoint().getY()))
                     score->updateScoreBlock(block->getLevel());
             }
@@ -61,12 +85,4 @@ int MainBoard::checkRow(std::shared_ptr<Score> score)
         }
     }
     return rowsCleared;
-}
-
-void MainBoard::addBlock(std::shared_ptr<Block> block){
-    blocks.emplace_back(block);
-}
-
-void MainBoard::removeBlock(){
-    blocks.pop_back();
 }

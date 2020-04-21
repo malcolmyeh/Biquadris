@@ -2,7 +2,12 @@
 #include "../display/window.h"
 #include "../display/view.h"
 
-Score::Score(int level, int boardNumber) : boardNumber{boardNumber}, level{level}, currentScore{0}, highScore{0} {}
+////////////////////////////// CONSTRUCTOR //////////////////////////////
+
+Score::Score(int level, int boardNumber)
+    : boardNumber{boardNumber}, level{level}, currentScore{0}, highScore{0} {}
+
+////////////////////////////// SETTERS //////////////////////////////
 
 void Score::updateScoreRow()
 {
@@ -31,27 +36,23 @@ void Score::changeLevel(int level)
         this->level = level;
     drawDisplays();
 }
+
 void Score::resetScore()
 {
     currentScore = 0;
     drawDisplays();
 }
 
+////////////////////////////// GETTERS //////////////////////////////
+
+std::string Score::getLevel() { return std::to_string(level); }
+std::string Score::getScore() { return std::to_string(currentScore); }
+int Score::getBoardNumber() { return boardNumber; }
+
+////////////////////////////// NOTIFY OBSERVERS //////////////////////////////
+
 void Score::drawDisplays()
 {
     for (auto &display : displays)
         display.lock()->drawScore(*this);
-}
-
-std::string Score::getLevel()
-{
-    return std::to_string(level);
-}
-std::string Score::getScore()
-{
-    return std::to_string(currentScore);
-}
-
-int Score::getBoardNumber(){
-    return boardNumber;
 }

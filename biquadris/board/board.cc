@@ -5,6 +5,8 @@
 #include <memory>
 #include <iostream>
 
+////////////////////////////// CONSTRUCTOR //////////////////////////////
+
 Board::Board() {}
 
 Board::Board(int boardNumber) : boardNumber{boardNumber} {}
@@ -22,18 +24,16 @@ Board::Board(Board *board)
     origin = board->origin;
 }
 
-int Board::getBoardNumber()
-{
-    return boardNumber;
-}
-
-void Board::clear()
+Board::~Board()
 {
     for (auto r : cellGrid)
         r.clear();
     cellGrid.clear();
 }
 
+////////////////////////////// SETTERS //////////////////////////////
+
+// Links all Cells to given Display
 void Board::setDisplay(std::shared_ptr<View> display)
 {
     for (unsigned int r = 0; r < cellGrid.size(); ++r)
@@ -46,6 +46,26 @@ void Board::setDisplay(std::shared_ptr<View> display)
     displays.emplace_back(display);
 }
 
+////////////////////////////// GETTERS //////////////////////////////
+
+int Board::getBoardNumber()
+{
+    return boardNumber;
+}
+
+Point Board::getOrigin()
+{
+    return this->origin;
+}
+
+bool Board::isFilled(Point point)
+{
+    return cellGrid[point.getY()][point.getX()].isFilled();
+}
+
+////////////////////////////// BOARD FUNCTIONS //////////////////////////////
+
+// Initialize Board, creates and attaches Cells to Displays
 void Board::init(int boardNumber)
 {
     this->boardNumber = boardNumber;
@@ -64,6 +84,7 @@ void Board::init(int boardNumber)
     }
 }
 
+// Redraws all Cells
 void Board::refresh()
 {
     for (auto r : cellGrid)
@@ -83,20 +104,11 @@ void Board::restart()
     refresh();
 }
 
+// Fill Cell at given Point
 void Board::fillCell(Point point, int colour)
 {
     if (cellGrid[point.getY()][point.getX()].getColour() != colour)
         cellGrid[point.getY()][point.getX()]
             .setColour(colour);
     cellGrid[point.getY()][point.getX()].drawDisplays();
-}
-
-Point Board::getOrigin()
-{
-    return this->origin;
-}
-
-bool Board::isFilled(Point point)
-{
-    return cellGrid[point.getY()][point.getX()].isFilled();
 }

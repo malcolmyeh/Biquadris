@@ -5,6 +5,7 @@
 #include "../board/nextblockboard.h"
 #include "../display/window.h"
 
+////////////////////////////// CONSTRUCTORS //////////////////////////////
 
 Player::Player(std::shared_ptr<Score> score, std::shared_ptr<MainBoard> mainBoard,
                std::shared_ptr<NextBlockBoard> nextBlockBoard,
@@ -49,6 +50,8 @@ Player::Player(std::shared_ptr<Player> player)
 
 Player::Player() {}
 
+////////////////////////////// SETTERS //////////////////////////////
+
 void Player::setCurrentBlock(std::shared_ptr<Block> block)
 {
     currentBlock = block;
@@ -70,11 +73,11 @@ void Player::setHoldBlock()
         std::shared_ptr<Block> oldHoldBlock = holdBlock;
         std::shared_ptr<Block> oldCurrentBlock = currentBlock;
         mainBoard->removeBlock();
-        currentBlock->setHoldBlockBoard(holdBlockBoard); // erases current from main, draws in hold
+        currentBlock->setHoldBlockBoard(holdBlockBoard);
         holdBlockBoard->setBlock(currentBlock);
         this->holdBlock = this->currentBlock;
-        setCurrentBlock(oldHoldBlock);                            // erases hold, draws in main, but erases new hold block too
-        oldCurrentBlock->drawBlock(oldCurrentBlock->getColour()); // redraw erased hold block cells
+        setCurrentBlock(oldHoldBlock);
+        oldCurrentBlock->drawBlock(oldCurrentBlock->getColour());
     }
     else
     {
@@ -103,6 +106,8 @@ void Player::toggleBlind()
     isBlind = !isBlind;
 }
 
+////////////////////////////// GETTERS //////////////////////////////
+
 bool Player::hasHoldBlock()
 {
 
@@ -111,20 +116,11 @@ bool Player::hasHoldBlock()
     return false;
 }
 
-bool Player::getCanSpecial()
-{
-    return canSpecial;
-}
+bool Player::getCanSpecial() { return canSpecial; }
 
-bool Player::getIsLost()
-{
-    return isLost;
-}
+bool Player::getIsLost() { return isLost; }
 
-bool Player::getIsDecorated()
-{
-    return isDecorated;
-}
+bool Player::getIsDecorated() { return isDecorated; }
 
 bool Player::getRowCleared()
 {
@@ -133,48 +129,25 @@ bool Player::getRowCleared()
     return temp;
 }
 
-std::shared_ptr<Block> Player::getCurrentBlock()
-{
-    return currentBlock;
-}
+std::shared_ptr<Block> Player::getCurrentBlock() { return currentBlock; }
 
-std::shared_ptr<Block> Player::getNextBlock()
-{
-    return nextBlock;
-}
-std::shared_ptr<Block> Player::getHoldBlock()
-{
-    return holdBlock;
-}
+std::shared_ptr<Block> Player::getNextBlock() { return nextBlock; }
 
-std::shared_ptr<MainBoard> Player::getMainBoard()
-{
-    return mainBoard;
-}
+std::shared_ptr<Block> Player::getHoldBlock() { return holdBlock; }
 
-std::shared_ptr<NextBlockBoard> Player::getNextBlockBoard()
-{
-    return nextBlockBoard;
-}
-std::shared_ptr<HoldBlockBoard> Player::getHoldBlockBoard()
-{
-    return holdBlockBoard;
-}
+std::shared_ptr<MainBoard> Player::getMainBoard() { return mainBoard; }
 
-std::shared_ptr<Score> Player::getScore()
-{
-    return score;
-}
+std::shared_ptr<NextBlockBoard> Player::getNextBlockBoard() { return nextBlockBoard; }
 
-int Player::getLevel()
-{
-    return level;
-}
+std::shared_ptr<HoldBlockBoard> Player::getHoldBlockBoard() { return holdBlockBoard; }
 
-std::shared_ptr<Player> Player::getPlayer()
-{
-    return std::make_shared<Player>(this);
-}
+std::shared_ptr<Score> Player::getScore() { return score; }
+
+int Player::getLevel() { return level; }
+
+std::shared_ptr<Player> Player::getPlayer() { return std::make_shared<Player>(this); }
+
+////////////////////////////// BLOCK FUNCTIONS //////////////////////////////
 
 bool Player::moveBlock(char direction, int magnitude)
 {

@@ -15,13 +15,18 @@ class MainBoard : public Board
     bool rowIsFilled(std::vector<Cell> row);
 
 public:
+    // Constructors
     MainBoard();
     MainBoard(int boardNumber);
     MainBoard(MainBoard *mainBoard);
+
+    // Setters
     void toggleBlind();
-    int checkRow(std::shared_ptr<Score> score);
     void addBlock(std::shared_ptr<Block> block);
     void removeBlock();
+
+    // Board Function
+    int checkRow(std::shared_ptr<Score> score);
 };
 
 #endif
