@@ -27,6 +27,7 @@ public:
 
     // Board Function
     int checkRow(std::shared_ptr<Score> score);
+    void restart() override;
 };
 
 #endif

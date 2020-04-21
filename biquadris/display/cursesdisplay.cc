@@ -44,6 +44,8 @@ void CursesDisplay::initNextBlockWindows()
 	for (auto nextBlockWindow : nextBlockWindows)
 	{
 		box(nextBlockWindow, 0, 0);
+		mvwprintw(nextBlockWindow, 1, 1, "Next:");
+		mvwprintw(nextBlockWindow, 1, 7, "Hold:");
 		wrefresh(nextBlockWindow);
 	}
 }

@@ -28,6 +28,9 @@ class PlayerManager;
 
 class Controller
 {
+    int startLevel;
+    std::vector<std::string> scriptFiles;
+
     std::vector<std::shared_ptr<PlayerManager>> playerManagers;
     std::shared_ptr<PlayerManager> currentPlayer;
     std::vector<std::vector<std::shared_ptr<View>>> displays;
@@ -39,8 +42,8 @@ class Controller
 
     void makeDisplays(bool graphics, bool curses);
     void makeBoards();
-    void makePlayerManagers(int startLevel, std::vector<std::string> scriptFiles);
-    void makeScores(int startLevel);
+    void makePlayerManagers();
+    void makeScores();
     void makeMessages();
     void initBoards();
     void restart();

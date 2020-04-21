@@ -18,3 +18,14 @@ void HoldBlockBoard::setBlock(std::shared_ptr<Block> block)
 {
     this->block = block;
 }
+
+void HoldBlockBoard::restart()
+{
+    this->block.reset();
+    for (auto r : cellGrid)
+    {
+        for (auto c : r)
+            c.setColour(Xwindow::White);
+    }
+    refresh();
+}

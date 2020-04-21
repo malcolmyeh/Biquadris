@@ -42,7 +42,7 @@ public:
     // Board Functions
     void init(int boardNumber);
     void refresh();
-    void restart();
+    virtual void restart();
     void fillCell(Point point, int colour);
     friend std::ostream &operator<<(std::ostream &out, const Board &b);
 };

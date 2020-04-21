@@ -81,6 +81,10 @@ int main(int argc, char *argv[])
             {
                 graphics = false;
             }
+            if (flag == "-curses")
+            {
+                ncurses = true;
+            }
             else if (flag == "-seed")
             {
                 if (i + 1 < args.size())

@@ -57,3 +57,9 @@ void Score::drawDisplays()
     for (auto &display : displays)
         display.lock()->drawScore(*this);
 }
+
+void Score::drawHighScore()
+{
+    for (auto &display : displays)
+        display.lock()->drawHighScore(*this);
+}

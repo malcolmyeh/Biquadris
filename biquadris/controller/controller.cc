@@ -3,13 +3,14 @@
 #include <vector>
 
 Controller::Controller(bool graphics, bool curses, std::vector<std::string> scriptFiles, int startLevel = 0)
+    : startLevel{startLevel}, scriptFiles{scriptFiles}
 {
     makeDisplays(graphics, curses);
     makeBoards();
     initBoards();
-    makeScores(startLevel);
+    makeScores();
     makeMessages();
-    makePlayerManagers(startLevel, scriptFiles);
+    makePlayerManagers();
 
     // set currentPlayer to first player
     currentPlayer = playerManagers.front();
@@ -19,20 +20,28 @@ void Controller::makeDisplays(bool graphics, bool curses)
 {
     std::vector<std::shared_ptr<View>> p1Displays;
     std::vector<std::shared_ptr<View>> p2Displays;
-    std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
-    p1Displays.emplace_back(td);
-    p2Displays.emplace_back(td);
+
+    if (curses)
+    {
+        // std::shared_ptr<CursesDisplay> cd = std::make_shared<CursesDisplay>();
+        // p1Displays.emplace_back(cd);
+        // p2Displays.emplace_back(cd);
+        p1Displays.emplace_back(std::make_shared<CursesDisplay>());
+        p2Displays.emplace_back(std::make_shared<CursesDisplay>());
+    }
+    else
+    {
+        std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
+        p1Displays.emplace_back(td);
+        p2Displays.emplace_back(td);
+    }
     if (graphics)
     {
         std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
         p1Displays.emplace_back(gd);
         p2Displays.emplace_back(gd);
     }
-    if (curses)
-    {
-        p1Displays.emplace_back(std::make_shared<CursesDisplay>());
-        p2Displays.emplace_back(std::make_shared<CursesDisplay>());
-    }
+
     displays.emplace_back(p1Displays);
     displays.emplace_back(p2Displays);
 }
@@ -47,7 +56,7 @@ void Controller::makeBoards()
     holdBlockBoards.emplace_back(std::make_shared<HoldBlockBoard>(2));
 }
 
-void Controller::makeScores(int startLevel)
+void Controller::makeScores()
 {
     // create Scores
     for (auto mainBoard : mainBoards)
@@ -79,7 +88,7 @@ void Controller::makeMessages()
     }
 }
 
-void Controller::makePlayerManagers(int startLevel, std::vector<std::string> scriptFiles)
+void Controller::makePlayerManagers()
 {
     // create PlayerManagers and initialize Blocks
     for (int i = 0; i < 2; ++i)
@@ -132,22 +141,20 @@ void Controller::initBoards()
 
 void Controller::restart()
 {
-    for (auto mainBoard : mainBoards)
-    {
-        mainBoard->restart();
-    }
-    for (auto nextBlockBoard : nextBlockBoards)
-    {
-        nextBlockBoard->restart();
-    }
-    for (auto holdBlockBoard : holdBlockBoards)
-    {
-        holdBlockBoard->restart();
-    }
     for (auto message : messages)
         message->clearMessage();
     for (auto score : scores)
         score->resetScore();
+
+    mainBoards.clear();
+    nextBlockBoards.clear();
+    holdBlockBoards.clear();
+    makeBoards();
+    initBoards();
+    playerManagers.clear();
+    makePlayerManagers();
+    currentPlayer = playerManagers.front();
+    runGame();
 }
 
 void Controller::changeTurn()
@@ -167,8 +174,57 @@ bool startsWith(std::string input, std::string command)
            (std::mismatch(input.begin(), input.end(), command.begin()).first == input.end());
 }
 
-void Controller::gameEnd(){
-    
+void Controller::gameEnd()
+{
+    for (auto score : scores)
+        score->drawHighScore();
+    std::vector<std::string> commands = {"restart", "quit"};
+    std::string matchedCommand = "";
+
+    while (true)
+    {
+        std::string input;
+        std::cin >> input;
+        if (std::cin.eof())
+            break;
+
+        bool errorFlag = false;
+
+        for (auto command : commands)
+        {
+            if (startsWith(input, command) && matchedCommand != "")
+            {
+                errorFlag = true;
+                break;
+            }
+            if (startsWith(input, command))
+                matchedCommand = command;
+        }
+
+        if (matchedCommand == "")
+        {
+            std::cerr << "No commands matched." << std::endl;
+            continue;
+        }
+
+        if (errorFlag)
+        {
+            std::cerr << "Unable to match command. Please try again." << std::endl;
+            matchedCommand = "";
+            errorFlag = false;
+            continue;
+        }
+
+        if (matchedCommand == commands[0])
+        { // restart
+            restart();
+        }
+        else if (matchedCommand == commands[1])
+        { // quit
+            break;
+        }
+        matchedCommand = "";
+    }
 }
 
 void Controller::runGame()
@@ -191,7 +247,7 @@ void Controller::runGame()
     while (true)
     {
         if (currentPlayer->getIsLost())
-            break;
+            gameEnd();
         if (!currentPlayer->getIsPlaying())
         {                 // if current player turn ends
             changeTurn(); // change player
@@ -426,7 +482,7 @@ void Controller::runGame()
         { // Z
             currentPlayer->forceBlock('Z');
         }
-        
+
         else if (matchedCommand == commands[21])
         { // blind
             currentPlayer->blind();

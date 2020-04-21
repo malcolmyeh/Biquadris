@@ -131,7 +131,7 @@ void GraphicsDisplay::drawHighScore(Score &score)
         x1 += boardWidth + padding;
         x2 = totalWidth - padding - boardWidth;
     }
-    xw->fillRectangle(x2, padding, boardWidth, scoreHeight, Xwindow::White);
+    xw->fillRectangle(x2, padding, boardWidth/2, scoreHeight, Xwindow::White);
     drawOutline(x2, padding, boardWidth, scoreHeight);
     xw->drawString(x2 + padding, 2 * padding, "HiScr: ", Xwindow::Black);
     xw->drawString(x2 + padding, 3 * padding, "Score: ", Xwindow::Black);
