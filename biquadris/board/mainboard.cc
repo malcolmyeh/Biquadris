@@ -87,14 +87,3 @@ int MainBoard::checkRow(std::shared_ptr<Score> score)
     }
     return rowsCleared;
 }
-
-void MainBoard::restart()
-{
-    blocks.clear();
-    for (auto r : cellGrid)
-    {
-        for (auto c : r)
-            c.setColour(Xwindow::White);
-    }
-    refresh();
-}

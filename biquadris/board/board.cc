@@ -94,16 +94,6 @@ void Board::refresh()
     }
 }
 
-void Board::restart()
-{
-    for (auto r : cellGrid)
-    {
-        for (auto c : r)
-            c.setColour(Xwindow::White);
-    }
-    refresh();
-}
-
 // Fill Cell at given Point
 void Board::fillCell(Point point, int colour)
 {

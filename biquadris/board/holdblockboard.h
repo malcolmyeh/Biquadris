@@ -14,7 +14,6 @@ public:
     HoldBlockBoard(int boardNumber);
     HoldBlockBoard(HoldBlockBoard *holdBlockBoard);
     void setBlock(std::shared_ptr<Block> block);
-    void restart() override;
 };
 
 #endif
