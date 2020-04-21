@@ -338,8 +338,11 @@ void Controller::runGame()
         }
         else if (matchedCommand == commands[5])
         { // drop piece
-            for (int i = 0; i < multiplier; ++i)
+            for (int i = 0; i < multiplier; ++i){
                 currentPlayer->dropBlock();
+                if (currentPlayer->getIsLost())
+                    break;
+            }
         }
         else if (matchedCommand == commands[6])
         { // level up
