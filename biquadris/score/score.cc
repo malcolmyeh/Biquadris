@@ -47,6 +47,7 @@ void Score::resetScore()
 
 std::string Score::getLevel() { return std::to_string(level); }
 std::string Score::getScore() { return std::to_string(currentScore); }
+std::string Score::getHighScore() { return std::to_string(highScore); }
 int Score::getBoardNumber() { return boardNumber; }
 
 ////////////////////////////// NOTIFY OBSERVERS //////////////////////////////

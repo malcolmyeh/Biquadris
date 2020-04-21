@@ -179,6 +179,15 @@ void CursesDisplay::drawScore(Score &score)
 	mvwprintw(scoreWindows[which], 2, 1, "Score: %d", std::stoi(score.getScore()));
 	wrefresh(scoreWindows[which]);
 }
+
+void CursesDisplay::drawHighScore(Score &score)
+{
+	int which = score.getBoardNumber() - 1;
+	mvwprintw(scoreWindows[which], 1, 1, "HiScr: %d", std::stoi(score.getHighScore()));
+	mvwprintw(scoreWindows[which], 2, 1, "Score: %d", std::stoi(score.getScore()));
+	wrefresh(scoreWindows[which]);
+}
+
 void CursesDisplay::drawMessage(Message &message)
 {
 	int which = message.getBoardNumber() - 1;

@@ -94,6 +94,18 @@ void TextDisplay::drawScore(Score &score)
     draw();
 }
 
+void TextDisplay::drawHighScore(Score &score)
+{
+    int c = 0;
+    if (score.getBoardNumber() == 2)
+    {
+        c += 16;
+    }
+    std::string str = "HiScr: " + score.getHighScore();
+    for (unsigned int i = 0; i < str.length(); ++i)
+        charGrid[0][c + 1] = str[i];
+}
+
 void TextDisplay::drawMessage(Message &message)
 {
     int c = 0;
@@ -112,7 +124,8 @@ void TextDisplay::drawMessage(Message &message)
 
 void TextDisplay::clearMessage(Message &message)
 {
-    for (int r = 26; r < 30; ++r){
+    for (int r = 26; r < 30; ++r)
+    {
         for (int c = 0; c < 28; ++c)
             charGrid[r][c] = ' ';
     }

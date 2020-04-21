@@ -19,9 +19,9 @@ void Controller::makeDisplays(bool graphics, bool curses)
 {
     std::vector<std::shared_ptr<View>> p1Displays;
     std::vector<std::shared_ptr<View>> p2Displays;
-    // std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
-    // p1Displays.emplace_back(td);
-    // p2Displays.emplace_back(td);
+    std::shared_ptr<TextDisplay> td = std::make_shared<TextDisplay>();
+    p1Displays.emplace_back(td);
+    p2Displays.emplace_back(td);
     if (graphics)
     {
         std::shared_ptr<GraphicsDisplay> gd = std::make_shared<GraphicsDisplay>();
@@ -33,8 +33,6 @@ void Controller::makeDisplays(bool graphics, bool curses)
         p1Displays.emplace_back(std::make_shared<CursesDisplay>());
         p2Displays.emplace_back(std::make_shared<CursesDisplay>());
     }
-    p1Displays.emplace_back(std::make_shared<CursesDisplay>());
-    p2Displays.emplace_back(std::make_shared<CursesDisplay>());
     displays.emplace_back(p1Displays);
     displays.emplace_back(p2Displays);
 }

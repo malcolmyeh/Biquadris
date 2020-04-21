@@ -57,7 +57,8 @@ bool parseCommandLineArgs(const int argc, char *argv[], bool &graphics, bool &nc
     return true;
 }
 
-bool fileExists(std::string filename) {
+bool fileExists(std::string filename)
+{
     std::ifstream file(filename);
     return file.good();
 }
@@ -71,54 +72,68 @@ int main(int argc, char *argv[])
     bool valid = true;
 
     std::vector<std::string> args(argv + 1, argv + argc);
-    for (unsigned i = 0; i < args.size(); ++i) {
-        std:: string flag = args[i];
-        try {
-            if (flag == "-text") 
+    for (unsigned i = 0; i < args.size(); ++i)
+    {
+        std::string flag = args[i];
+        try
+        {
+            if (flag == "-text")
             {
                 graphics = false;
             }
             else if (flag == "-seed")
             {
-                if (i + 1 < args.size()) {
+                if (i + 1 < args.size())
+                {
                     // verify it doesn't contain letters
-                    for (unsigned int j = 0; j < args[i + 1].length(); ++j) {
+                    for (unsigned int j = 0; j < args[i + 1].length(); ++j)
+                    {
                         if (!isdigit(args[i + 1][j]))
                             throw "Seed should be an unsigned integer.";
                     }
                     srand(std::stoi(args[i + 1]));
                     ++i;
-                } else {
+                }
+                else
+                {
                     throw "No seed given";
                 }
             }
             else if (flag == "-scriptfile1")
             {
-                if (i + 1 < args.size()) {
+                if (i + 1 < args.size())
+                {
                     if (!fileExists(args[i + 1]))
                         throw "File does not exist, or cannot be read for player 1.";
                     scriptFiles[0] = args[i + 1];
                     ++i;
-                } else {
+                }
+                else
+                {
                     throw "No scriptfile for player 1 given.";
                 }
             }
             else if (flag == "-scriptfile2")
             {
-                if (i + 1 < args.size()) {
+                if (i + 1 < args.size())
+                {
                     if (!fileExists(args[i + 1]))
                         throw "File does not exist, or cannot be read for player 2.";
                     scriptFiles[1] = args[i + 1];
                     ++i;
-                } else {
+                }
+                else
+                {
                     throw "No scriptfile for player 2 given.";
                 }
             }
             else if (flag == "-startlevel")
             {
-                if (i + 1 < args.size()) {
+                if (i + 1 < args.size())
+                {
                     // verify that it doesn't contain letters
-                    for (unsigned int j = 0; j < args[i + 1].length(); ++j) {
+                    for (unsigned int j = 0; j < args[i + 1].length(); ++j)
+                    {
                         if (!isdigit(args[i + 1][j]))
                             throw "Level must be a number between 0 and 4 inclusive.";
                     }
@@ -126,11 +141,15 @@ int main(int argc, char *argv[])
                         throw "Level must be between 0 and 4.";
                     startLevel = std::stoi(args[i + 1]);
                     ++i;
-                } else {
+                }
+                else
+                {
                     throw "No startlevel given.";
                 }
             }
-        } catch (const char* errorMessage) {
+        }
+        catch (const char *errorMessage)
+        {
             valid = false;
             std::cerr << errorMessage << std::endl;
         }
@@ -138,16 +157,10 @@ int main(int argc, char *argv[])
 
     if (valid)
     {
-        if (ncurses)
-        {
-            // ncurses controller
-        }
-        else
-        {
-            Controller c(graphics, ncurses, scriptFiles, startLevel);
-            c.runGame();
-        }
-        std::cout << "Thanks for playing :D" << std::endl;
+
+        Controller c(graphics, ncurses, scriptFiles, startLevel);
+        c.runGame();
+        std::cout << "Thanks for playing! :D" << std::endl;
     }
     return 0;
 }

@@ -21,10 +21,12 @@ public:
     // Getters
     std::string getLevel();
     std::string getScore();
+    std::string getHighScore();
     int getBoardNumber();
 
     // Notify observers
     void drawDisplays() override;
+    void drawHighScore();
 };
 
 #endif

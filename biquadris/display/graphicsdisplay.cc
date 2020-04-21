@@ -122,6 +122,24 @@ void GraphicsDisplay::drawScore(Score &score)
     xw->drawString(x, padding * 3, score.getScore(), Xwindow::Black);
 }
 
+void GraphicsDisplay::drawHighScore(Score &score)
+{
+    int x1 = padding * 4;
+    int x2 = padding;
+    if (score.getBoardNumber() == 2)
+    {
+        x1 += boardWidth + padding;
+        x2 = totalWidth - padding - boardWidth;
+    }
+    xw->fillRectangle(x2, padding, boardWidth, scoreHeight, Xwindow::White);
+    drawOutline(x2, padding, boardWidth, scoreHeight);
+    xw->drawString(x2 + padding, 2 * padding, "HiScr: ", Xwindow::Black);
+    xw->drawString(x2 + padding, 3 * padding, "Score: ", Xwindow::Black);
+
+    xw->drawString(x1, padding * 2, score.getHighScore(), Xwindow::Black);
+    xw->drawString(x1, padding * 3, score.getScore(), Xwindow::Black);
+}
+
 void GraphicsDisplay::drawMessage(Message &message)
 {
     int x = 2 * padding + boardWidth / 2;

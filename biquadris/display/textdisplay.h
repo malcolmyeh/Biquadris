@@ -15,6 +15,7 @@ public:
     TextDisplay();
     void drawCell(Cell &cell) override;
     void drawScore(Score &score) override;
+    void drawHighScore(Score &score) override;
     void drawMessage(Message &message) override;
     void clearMessage(Message &message) override;
     friend std::ostream &operator<<(std::ostream &out, const TextDisplay &td);

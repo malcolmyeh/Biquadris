@@ -31,10 +31,10 @@ class GraphicsDisplay : public View
     void drawBlindCell(int x, int y);
 
 public:
-
     GraphicsDisplay(int cellSize = 25);
     void drawCell(Cell &cell) override;
     void drawScore(Score &score) override;
+    void drawHighScore(Score &score) override;
     void drawMessage(Message &message) override;
     void clearMessage(Message &message) override;
 };
