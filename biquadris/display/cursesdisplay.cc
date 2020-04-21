@@ -4,6 +4,7 @@ using namespace std;
 CursesDisplay::CursesDisplay()
 {
 	initscr();
+	curs_set(0);
 	initColours();
 	initScoreWindows();
 	initNextBlockWindows();
