@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <locale>
+#include <ncurses.h>
 
 #include "../display/graphicsdisplay.h"
 #include "../display/textdisplay.h"
@@ -30,7 +31,8 @@ class Controller
 {
     int startLevel;
     std::vector<std::string> scriptFiles;
-
+    bool curses;
+    WINDOW * inputBox;
     std::vector<std::shared_ptr<PlayerManager>> playerManagers;
     std::shared_ptr<PlayerManager> currentPlayer;
     std::vector<std::vector<std::shared_ptr<View>>> displays;

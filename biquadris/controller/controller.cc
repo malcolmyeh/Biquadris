@@ -1,9 +1,10 @@
 #include "controller.h"
 #include "../player/heavylevel.h"
 #include <vector>
+#include <ncurses.h>
 
 Controller::Controller(bool graphics, bool curses, std::vector<std::string> scriptFiles, int startLevel = 0)
-    : startLevel{startLevel}, scriptFiles{scriptFiles}
+    : startLevel{startLevel}, scriptFiles{scriptFiles}, curses{curses}
 {
     makeDisplays(graphics, curses);
     makeBoards();
@@ -23,8 +24,13 @@ void Controller::makeDisplays(bool graphics, bool curses)
 
     if (curses)
     {
+        initscr();
+        curs_set(0);
         p1Displays.emplace_back(std::make_shared<CursesDisplay>());
         p2Displays.emplace_back(std::make_shared<CursesDisplay>());
+        inputBox = newwin(5, 55, 26, 5);
+        wmove(inputBox, 0, 0);
+        wrefresh(inputBox);
     }
     else
     {
@@ -194,6 +200,23 @@ bool startsWith(std::string input, std::string command)
            (std::mismatch(input.begin(), input.end(), command.begin()).first == input.end());
 }
 
+void readString(WINDOW *inputBox, std::string &str)
+{
+    // wrefresh(inputBox);
+    char nstr[80];
+    wgetstr(inputBox, nstr);
+    str = nstr;
+    wclear(inputBox);
+    wrefresh(inputBox);
+}
+
+void printString(WINDOW *inputBox, std::string str)
+{
+    wclear(inputBox);
+    mvwprintw(inputBox, 0, 0, str.c_str());
+    wrefresh(inputBox);
+}
+
 void Controller::gameEnd()
 {
     for (auto score : scores)
@@ -204,7 +227,10 @@ void Controller::gameEnd()
     while (true)
     {
         std::string input;
-        std::cin >> input;
+        if (curses)
+            readString(inputBox, input);
+        else
+            std::cin >> input;
         if (std::cin.eof())
             break;
 
@@ -246,6 +272,8 @@ void Controller::gameEnd()
         }
         matchedCommand = "";
     }
+    delwin(inputBox);
+    endwin();
 }
 
 void Controller::runGame()
@@ -290,7 +318,10 @@ void Controller::runGame()
         }
         else
         {
-            std::cin >> input;
+            if (curses)
+                readString(inputBox, input);
+            else
+                std::cin >> input;
             if (std::cin.eof())
                 break;
         }
@@ -302,7 +333,6 @@ void Controller::runGame()
             {
                 input.erase(0, 1);
             }
-            // std::cout << input << std::endl;
         }
 
         bool errorFlag = false;
@@ -320,13 +350,19 @@ void Controller::runGame()
 
         if (matchedCommand == "")
         {
-            std::cerr << "No commands matched." << std::endl;
+            if (curses)
+                printString(inputBox, "No commands matched. ");
+            else
+                std::cerr << "No commands matched." << std::endl;
             continue;
         }
 
         if (errorFlag)
         {
-            std::cerr << "Unable to match command. Please try again." << std::endl;
+            if (curses)
+                printString(inputBox, "Unable to match command. Please try again.");
+            else
+                std::cerr << "Unable to match command. Please try again." << std::endl;
             matchedCommand = "";
             multiplier = 1;
             errorFlag = false;
@@ -379,7 +415,10 @@ void Controller::runGame()
         else if (matchedCommand == commands[8])
         { // no random
             std::string file;
-            std::cin >> file;
+            if (curses)
+                readString(inputBox, file);
+            else
+                std::cin >> file;
             currentPlayer->setRandom(false);
             currentPlayer->setLevel(createLevel(currentPlayer->getLevel(), file));
         }
@@ -390,7 +429,10 @@ void Controller::runGame()
         else if (matchedCommand == commands[10])
         { // sequence
             std::string filename;
-            std::cin >> filename;
+            if (curses)
+                readString(inputBox, filename);
+            else
+                std::cin >> filename;
             std::ifstream infile{filename};
             if (!infile.good())
             {
@@ -403,7 +445,6 @@ void Controller::runGame()
             // file exists - move on
             while (infile >> filename)
             {
-                std::cout << filename << std::endl;
                 fileInput.emplace_back(filename);
             }
             readFileInput = true;
@@ -417,10 +458,16 @@ void Controller::runGame()
             matchedCommand = "";
             std::cout << "MATCHED COMMAND IS: " << matchedCommand << std::endl;
             std::string oldCommand;
-            std::cin >> oldCommand;
+            if (curses)
+                readString(inputBox, oldCommand);
+            else
+                std::cin >> oldCommand;
             std::cout << "OLD COMMAND IS:" << oldCommand << std::endl;
             std::string newCommand;
-            std::cin >> newCommand;
+            if (curses)
+                readString(inputBox, newCommand);
+            else
+                std::cin >> newCommand;
             for (auto command : commands)
             {
                 if (startsWith(oldCommand, command) && matchedCommand != "")
@@ -519,7 +566,10 @@ void Controller::runGame()
         else if (matchedCommand == commands[23])
         { // force
             char blockType;
-            std::cin >> blockType;
+            if (curses)
+                blockType = wgetch(inputBox);
+            else
+                std::cin >> blockType;
             currentPlayer->forceOpponentBlock(blockType);
         }
         else if (matchedCommand == commands[24])
@@ -529,4 +579,6 @@ void Controller::runGame()
         multiplier = 1;
         matchedCommand = "";
     }
+    delwin(inputBox);
+    endwin();
 }

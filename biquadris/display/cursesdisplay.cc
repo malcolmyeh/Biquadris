@@ -3,8 +3,8 @@
 using namespace std;
 CursesDisplay::CursesDisplay()
 {
-	initscr();
-	curs_set(0);
+	// initscr();
+	// curs_set(0);
 	initColours();
 	initScoreWindows();
 	initNextBlockWindows();
@@ -82,7 +82,7 @@ CursesDisplay::~CursesDisplay()
 		delwin(window);
 	for (auto window : messageWindows)
 		delwin(window);
-	endwin();
+	// endwin();
 }
 
 void CursesDisplay::drawCell(Cell &cell)
