@@ -17,9 +17,9 @@ void Score::updateScoreRow()
     drawDisplays();
 }
 
-void Score::updateScoreBlock(int level)
+void Score::updateScoreBlock(int blockLevel)
 {
-    this->currentScore += (level + 1) * (level + 1);
+    this->currentScore += (blockLevel + 1) * (blockLevel + 1);
     if (currentScore > highScore)
         highScore = currentScore;
     drawDisplays();
@@ -27,13 +27,7 @@ void Score::updateScoreBlock(int level)
 
 void Score::changeLevel(int level)
 {
-
-    if (level == 4)
-    {
-        this->level = 4;
-    }
-    else
-        this->level = level;
+    this->level = level;
     drawDisplays();
 }
 

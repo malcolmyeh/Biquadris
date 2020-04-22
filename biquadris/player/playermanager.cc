@@ -54,7 +54,7 @@ void PlayerManager::changeLevel(int num)
     if (levelNumber > 4)
         levelNumber = 4;
 
-    player->setLevel(num + level->getLevelNumber());
+    player->setLevel(levelNumber);
 
     // assuming num is +-1, undecorate if current Level >= 3
     if (level->getLevelNumber() >= 3 && levelNumber < level->getLevelNumber())

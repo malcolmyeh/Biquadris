@@ -15,7 +15,7 @@ public:
     Score(int level, int boardNumber);
     // Setters
     void updateScoreRow();
-    void updateScoreBlock(int level);
+    void updateScoreBlock(int blockLevel);
     void changeLevel(int level);
     void resetScore();
     // Getters

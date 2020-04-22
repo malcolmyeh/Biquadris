@@ -5,10 +5,7 @@
 // ctor
 Block::Block(int colour, int level) : colour{colour}, level{level} {}
 
-// this function returns true if it is possible to move in direction (x, y) and false otherwise
-//   if move is valid, unfill cells, then refill them after the points have shifted internally
-
-// true for full movement carried out. false otherwise.
+// true for full movement carried out magnitude amount of times in direction. false otherwise
 bool Block::move(char direction, int magnitude)
 {
     for (int i = 0; i < magnitude; ++i)
@@ -37,9 +34,7 @@ bool Block::move(char direction, int magnitude)
                     if (b.getX() == a)
                     {
                         if (b.getY() > largestY)
-                        {
                             largestY = b.getY();
-                        }
                     }
                 }
                 Point p{a, largestY};
@@ -60,7 +55,6 @@ bool Block::move(char direction, int magnitude)
 
             // empty the current cells
             this->drawBlock(Xwindow::White);
-
             p = {0, 1};
         }
         else if (direction == 'L')
@@ -81,9 +75,7 @@ bool Block::move(char direction, int magnitude)
                     if (b.getY() == a)
                     {
                         if (b.getX() < smallestX)
-                        {
                             smallestX = b.getX();
-                        }
                     }
                 }
                 Point p{smallestX, a};
@@ -122,9 +114,7 @@ bool Block::move(char direction, int magnitude)
                     if (b.getY() == a)
                     {
                         if (b.getX() > largestX)
-                        {
                             largestX = b.getX();
-                        }
                     }
                 }
                 Point p{largestX, a};
@@ -147,16 +137,10 @@ bool Block::move(char direction, int magnitude)
         }
 
         for (auto &a : this->points)
-        {
             a += p;
-        }
         for (auto &a : this->minRec)
-        {
             a += p;
-            // if (std::find(this->points.begin(), this->points.end(), a) != this->points.end()) { // if a is in points
 
-            // }
-        }
         this->topLeft += p;
         this->drawBlock(this->colour);
     }
@@ -187,7 +171,6 @@ bool Block::rotate(std::string direction)
 
     if (direction == "CW")
     {
-
         // new vars
         std::vector<std::vector<int>> tempCW(this->recHeight, std::vector<int>(this->recWidth, 0));
         std::vector<Point> newPoints;
@@ -197,9 +180,7 @@ bool Block::rotate(std::string direction)
         for (int i = 0; i < recWidth; ++i)
         {
             for (int j = 0; j < recHeight; ++j)
-            {
                 tempCW[j][i] = temp[i][recHeight - 1 - j];
-            }
         }
 
         Point newTopLeft{this->topLeft.getX(), this->topLeft.getY() + this->recHeight - this->recWidth};
@@ -233,8 +214,6 @@ bool Block::rotate(std::string direction)
                 if (getMainBoard()->isFilled(a))
                     return false;
             }
-            // if (this->board->isFilled(a) && !std::find(this->points.begin(), this->points.end(), a))
-            //     return false;
         }
         this->drawBlock(Xwindow::White);
         this->points = newPoints;
@@ -242,9 +221,6 @@ bool Block::rotate(std::string direction)
         this->topLeft = newTopLeft;
         std::swap(this->recWidth, this->recHeight);
         this->drawBlock(this->colour);
-        // rotation += 90;
-        // if (rotation >= 360)
-        //     rotation = rotation % 360;
         return true;
     }
     else if (direction == "CCW")
@@ -256,9 +232,7 @@ bool Block::rotate(std::string direction)
         for (int i = 0; i < recWidth; ++i)
         {
             for (int j = 0; j < recHeight; ++j)
-            {
                 tempCCW[j][i] = temp[recWidth - 1 - i][j];
-            }
         }
 
         Point newTopLeft{this->topLeft.getX(), this->topLeft.getY() + this->recHeight - this->recWidth};
@@ -269,9 +243,7 @@ bool Block::rotate(std::string direction)
                 Point p{newTopLeft.getX() + j, newTopLeft.getY() + i};
                 newMinRec.emplace_back(p);
                 if (tempCCW[j][i] == 1)
-                {
                     newPoints.emplace_back(p);
-                }
             }
         }
 
@@ -299,22 +271,14 @@ bool Block::rotate(std::string direction)
         this->topLeft = newTopLeft;
         std::swap(this->recWidth, this->recHeight);
         this->drawBlock(this->colour);
-        // rotation += 270;
-        // if (rotation >= 360)
-        //     rotation = rotation % 360;
+
         return true;
     }
     return false;
 }
 
-// it should be possible to drop at anytime..?? so change to void
 void Block::drop()
 {
-    // while (true)
-    // {
-    //     if (!this->move('D'))
-    //         break;
-    // }
     Point p{0, 0};
     std::unordered_set<int> uniqueXValues;
     for (auto a : this->points)
@@ -331,9 +295,7 @@ void Block::drop()
             if (b.getX() == a)
             {
                 if (b.getY() > largestY)
-                {
                     largestY = b.getY();
-                }
             }
         }
         Point p{a, largestY};
@@ -370,16 +332,9 @@ void Block::drop()
     this->drawBlock(Xwindow::White);
     p = {0, down - 1};
     for (auto &a : this->points)
-    {
         a += p;
-    }
     for (auto &a : this->minRec)
-    {
         a += p;
-        // if (std::find(this->points.begin(), this->points.end(), a) != this->points.end()) { // if a is in points
-
-        // }
-    }
     this->topLeft += p;
     this->drawBlock(this->colour);
 }
@@ -394,7 +349,6 @@ bool Block::isPlaced()
             uniqueXValues.insert(a.getX());
     }
 
-    // now that the set is created, find the lowermost points for each unique X
     std::vector<Point> checkDown;
     for (auto a : uniqueXValues)
     {
@@ -404,9 +358,7 @@ bool Block::isPlaced()
             if (b.getX() == a)
             {
                 if (b.getY() > largestY)
-                {
                     largestY = b.getY();
-                }
             }
         }
         Point p{a, largestY};
@@ -441,15 +393,9 @@ bool Block::clearPoint(int row)
     return this->points.empty();
 }
 
-int Block::getLevel()
-{
-    return this->level;
-}
+int Block::getLevel() { return this->level; }
 
-int Block::getColour()
-{
-    return this->colour;
-}
+int Block::getColour() { return this->colour; }
 
 bool Block::setMainBoard(std::shared_ptr<MainBoard> mainBoard)
 {
@@ -478,10 +424,6 @@ void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
 {
     if (!mainBoard.expired()) // rotate block to original position
     {
-        // for (int r = rotation; r > 0; r -= 90)
-        // {
-        //     rotate("CCW");
-        // }
         this->reset();
         drawBlock(Xwindow::White);
         mainBoard.reset();
@@ -493,7 +435,6 @@ void Block::setHoldBlockBoard(std::shared_ptr<HoldBlockBoard> holdBlockBoard)
 
 void Block::drawBlock(int colour)
 {
-
     if (!mainBoard.expired())
     {
         for (auto a : this->points)
@@ -509,7 +450,6 @@ void Block::drawBlock(int colour)
     }
     else if (!holdBlockBoard.expired())
     {
-
         for (auto a : this->points)
         {
             Point b = a += {0, -2};
@@ -518,32 +458,20 @@ void Block::drawBlock(int colour)
     }
 }
 
-bool Block::isEmpty()
-{
-    return this->points.empty();
-}
+bool Block::isEmpty() { return this->points.empty(); }
 
 bool Block::isValid()
 {
     for (auto a : this->points)
     {
         if (getMainBoard()->isFilled(a))
-        {
             return false;
-        }
     }
     return true;
 }
 
-std::shared_ptr<MainBoard> Block::getMainBoard()
-{
-    return mainBoard.lock();
-}
-std::shared_ptr<NextBlockBoard> Block::getNextBlockBoard()
-{
-    return nextBlockBoard.lock();
-}
-std::shared_ptr<HoldBlockBoard> Block::getHoldBlockBoard()
-{
-    return holdBlockBoard.lock();
-}
+std::shared_ptr<MainBoard> Block::getMainBoard() { return mainBoard.lock(); }
+
+std::shared_ptr<NextBlockBoard> Block::getNextBlockBoard() { return nextBlockBoard.lock(); }
+
+std::shared_ptr<HoldBlockBoard> Block::getHoldBlockBoard() { return holdBlockBoard.lock(); }

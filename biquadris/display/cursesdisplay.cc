@@ -82,7 +82,6 @@ CursesDisplay::~CursesDisplay()
 		delwin(window);
 	for (auto window : messageWindows)
 		delwin(window);
-	// endwin();
 }
 
 void CursesDisplay::drawCell(Cell &cell)

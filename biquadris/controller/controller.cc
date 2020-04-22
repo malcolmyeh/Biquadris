@@ -180,7 +180,6 @@ void Controller::restart()
     playerManagers.clear();
     makePlayerManagers();
     currentPlayer = playerManagers.front();
-    runGame();
 }
 
 void Controller::changeTurn()
@@ -191,7 +190,7 @@ void Controller::changeTurn()
         currentPlayer = playerManagers.front();
 }
 
-// returns true if the command starts with input, iwwe. prefix
+// returns true if the command starts with input. prefix
 //   use of mismatch was found from:
 //   https://stackoverflow.com/questions/7913835/check-if-one-string-is-a-prefix-of-another
 bool startsWith(std::string input, std::string command)
@@ -267,13 +266,15 @@ void Controller::gameEnd()
         }
         else if (matchedCommand == commands[1])
         { // quit
-            std::cout << "QUIT ENTERED" << std::endl;
             break;
         }
         matchedCommand = "";
     }
-    delwin(inputBox);
-    endwin();
+    if (curses)
+    {
+        delwin(inputBox);
+        endwin();
+    }
 }
 
 void Controller::runGame()
@@ -292,7 +293,11 @@ void Controller::runGame()
     while (true)
     {
         if (currentPlayer->getIsLost())
+        {
             gameEnd();
+            break;
+        }
+
         if (!currentPlayer->getIsPlaying())
         {                 // if current player turn ends
             changeTurn(); // change player
@@ -572,6 +577,10 @@ void Controller::runGame()
         multiplier = 1;
         matchedCommand = "";
     }
-    delwin(inputBox);
-    endwin();
+
+    if (curses)
+    {
+        delwin(inputBox);
+        endwin();
+    }
 }

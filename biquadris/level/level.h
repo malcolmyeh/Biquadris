@@ -24,7 +24,7 @@ protected:
     std::vector<char> sequence;
     unsigned int sequencePosition = 0;
     void getBlocksFromFile();
-    bool random = true;
+    bool random = false;
 
 public:
     Level(int levelNumber, std::string file);
