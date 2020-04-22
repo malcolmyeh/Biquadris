@@ -278,7 +278,6 @@ void Controller::gameEnd()
 
 void Controller::runGame()
 {
-    // we can build a map later to support macros and remapping
     std::vector<std::string> commands = {"left", "down", "right", "clockwise",
                                          "counterclockwise", "drop", "levelup",
                                          "leveldown", "norandom", "random",
@@ -289,10 +288,7 @@ void Controller::runGame()
     bool readFileInput = false;
     std::string matchedCommand = "";
     currentPlayer->setIsPlaying(); // set p1 to take first turn
-    // on downwards, see if is lost every movement
-    //   on horizontal or rtate, check after all are done
-    // possible code improvement: since multiplier, match and errorFlag are within loop, they do not
-    //   have to be constantly reset
+
     while (true)
     {
         if (currentPlayer->getIsLost())
@@ -302,7 +298,6 @@ void Controller::runGame()
             changeTurn(); // change player
             currentPlayer->setIsPlaying();
         }
-        // getOpponentLost
         std::string input;
         if (readFileInput)
         {
@@ -369,8 +364,6 @@ void Controller::runGame()
             continue;
         }
 
-        // change something in command array to remap. the if statement maps to a function. we may have to move the matching
-        //   to a function for easier remapping
         if (matchedCommand == commands[0])
         { // move left
             currentPlayer->moveBlock('L', multiplier);
